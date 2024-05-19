@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.Date;
 
 public abstract class Aliment {
 
@@ -25,11 +24,7 @@ public abstract class Aliment {
     //la dispensa ogni giorno farà un check per verificare se l'alimento è scaduto
     public void setIsExpired(){
         LocalDate today = LocalDate.now();
-        if (today.isAfter(expirationDate)){
-            isExpired = true;
-        } else {
-            isExpired = false;
-        }
+        isExpired = today.isAfter(expirationDate);
     }
 
     public String toString(){
