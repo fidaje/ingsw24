@@ -1,7 +1,9 @@
 # Progetto Gruppo 1
 
-## Diagramma UML
+## Struttura
+![Architettura](Struttura.drawio.svg)
 
+## Diagramma UML
 ![Diagramma UML](images/class_diagram.png)
 
 
