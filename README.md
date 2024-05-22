@@ -3,6 +3,9 @@
 ## Struttura
 ![Architettura](/images/Struttura.drawio.svg)
 
+## Use Case Diagram
+![Use Case Diagram](images/usecase.drawio.png)
+
 ## Diagramma UML
 ![Diagramma UML](images/class_diagram.png)
 
