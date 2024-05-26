@@ -1,11 +1,11 @@
 # Progetto Gruppo 1
 
 ## Team
-Mattia Fiore
-Francesco Iuorio
-Walter Musto
-Matteo Porcaro
-Gaetano Oliva
+Mattia Fiore <br>
+Francesco Iuorio <br>
+Walter Musto <br>
+Matteo Porcaro <br>
+Gaetano Oliva <br>
 
 ## Struttura
 ![Architettura](/images/Struttura.drawio.svg)
