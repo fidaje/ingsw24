@@ -3,7 +3,11 @@ package it.unisannio.ingsw24.unpacked.persistance;
 import it.unisannio.ingsw24.entities.Category;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.sql.*;
 
 public class UnPackedDAOMySQL implements UnPackedDAO{
@@ -12,9 +16,9 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     private static String port = System.getenv("MYSQL_PORT");
     private Connection connection;
 
-    private static final String GET_FRUIT = "SELECT * FROM " + TABLE_FRUIT + " WHERE " + ELEMENT_NAME + " = ?";
-    private static final String GET_TABLE_NAME = "SELECT DISTINCT"+ " table_name" +
-    " FROM information_schema.columns" + " WHERE table_schema = 'PROVAWM'";
+
+    private static final String GET_UNPACKEDFOOD = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
+    private static final String GET_ALL_UNPACKEDFOOD_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
 
     public UnPackedDAOMySQL(){
         if (host == null) {
@@ -26,7 +30,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         String URI = "jdbc:mysql://" + host + ":" + port + "/" + DATABASE_NAME;
 
         try {
-            this.connection = DriverManager.getConnection(URI, "root", "mysql");
+            this.connection = DriverManager.getConnection(URI, "root", "cusas-mysql");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -47,21 +51,45 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return null;
     }
 
+    @Override
+    public List<String> getAllUnPackedFoodNames(){
+
+        List<String> names = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_ALL_UNPACKEDFOOD_FOR_NAME);
+            ResultSet rs = preparedStmt.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getString(UnPackedDAO.ELEMENT_NAME));
+                names.add(rs.getString(UnPackedDAO.ELEMENT_NAME));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return names;
+
+    }
+
+
 
     public static UnPackedFood unPackedFoodFromResultSet(ResultSet resultSet) throws SQLException{
+
+        String cat = resultSet.getString(ELEMENT_CATEGORY);
+
+
         return new UnPackedFood(resultSet.getString(ELEMENT_NAME),
                 resultSet.getString(ELEMENT_UNIQUE_ID),
-                null,
                 false,
                 false,
                 1,
-                Category.OTHER,
-                resultSet.getInt(ELEMENT_Average_Expiry_Date));
+                Category.valueOf(cat.toUpperCase()),
+                resultSet.getInt(ELEMENT_AVERAGE_EXPIRY_DATE));
     }
+
     @Override
     public UnPackedFood getUnPackedFood(String name) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_FRUIT);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_UNPACKEDFOOD);
             preparedStmt.setString(1, name);
             ResultSet rs = preparedStmt.executeQuery();
             if (rs.next()) {

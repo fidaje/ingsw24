@@ -19,6 +19,14 @@ public abstract class Food {
         this.isFridge = isFridge;
         this.quantity = quantity;
     }
+    
+    protected Food(String name, String id, boolean isExpired, boolean isFridge, int quantity) {
+        this.name = name;
+        this.id = id;
+        this.isExpired = isExpired;
+        this.isFridge = isFridge;
+        this.quantity = quantity;
+    }
 
 
     abstract public void setExpirationDate();

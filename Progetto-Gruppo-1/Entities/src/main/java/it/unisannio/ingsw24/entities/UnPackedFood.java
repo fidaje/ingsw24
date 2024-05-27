@@ -8,8 +8,8 @@ public class UnPackedFood extends Food {
     Category type;
     int averageExpirationDays;
 
-    public UnPackedFood(String name, String id, LocalDate expirationDate, boolean isExpired, boolean isFridge, int quantity, Category type, int averageExpirationDays) {
-        super(name, id, expirationDate, isExpired, isFridge, quantity);
+    public UnPackedFood(String name, String id, boolean isExpired, boolean isFridge, int quantity, Category type, int averageExpirationDays) {
+        super(name, id, isExpired, isFridge, quantity);
         this.type = type;
         this.averageExpirationDays = averageExpirationDays;
         setExpirationDate();
@@ -24,6 +24,6 @@ public class UnPackedFood extends Food {
     }
 
     public String toString(){
-        return super.toString() + "Average Ex:" + this.averageExpirationDays;
+        return super.toString() + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.type;
     }
 }
