@@ -22,7 +22,7 @@ public interface UnPackedDAO {
 
     boolean dropDB();
 
-    String createUnPackedFood(UnPackedFood UF);
+    boolean createUnPackedFood(String ID, String name, int average_exp_date, String category);
 
     Map<String, UnPackedFood> getAllUnPackedFood();
 
@@ -32,7 +32,7 @@ public interface UnPackedDAO {
 
     UnPackedFood updateUnPackedFood(int averageExpiryDate);
 
-    boolean deleteUnPackedFood(Long frameNumber);
+    boolean deleteUnPackedFood(String id);
 
     boolean closeConnection();
 

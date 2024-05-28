@@ -4,10 +4,9 @@ import it.unisannio.ingsw24.entities.Category;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.sql.*;
 
 public class UnPackedDAOMySQL implements UnPackedDAO{
@@ -19,6 +18,9 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
     private static final String GET_UNPACKEDFOOD = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
     private static final String GET_ALL_UNPACKEDFOOD_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
+    private static final String POST_UNPACKEDFOOD = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DATE + ", " + ELEMENT_CATEGORY + ")" 
+                                + " VALUES ( ?, ?, ?, ?)";
+    private static final String DELETE_UNPACKEDFOOD = "DELETE FROM UNPACKEDFOOD WHERE ID = ?";
 
     public UnPackedDAOMySQL(){
         if (host == null) {
@@ -41,14 +43,41 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return false;
     }
 
+
     @Override
-    public String createUnPackedFood(UnPackedFood UF) {
-        return null;
+    public boolean createUnPackedFood(String ID, String name, int average_exp_date, String category) {
+        try {
+            PreparedStatement preparedStmt = this.connection.prepareStatement(POST_UNPACKEDFOOD);
+            preparedStmt.setString(1, ID);
+            preparedStmt.setString(2, name);
+            preparedStmt.setInt(3, average_exp_date);
+            preparedStmt.setString(4, category);
+            
+            int affectedRaw = preparedStmt.executeUpdate();
+
+            if (affectedRaw == 1){
+                return true;
+            }
+            else    
+                return false;
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public Map<String, UnPackedFood> getAllUnPackedFood() {
-        return null;
+        
+        Map<String, UnPackedFood> unpackedfoods = new HashMap<>();
+        List<String> names = this.getAllUnPackedFoodNames();
+        for( String name : names){
+            UnPackedFood upf = this.getUnPackedFood(name);
+            unpackedfoods.put(upf.getID(), upf);
+        }
+
+        return unpackedfoods;
     }
 
     @Override
@@ -60,7 +89,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
             PreparedStatement preparedStmt = this.connection.prepareStatement(GET_ALL_UNPACKEDFOOD_FOR_NAME);
             ResultSet rs = preparedStmt.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString(UnPackedDAO.ELEMENT_NAME));
                 names.add(rs.getString(UnPackedDAO.ELEMENT_NAME));
             }
         } catch (SQLException e) {
@@ -76,14 +104,13 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
         String cat = resultSet.getString(ELEMENT_CATEGORY);
 
-
         return new UnPackedFood(resultSet.getString(ELEMENT_NAME),
                 resultSet.getString(ELEMENT_UNIQUE_ID),
                 false,
                 false,
                 1,
                 Category.valueOf(cat.toUpperCase()),
-                resultSet.getInt(ELEMENT_AVERAGE_EXPIRY_DATE));
+                resultSet.getString(ELEMENT_AVERAGE_EXPIRY_DATE));
     }
 
     @Override
@@ -99,7 +126,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return null; // FACTORY
 
     }
 
@@ -109,7 +136,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
     @Override
-    public boolean deleteUnPackedFood(Long frameNumber) {
+    public boolean deleteUnPackedFood(String id) {
         return false;
     }
 
