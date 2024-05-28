@@ -11,6 +11,8 @@ public abstract class Food {
     private boolean isFridge;
     private int quantity;
 
+
+
     public Food(String name, String id, LocalDate expirationDate, boolean isExpired, boolean isFridge, int quantity) {
         this.name = name;
         this.id = id;
@@ -28,13 +30,40 @@ public abstract class Food {
         this.quantity = quantity;
     }
 
-
-    abstract public void setExpirationDate();
+    abstract public void setExpirationDate(String date);
 
     //la dispensa ogni giorno farà un check per verificare se l'alimento è scaduto
     public void setIsExpired(){
         LocalDate today = LocalDate.now();
-        isExpired = today.isAfter(expirationDate);
+        this.isExpired = today.isAfter(this.expirationDate);
+    }
+
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getID(){
+        return this.id;
+    }
+
+    public LocalDate getExpirationDate(){
+        return this.expirationDate;
+    }
+    
+    public boolean getIsExpired(){
+        return this.isExpired;
+    }
+
+    public boolean getIsFridge(){
+        return this.isFridge;
+    }
+
+    public int getQuantity(){
+        return this.quantity;
     }
 
     public String toString(){

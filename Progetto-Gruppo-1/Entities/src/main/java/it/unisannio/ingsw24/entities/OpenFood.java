@@ -17,7 +17,20 @@ public class OpenFood extends Food {
     }
 
     @Override
-    public void setExpirationDate() {
+    public void setExpirationDate(String date){
+        LocalDate ld = LocalDate.parse(date);
+        this.expirationDate = ld;
+    }
 
+    public String getBrand(){
+        return this.brand;
+    }
+
+    public String getNutritionGrade(){
+        return this.nutritionGrade;
+    }
+
+    public String toString(){
+        return super.toString() + " Brand: " + this.brand + " Nutrition Grade: " + this.nutritionGrade;
     }
 }
