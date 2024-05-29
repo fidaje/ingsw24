@@ -14,7 +14,7 @@ Gaetano Oliva <br>
 ![Use Case Diagram](images/use-case.drawio.png)
 
 ## Struttura con Classi
-![Struttura con Classi](images/struttura-con-classi.drawio.png)
+![Struttura con Classi](images/Struttura.drawio.png)
 
 ## Diagramma UML
 ![Diagramma UML](images/class_diagram.png)
