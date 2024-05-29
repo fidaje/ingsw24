@@ -22,7 +22,10 @@ public class TestMySQL {
 
         //System.out.println(voto);
 
-        /* Map<String, UnPackedFood> mappa = upd.getAllUnPackedFood();
+        /*
+         
+         
+        Map<String, UnPackedFood> mappa = upd.getAllUnPackedFood();
 
         Set<String> chiavi = mappa.keySet();
 
@@ -30,11 +33,12 @@ public class TestMySQL {
              UnPackedFood up = mappa.get(chiave);
              System.out.println(up + "\n");
             }
-        System.out.println(chiavi.size()); */
+        System.out.println(chiavi.size());
+        */
 
         //boolean esito = upd.createUnPackedFood("ZZZZ", "francesco", 123456, "Others");
         //System.out.println(esito);
-        boolean esito = upd.deleteUnPackedFood("ZZZZ");
+        boolean esito = upd.updateUnPackedFood("ZZZZ", 1);
         System.out.println(esito);
     }
 }

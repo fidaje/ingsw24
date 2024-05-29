@@ -4,7 +4,6 @@ import it.unisannio.ingsw24.entities.UnPackedFood;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public interface UnPackedDAO {
 
@@ -30,7 +29,10 @@ public interface UnPackedDAO {
 
     UnPackedFood getUnPackedFood(String name);
 
-    UnPackedFood updateUnPackedFood(int averageExpiryDate);
+    // Vedere commento UnPackedDAOMySQL linea 141
+    // UnPackedFood updateUnPackedFood(int averageExpiryDate);
+
+    boolean updateUnPackedFood(String id, int averageExpiryDate);
 
     boolean deleteUnPackedFood(String id);
 
