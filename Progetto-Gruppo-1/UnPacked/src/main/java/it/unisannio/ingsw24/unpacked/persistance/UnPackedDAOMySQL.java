@@ -1,7 +1,6 @@
 package it.unisannio.ingsw24.unpacked.persistance;
 
 import it.unisannio.ingsw24.entities.Category;
-import it.unisannio.ingsw24.entities.UnPackedFood;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +15,12 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     private Connection connection;
 
 
-    private static final String GET_UNPACKEDFOOD = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
-    private static final String GET_ALL_UNPACKEDFOOD_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
-    private static final String POST_UNPACKEDFOOD = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DAYS + ", " + ELEMENT_CATEGORY + ")" 
+    private static final String GET_FoodDAO = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
+    private static final String GET_ALL_FoodDAO_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
+    private static final String POST_FoodDAO = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DAYS + ", " + ELEMENT_CATEGORY + ")" 
                                 + " VALUES ( ?, ?, ?, ?)";
-    private static final String DELETE_UNPACKEDFOOD = "DELETE FROM " + TABLE + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
-    private static final String UPDATE_AVGEXPDAYS_UNPACKEDFOOD = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DAYS + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
+    private static final String DELETE_FoodDAO = "DELETE FROM " + TABLE + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
+    private static final String UPDATE_AVGEXPDAYS_FoodDAO = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DAYS + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
 
     public UnPackedDAOMySQL(){
         if (host == null) {
@@ -39,29 +38,26 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         }
     }
 
-    // Parser che crea l'oggetto UnPackedFood
-    public static UnPackedFood unPackedFoodFromResultSet(ResultSet resultSet) throws SQLException{
+    // Parser che crea l'oggetto FoodDAO
+    public static FoodDAO FoodDAOFromResultSet(ResultSet resultSet) throws SQLException{
 
-        String cat = resultSet.getString(ELEMENT_CATEGORY);
+        //String cat = resultSet.getString(ELEMENT_CATEGORY);
 
-        return new UnPackedFood(resultSet.getString(ELEMENT_NAME),
-                resultSet.getString(ELEMENT_UNIQUE_ID),
-                false,
-                false,
-                1,
-                Category.valueOf(cat.toUpperCase()),
-                resultSet.getString(ELEMENT_AVERAGE_EXPIRY_DAYS));
+        return new FoodDAO(resultSet.getString(ELEMENT_UNIQUE_ID),
+                resultSet.getString(ELEMENT_NAME),
+                resultSet.getInt(ELEMENT_AVERAGE_EXPIRY_DAYS),
+                Category.valueOf(resultSet.getString(ELEMENT_CATEGORY).toUpperCase()));
     }
 
 
     @Override
-    public UnPackedFood getUnPackedFood(String name) {
+    public FoodDAO getFoodDAO(String name) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_UNPACKEDFOOD);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_FoodDAO);
             preparedStmt.setString(1, name);
             ResultSet rs = preparedStmt.executeQuery();
             if (rs.next()) {
-                UnPackedFood uf = unPackedFoodFromResultSet(rs);
+                FoodDAO uf = FoodDAOFromResultSet(rs);
                 return uf;
             }
         } catch (SQLException e) {
@@ -71,9 +67,9 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
     @Override
-    public boolean createUnPackedFood(String ID, String name, int averageExpiryDays, String category) {
+    public boolean createFoodDAO(String ID, String name, int averageExpiryDays, String category) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(POST_UNPACKEDFOOD);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(POST_FoodDAO);
             preparedStmt.setString(1, ID);
             preparedStmt.setString(2, name);
             preparedStmt.setInt(3, averageExpiryDays);
@@ -91,9 +87,9 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
 
     @Override
-    public boolean deleteUnPackedFood(String ID) {
+    public boolean deleteFoodDAO(String ID) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(DELETE_UNPACKEDFOOD);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(DELETE_FoodDAO);
             preparedStmt.setString(1, ID);
             int affectedRows = preparedStmt.executeUpdate();
 
@@ -106,12 +102,12 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
 
-    private List<String> getAllUnPackedFoodNames(){
+    private List<String> getAllFoodDAONames(){
 
         List<String> names = new ArrayList<>();
 
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_ALL_UNPACKEDFOOD_FOR_NAME);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_ALL_FoodDAO_FOR_NAME);
             ResultSet rs = preparedStmt.executeQuery();
             while (rs.next()) {
                 names.add(rs.getString(UnPackedDAO.ELEMENT_NAME));
@@ -124,16 +120,16 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     
 
     @Override
-    public Map<String, UnPackedFood> getAllUnPackedFood() {
+    public Map<String, FoodDAO> getAllFoodDAO() {
         
-        Map<String, UnPackedFood> unpackedfoods = new HashMap<>();
-        List<String> names = this.getAllUnPackedFoodNames();
+        Map<String, FoodDAO> FoodDAOs = new HashMap<>();
+        List<String> names = this.getAllFoodDAONames();
         for( String name : names){
-            UnPackedFood upf = this.getUnPackedFood(name);
-            unpackedfoods.put(upf.getID(), upf);
+            FoodDAO upf = this.getFoodDAO(name);
+            FoodDAOs.put(upf.getID(), upf);
         }
 
-        return unpackedfoods;
+        return FoodDAOs;
     }
 
     
@@ -141,14 +137,14 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     // ID dell'oggetto da modificare e la scadenza media, magari aggiornando la mappa se contiene l'oggetto e non è vuota
     
     /* @Override
-    public UnPackedFood updateUnPackedFood(int averageExpiryDate) {
+    public FoodDAO updateFoodDAO(int averageExpiryDate) {
         return null;
     } */
 
     @Override
-    public boolean updateUnPackedFood(String ID, int averageExpiryDays) {
+    public boolean updateFoodDAO(String ID, int averageExpiryDays) {
         try{
-            PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_AVGEXPDAYS_UNPACKEDFOOD);
+            PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_AVGEXPDAYS_FoodDAO);
             preparedStatement.setString(2, ID);
             preparedStatement.setInt(1, averageExpiryDays);
             int affectedRows = preparedStatement.executeUpdate();

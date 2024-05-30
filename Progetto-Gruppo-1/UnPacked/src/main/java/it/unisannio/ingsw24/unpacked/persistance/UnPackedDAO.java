@@ -1,14 +1,12 @@
 package it.unisannio.ingsw24.unpacked.persistance;
 
-import it.unisannio.ingsw24.entities.UnPackedFood;
-
 import java.util.Map;
 
 public interface UnPackedDAO {
 
     String DATABASE_NAME = "UnPackedDB";
 
-    String TABLE = "UNPACKEDFOOD";
+    String TABLE = "FoodDAO";
 
     String ELEMENT_NAME = "Name";
 
@@ -20,19 +18,19 @@ public interface UnPackedDAO {
 
     boolean dropDB();
 
-    boolean createUnPackedFood(String ID, String name, int averageExpiryDays, String category);
+    boolean createFoodDAO(String ID, String name, int averageExpiryDays, String category);
 
-    Map<String, UnPackedFood> getAllUnPackedFood();
+    Map<String, FoodDAO> getAllFoodDAO();
 
 
-    UnPackedFood getUnPackedFood(String name);
+    FoodDAO getFoodDAO(String name);
 
     // Vedere commento UnPackedDAOMySQL linea 141
-    // UnPackedFood updateUnPackedFood(int averageExpiryDate);
+    // FoodDAO updateFoodDAO(int averageExpiryDate);
 
-    boolean updateUnPackedFood(String id, int averageExpiryDays);
+    boolean updateFoodDAO(String id, int averageExpiryDays);
 
-    boolean deleteUnPackedFood(String id);
+    boolean deleteFoodDAO(String id);
 
     boolean closeConnection();
 
