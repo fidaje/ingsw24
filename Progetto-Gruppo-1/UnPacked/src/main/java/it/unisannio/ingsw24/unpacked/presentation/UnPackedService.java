@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.Response;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/unpackedfood/api")
+@Path("/unpackedfood")
 public class UnPackedService {
 
     UnPackedLogic logic;
@@ -31,7 +31,7 @@ public class UnPackedService {
    public Response updateUnpackedFood(@PathParam("ID") String ID, @PathParam("days") int days){
         boolean result = logic.updateUnPackedFood(ID, days);
 
-        if (result == true){
+        if (result){
             return Response.ok().build();
         }
         else
