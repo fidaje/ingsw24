@@ -5,12 +5,14 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import it.unisannio.ingsw24.unpacked.presentation.UnPackedService;
+
 @SpringBootApplication
 @ApplicationPath("unpacked")
 public class UnPackedApplication extends ResourceConfig {
 
     public UnPackedApplication(){
-        //register();
+        register(UnPackedService.class);
     }
 
     public static void main(String[] args) {

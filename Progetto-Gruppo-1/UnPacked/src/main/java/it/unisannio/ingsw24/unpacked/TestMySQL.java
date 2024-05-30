@@ -38,7 +38,7 @@ public class TestMySQL {
 
         //boolean esito = upd.createUnPackedFood("ZZZZ", "francesco", 123456, "Others");
         //System.out.println(esito);
-        boolean esito = upd.updateUnPackedFood("ZZZZ", 1);
+        boolean esito = upd.updateUnPackedFood("ZZZZ", 34);
         System.out.println(esito);
     }
 }

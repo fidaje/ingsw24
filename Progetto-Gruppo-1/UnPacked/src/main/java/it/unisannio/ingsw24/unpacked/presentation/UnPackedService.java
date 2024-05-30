@@ -25,4 +25,17 @@ public class UnPackedService {
         return Response.ok(unp).build();
 
     }
+
+   @PUT
+   @Path("/{ID}/{days}")
+   public Response updateUnpackedFood(@PathParam("ID") String ID, @PathParam("days") int days){
+        boolean result = logic.updateUnPackedFood(ID, days);
+
+        if (result == true){
+            return Response.ok().build();
+        }
+        else
+            return Response.status(400,"The resource to update does not exists").build();
+
+   }
 }
