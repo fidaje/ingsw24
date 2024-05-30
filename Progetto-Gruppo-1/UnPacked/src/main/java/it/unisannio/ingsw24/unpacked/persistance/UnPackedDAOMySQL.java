@@ -18,10 +18,10 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
     private static final String GET_UNPACKEDFOOD = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
     private static final String GET_ALL_UNPACKEDFOOD_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
-    private static final String POST_UNPACKEDFOOD = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DATE + ", " + ELEMENT_CATEGORY + ")" 
+    private static final String POST_UNPACKEDFOOD = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DAYS + ", " + ELEMENT_CATEGORY + ")" 
                                 + " VALUES ( ?, ?, ?, ?)";
     private static final String DELETE_UNPACKEDFOOD = "DELETE FROM " + TABLE + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
-    private static final String UPDATE_AVGEXPDAYS_UNPACKEDFOOD = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DATE + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
+    private static final String UPDATE_AVGEXPDAYS_UNPACKEDFOOD = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DAYS + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
 
     public UnPackedDAOMySQL(){
         if (host == null) {
@@ -50,7 +50,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
                 false,
                 1,
                 Category.valueOf(cat.toUpperCase()),
-                resultSet.getString(ELEMENT_AVERAGE_EXPIRY_DATE));
+                resultSet.getString(ELEMENT_AVERAGE_EXPIRY_DAYS));
     }
 
 
@@ -71,12 +71,12 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
     @Override
-    public boolean createUnPackedFood(String ID, String name, int average_exp_date, String category) {
+    public boolean createUnPackedFood(String ID, String name, int averageExpiryDays, String category) {
         try {
             PreparedStatement preparedStmt = this.connection.prepareStatement(POST_UNPACKEDFOOD);
             preparedStmt.setString(1, ID);
             preparedStmt.setString(2, name);
-            preparedStmt.setInt(3, average_exp_date);
+            preparedStmt.setInt(3, averageExpiryDays);
             preparedStmt.setString(4, category);
             
             int affectedRows = preparedStmt.executeUpdate();
@@ -106,8 +106,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
 
-    @Override
-    public List<String> getAllUnPackedFoodNames(){
+    private List<String> getAllUnPackedFoodNames(){
 
         List<String> names = new ArrayList<>();
 
@@ -147,11 +146,11 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     } */
 
     @Override
-    public boolean updateUnPackedFood(String ID, int averageExpiryDate) {
+    public boolean updateUnPackedFood(String ID, int averageExpiryDays) {
         try{
             PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_AVGEXPDAYS_UNPACKEDFOOD);
             preparedStatement.setString(2, ID);
-            preparedStatement.setInt(1, averageExpiryDate);
+            preparedStatement.setInt(1, averageExpiryDays);
             int affectedRows = preparedStatement.executeUpdate();
             
             return affectedRows == 1;

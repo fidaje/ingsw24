@@ -1,2 +1,8 @@
 .DS_Store
 Progetto-Gruppo-1/UnPacked/.mvn/wrapper/maven-wrapper.properties
+.idea/misc.xml
+.idea/compiler.xml
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/progetto-gruppo-1.iml
+.idea/vcs.xml
