@@ -4,19 +4,27 @@ import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAO;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAOMySQL;
 
+import java.sql.SQLException;
+import java.util.List;
 
 
 public class TestMySQL {
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         UnPackedDAO upd = new UnPackedDAOMySQL();
 
-        UnPackedMySQL voto = upd.getUnPackedMySQL("mela");
+       // int id = upd.createUnPackedMySQL("gaetano", 123343, "OTHERS");
+        //System.out.println(id);
+
+        System.out.println(upd.deleteUnPackedMySQL(2272));
+
+
+
+
+        //UnPackedMySQL voto = upd.getUnPackedMySQL("mela");
 
         //List<String> names = upd.getAllUnPackedFoodNames();
 
         // System.out.println(names.size());
-
-        System.out.println(voto);
 
         /*
          

@@ -7,10 +7,10 @@ import java.util.Map;
 
 public interface UnPackedLogic {
 
-    boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category);
+    int createUnPackedMySQL(String name, int averageExpiryDays, String category);
     UnPackedMySQL getUnPackedMySQL(String name);
     Map<String, UnPackedMySQL> getAllUnPackedMySQL();
-    boolean updateUnPackedMySQL(String ID, int averageExpiryDays);
-    boolean deleteUnPackedMySQL(String ID);
+    boolean updateUnPackedMySQL(int ID, int averageExpiryDays);
+    boolean deleteUnPackedMySQL(int ID);
 
 }

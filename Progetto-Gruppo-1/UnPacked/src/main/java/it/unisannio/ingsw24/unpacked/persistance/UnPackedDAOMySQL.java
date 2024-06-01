@@ -15,12 +15,14 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     private Connection connection;
 
 
-    private static final String GET_FoodDAO = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
-    private static final String GET_ALL_FoodDAO_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
-    private static final String POST_FoodDAO = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DAYS + ", " + ELEMENT_CATEGORY + ")" 
+    private static final String GET_UNPACKED = "SELECT * FROM " + TABLE + " WHERE " + ELEMENT_NAME + " = ?";
+    private static final String GET_ALL_UNPACKED_FOR_NAME = "SELECT " + ELEMENT_NAME + " FROM " + TABLE;
+    private static final String POST_UNPACKED = "INSERT INTO " + TABLE + "(" + ELEMENT_UNIQUE_ID + ", " + ELEMENT_NAME + ", " + ELEMENT_AVERAGE_EXPIRY_DAYS + ", " + ELEMENT_CATEGORY + ")"
                                 + " VALUES ( ?, ?, ?, ?)";
-    private static final String DELETE_FoodDAO = "DELETE FROM " + TABLE + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
-    private static final String UPDATE_AVGEXPDAYS_FoodDAO = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DAYS + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
+    private static final String DELETE_UNPACKED = "DELETE FROM " + TABLE + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
+    private static final String UPDATE_AVERAGE_EXPIRE_DAYS_UNPACKED = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DAYS + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
+
+    private static final String GET_NEXT_ID = "SELECT MAX(" + ELEMENT_UNIQUE_ID + ") as maximum FROM " + TABLE;
 
     public UnPackedDAOMySQL(){
         if (host == null) {
@@ -49,11 +51,27 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
                 Category.valueOf(resultSet.getString(ELEMENT_CATEGORY).toUpperCase()));
     }
 
+    @Override
+    public int getNextId() {
+        try {
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_NEXT_ID);
+            ResultSet resultSet = preparedStmt.executeQuery();
+            if (resultSet.next()) {
+                int max = resultSet.getInt("maximum") + 1;
+                return max;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 
     @Override
     public UnPackedMySQL getUnPackedMySQL(String name) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_FoodDAO);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_UNPACKED);
             preparedStmt.setString(1, name);
             ResultSet rs = preparedStmt.executeQuery();
             if (rs.next()) {
@@ -66,31 +84,33 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return null; // FACTORY
     }
 
+
     @Override
-    public boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category) {
+    public int createUnPackedMySQL(String name, int averageExpiryDays, String category) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(POST_FoodDAO);
-            preparedStmt.setString(1, ID);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(POST_UNPACKED);
+            int id = this.getNextId();
+            preparedStmt.setInt(1, id);
             preparedStmt.setString(2, name);
             preparedStmt.setInt(3, averageExpiryDays);
             preparedStmt.setString(4, category);
             
             int affectedRows = preparedStmt.executeUpdate();
 
-            return affectedRows == 1;
+            return id;
     
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
     }
 
 
     @Override
-    public boolean deleteUnPackedMySQL(String ID) {
+    public boolean deleteUnPackedMySQL(int ID) {
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(DELETE_FoodDAO);
-            preparedStmt.setString(1, ID);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(DELETE_UNPACKED);
+            preparedStmt.setInt(1, ID);
             int affectedRows = preparedStmt.executeUpdate();
 
             return affectedRows == 1;
@@ -107,7 +127,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         List<String> names = new ArrayList<>();
 
         try {
-            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_ALL_FoodDAO_FOR_NAME);
+            PreparedStatement preparedStmt = this.connection.prepareStatement(GET_ALL_UNPACKED_FOR_NAME);
             ResultSet rs = preparedStmt.executeQuery();
             while (rs.next()) {
                 names.add(rs.getString(UnPackedDAO.ELEMENT_NAME));
@@ -117,6 +137,8 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         }
         return names;
     }
+
+
     
 
     @Override
@@ -142,10 +164,10 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     } */
 
     @Override
-    public boolean updateUnPackedMySQL(String ID, int averageExpiryDays) {
+    public boolean updateUnPackedMySQL(int ID, int averageExpiryDays) {
         try{
-            PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_AVGEXPDAYS_FoodDAO);
-            preparedStatement.setString(2, ID);
+            PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_AVERAGE_EXPIRE_DAYS_UNPACKED);
+            preparedStatement.setInt(2, ID);
             preparedStatement.setInt(1, averageExpiryDays);
             int affectedRows = preparedStatement.executeUpdate();
             

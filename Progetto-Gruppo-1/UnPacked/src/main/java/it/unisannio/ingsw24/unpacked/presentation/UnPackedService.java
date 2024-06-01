@@ -29,7 +29,7 @@ public class UnPackedService {
 
    @PUT
    @Path("/{ID}/{days}")
-   public Response updateUnPackedMySQL(@PathParam("ID") String ID, @PathParam("days") int days){
+   public Response updateUnPackedMySQL(@PathParam("ID") int ID, @PathParam("days") int days){
         boolean result = logic.updateUnPackedMySQL(ID, days);
 
         if (result){

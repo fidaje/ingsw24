@@ -18,9 +18,11 @@ public interface UnPackedDAO {
 
     boolean dropDB();
 
-    boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category);
+    int createUnPackedMySQL(String name, int averageExpiryDays, String category);
 
     Map<String, UnPackedMySQL> getAllUnPackedMySQL();
+
+    public int getNextId();
 
 
     UnPackedMySQL getUnPackedMySQL(String name);
@@ -28,9 +30,9 @@ public interface UnPackedDAO {
     // Vedere commento UnPackedDAOMySQL linea 141
     // FoodDAO updateFoodDAO(int averageExpiryDate);
 
-    boolean updateUnPackedMySQL(String id, int averageExpiryDays);
+    boolean updateUnPackedMySQL(int id, int averageExpiryDays);
 
-    boolean deleteUnPackedMySQL(String id);
+    boolean deleteUnPackedMySQL(int id);
 
     boolean closeConnection();
 

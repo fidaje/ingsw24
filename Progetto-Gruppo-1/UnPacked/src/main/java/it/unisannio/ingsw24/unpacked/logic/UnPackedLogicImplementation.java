@@ -15,8 +15,8 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     }
 
     @Override
-    public boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category) {
-        return this.upd.createUnPackedMySQL(ID, name, averageExpiryDays, category);
+    public int createUnPackedMySQL(String name, int averageExpiryDays, String category) {
+        return this.upd.createUnPackedMySQL(name, averageExpiryDays, category);
     }
 
     @Override
@@ -30,12 +30,12 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     }
 
     @Override
-    public boolean updateUnPackedMySQL(String ID, int averageExpiryDays) {
+    public boolean updateUnPackedMySQL(int ID, int averageExpiryDays) {
         return this.upd.updateUnPackedMySQL(ID, averageExpiryDays);
     }
 
     @Override
-    public boolean deleteUnPackedMySQL(String ID) {
+    public boolean deleteUnPackedMySQL(int ID) {
         return this.upd.deleteUnPackedMySQL(ID);
     }
 
