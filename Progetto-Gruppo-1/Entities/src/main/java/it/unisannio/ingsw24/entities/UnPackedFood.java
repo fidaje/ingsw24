@@ -22,6 +22,10 @@ public class UnPackedFood extends Food {
         expirationDate = today.plusDays(expirationDays);
     }
 
+    public String getAverageExpirationDays(){
+        return this.averageExpirationDays;
+    }
+
     public String toString(){
         return super.toString() + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.type;
     }
