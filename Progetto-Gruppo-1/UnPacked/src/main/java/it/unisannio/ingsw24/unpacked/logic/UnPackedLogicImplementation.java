@@ -15,27 +15,27 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     }
 
     @Override
-    public boolean createFoodDAO(String ID, String name, int averageExpiryDays, String category) {
+    public boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category) {
         return this.upd.createUnPackedMySQL(ID, name, averageExpiryDays, category);
     }
 
     @Override
-    public UnPackedMySQL getFoodDAO(String name) {
+    public UnPackedMySQL getUnPackedMySQL(String name) {
         return this.upd.getUnPackedMySQL(name);
     }
 
     @Override
-    public Map<String, UnPackedMySQL> getAllFoodDAO() {
+    public Map<String, UnPackedMySQL> getAllUnPackedMySQL() {
         return this.upd.getAllUnPackedMySQL();
     }
 
     @Override
-    public boolean updateFoodDAO(String ID, int averageExpiryDays) {
+    public boolean updateUnPackedMySQL(String ID, int averageExpiryDays) {
         return this.upd.updateUnPackedMySQL(ID, averageExpiryDays);
     }
 
     @Override
-    public boolean deleteFoodDAO(String ID) {
+    public boolean deleteUnPackedMySQL(String ID) {
         return this.upd.deleteUnPackedMySQL(ID);
     }
 

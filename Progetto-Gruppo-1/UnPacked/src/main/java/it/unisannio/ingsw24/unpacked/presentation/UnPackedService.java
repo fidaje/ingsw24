@@ -20,8 +20,8 @@ public class UnPackedService {
 
     @GET
     @Path("{name}")
-    public Response getFoodDAO(@PathParam("name") String name){
-        UnPackedMySQL f = logic.getFoodDAO(name);
+    public Response getUnPackedMySQL(@PathParam("name") String name){
+        UnPackedMySQL f = logic.getUnPackedMySQL(name);
         if (f == null)
             return Response.status(404, "Food " + name + " doesn't exist").build();
         return Response.ok(f).build();
@@ -29,8 +29,8 @@ public class UnPackedService {
 
    @PUT
    @Path("/{ID}/{days}")
-   public Response updateFoodDAO(@PathParam("ID") String ID, @PathParam("days") int days){
-        boolean result = logic.updateFoodDAO(ID, days);
+   public Response updateUnPackedMySQL(@PathParam("ID") String ID, @PathParam("days") int days){
+        boolean result = logic.updateUnPackedMySQL(ID, days);
 
         if (result){
             return Response.ok().build();

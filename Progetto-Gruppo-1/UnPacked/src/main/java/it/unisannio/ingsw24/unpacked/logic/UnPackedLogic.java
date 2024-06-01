@@ -7,10 +7,10 @@ import java.util.Map;
 
 public interface UnPackedLogic {
 
-    boolean createFoodDAO(String ID, String name, int averageExpiryDays, String category);
-    UnPackedMySQL getFoodDAO(String name);
-    Map<String, UnPackedMySQL> getAllFoodDAO();
-    boolean updateFoodDAO(String ID, int averageExpiryDays);
-    boolean deleteFoodDAO(String ID);
+    boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category);
+    UnPackedMySQL getUnPackedMySQL(String name);
+    Map<String, UnPackedMySQL> getAllUnPackedMySQL();
+    boolean updateUnPackedMySQL(String ID, int averageExpiryDays);
+    boolean deleteUnPackedMySQL(String ID);
 
 }
