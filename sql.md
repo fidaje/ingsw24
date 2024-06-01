@@ -1,6 +1,6 @@
 # UNPACKEDFOOD DB
 
-## CREAZIONE DOCKER
+## CREAZIONE DOCKER
 ```bash
 docker run -d --name mysql -p 0.0.0.0:3306:3306 -e MYSQL_ROOT_PASSWORD=*** --restart=always mysql:8.0.20
 ```
