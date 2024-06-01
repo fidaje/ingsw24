@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import it.unisannio.ingsw24.unpacked.presentation.UnPackedService;
 
 @SpringBootApplication
-@ApplicationPath("api")
+@ApplicationPath("/api")
 public class UnPackedApplication extends ResourceConfig {
 
     public UnPackedApplication(){
