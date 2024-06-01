@@ -6,7 +6,7 @@ public interface UnPackedDAO {
 
     String DATABASE_NAME = "UnPackedDB";
 
-    String TABLE = "FoodDAO";
+    String TABLE = "UNPACKEDFOOD";
 
     String ELEMENT_NAME = "Name";
 
@@ -18,19 +18,19 @@ public interface UnPackedDAO {
 
     boolean dropDB();
 
-    boolean createFoodDAO(String ID, String name, int averageExpiryDays, String category);
+    boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category);
 
-    Map<String, FoodDAO> getAllFoodDAO();
+    Map<String, UnPackedMySQL> getAllUnPackedMySQL();
 
 
-    FoodDAO getFoodDAO(String name);
+    UnPackedMySQL getUnPackedMySQL(String name);
 
     // Vedere commento UnPackedDAOMySQL linea 141
     // FoodDAO updateFoodDAO(int averageExpiryDate);
 
-    boolean updateFoodDAO(String id, int averageExpiryDays);
+    boolean updateUnPackedMySQL(String id, int averageExpiryDays);
 
-    boolean deleteFoodDAO(String id);
+    boolean deleteUnPackedMySQL(String id);
 
     boolean closeConnection();
 

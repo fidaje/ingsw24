@@ -24,7 +24,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
     public UnPackedDAOMySQL(){
         if (host == null) {
-            host = "172.17.0.4";
+            host = "127.0.0.1";
         }
         if (port == null) {
             port = "3306";
@@ -32,18 +32,18 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         String URI = "jdbc:mysql://" + host + ":" + port + "/" + DATABASE_NAME;
 
         try {
-            this.connection = DriverManager.getConnection(URI, "root", "cusas-mysql");
+            this.connection = DriverManager.getConnection(URI, "root", "mysql");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     // Parser che crea l'oggetto FoodDAO
-    public static FoodDAO FoodDAOFromResultSet(ResultSet resultSet) throws SQLException{
+    public static UnPackedMySQL UnPackedMySQLFromResultSet(ResultSet resultSet) throws SQLException{
 
         //String cat = resultSet.getString(ELEMENT_CATEGORY);
 
-        return new FoodDAO(resultSet.getString(ELEMENT_UNIQUE_ID),
+        return new UnPackedMySQL(resultSet.getString(ELEMENT_UNIQUE_ID),
                 resultSet.getString(ELEMENT_NAME),
                 resultSet.getInt(ELEMENT_AVERAGE_EXPIRY_DAYS),
                 Category.valueOf(resultSet.getString(ELEMENT_CATEGORY).toUpperCase()));
@@ -51,14 +51,14 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
 
     @Override
-    public FoodDAO getFoodDAO(String name) {
+    public UnPackedMySQL getUnPackedMySQL(String name) {
         try {
             PreparedStatement preparedStmt = this.connection.prepareStatement(GET_FoodDAO);
             preparedStmt.setString(1, name);
             ResultSet rs = preparedStmt.executeQuery();
             if (rs.next()) {
-                FoodDAO uf = FoodDAOFromResultSet(rs);
-                return uf;
+                UnPackedMySQL f = UnPackedMySQLFromResultSet(rs);
+                return f;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
     @Override
-    public boolean createFoodDAO(String ID, String name, int averageExpiryDays, String category) {
+    public boolean createUnPackedMySQL(String ID, String name, int averageExpiryDays, String category) {
         try {
             PreparedStatement preparedStmt = this.connection.prepareStatement(POST_FoodDAO);
             preparedStmt.setString(1, ID);
@@ -87,7 +87,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
 
     @Override
-    public boolean deleteFoodDAO(String ID) {
+    public boolean deleteUnPackedMySQL(String ID) {
         try {
             PreparedStatement preparedStmt = this.connection.prepareStatement(DELETE_FoodDAO);
             preparedStmt.setString(1, ID);
@@ -102,7 +102,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
 
-    private List<String> getAllFoodDAONames(){
+    private List<String> getAllUnPackedMySQLNames(){
 
         List<String> names = new ArrayList<>();
 
@@ -120,16 +120,16 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     
 
     @Override
-    public Map<String, FoodDAO> getAllFoodDAO() {
+    public Map<String, UnPackedMySQL> getAllUnPackedMySQL() {
         
-        Map<String, FoodDAO> FoodDAOs = new HashMap<>();
-        List<String> names = this.getAllFoodDAONames();
+        Map<String, UnPackedMySQL> UnPackedMySQLs = new HashMap<>();
+        List<String> names = this.getAllUnPackedMySQLNames();
         for( String name : names){
-            FoodDAO upf = this.getFoodDAO(name);
-            FoodDAOs.put(upf.getID(), upf);
+            UnPackedMySQL upf = this.getUnPackedMySQL(name);
+            UnPackedMySQLs.put(upf.getID(), upf);
         }
 
-        return FoodDAOs;
+        return UnPackedMySQLs;
     }
 
     
@@ -142,7 +142,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     } */
 
     @Override
-    public boolean updateFoodDAO(String ID, int averageExpiryDays) {
+    public boolean updateUnPackedMySQL(String ID, int averageExpiryDays) {
         try{
             PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_AVGEXPDAYS_FoodDAO);
             preparedStatement.setString(2, ID);

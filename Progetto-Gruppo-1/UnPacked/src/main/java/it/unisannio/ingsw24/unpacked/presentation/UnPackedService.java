@@ -2,14 +2,14 @@ package it.unisannio.ingsw24.unpacked.presentation;
 
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogic;
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogicImplementation;
-import it.unisannio.ingsw24.unpacked.persistance.FoodDAO;
+import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/FoodDAO")
+@Path("/unpacked")
 public class UnPackedService {
 
     UnPackedLogic logic;
@@ -21,9 +21,10 @@ public class UnPackedService {
     @GET
     @Path("{name}")
     public Response getFoodDAO(@PathParam("name") String name){
-        FoodDAO f = logic.getFoodDAO(name);
+        UnPackedMySQL f = logic.getFoodDAO(name);
+        if (f == null)
+            return Response.status(404, "Food " + name + " doesn't exist").build();
         return Response.ok(f).build();
-
     }
 
    @PUT
@@ -36,8 +37,9 @@ public class UnPackedService {
         }
         else
             return Response.status(400,"The resource to update does not exists").build();
-
    }
+
+
 
 
 }

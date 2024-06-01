@@ -2,13 +2,13 @@ package it.unisannio.ingsw24.unpacked.persistance;
 
 import it.unisannio.ingsw24.entities.Category;
 
-public class FoodDAO {
+public class UnPackedMySQL {
 
     private String ID, name;
     private int averageExipireDays;
     private Category category;
 
-    public FoodDAO(String ID, String name, int averageExipireDays, Category category){
+    public UnPackedMySQL(String ID, String name, int averageExipireDays, Category category){
         this.ID = ID;
         this.name = name;
         this.averageExipireDays = averageExipireDays;
@@ -32,6 +32,6 @@ public class FoodDAO {
     }
 
     public String toString() {
-        return "ID: " + this.ID + "Name: " + this.name + "Average Exipire Days: "+ this.averageExipireDays + "Category: " + this.category ;
+        return "ID: " + this.ID + "\nName: " + this.name + "\nAverage Exipire Days: "+ this.averageExipireDays + "\nCategory: " + this.category ;
     }
 }
