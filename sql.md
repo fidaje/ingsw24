@@ -1,10 +1,14 @@
 # UNPACKEDFOOD DB
 
 ## CREAZIONE DOCKER
+```bash
 docker run -d --name mysql -p 0.0.0.0:3306:3306 -e MYSQL_ROOT_PASSWORD=*** --restart=always mysql:8.0.20
+```
 
 ## ACCEDERE AL DATABASE
+```bash
 docker exec -it mysql mysql -u root -p
+```
 
 ## CREAZIONE DATABASE
 ```sql
