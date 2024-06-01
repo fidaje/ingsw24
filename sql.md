@@ -25,7 +25,7 @@ CREATE TABLE UNPACKEDFOOD (
 );
 ```
 
-## QUERY PER POPOLARE
+## QUERY PER POPOLARE
 ```sql
 INSERT INTO tablename (Unique_ID, Name, Average_Expiry_Days, Category) VALUES
 (2111, 'Albicocca', 7, 'Fruit'),
