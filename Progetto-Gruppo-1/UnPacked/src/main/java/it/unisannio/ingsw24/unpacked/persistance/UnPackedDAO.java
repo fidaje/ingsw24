@@ -1,5 +1,7 @@
 package it.unisannio.ingsw24.unpacked.persistance;
 
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
+
 import java.util.Map;
 
 public interface UnPackedDAO {

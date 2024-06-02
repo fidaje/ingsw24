@@ -5,13 +5,15 @@ import java.time.LocalDate;
 public class OpenFood extends Food {
 
     private String brand;
+    private String id;
     private String nutritionGrade;
 
     //private Image image;
 
 
     public OpenFood(String name, String id, LocalDate expirationDate, boolean isExpired, boolean isFridge, int quantity, String brand, String nutritionGrade) {
-        super(name, id, expirationDate, isExpired, isFridge, quantity);
+        super(name, expirationDate, isExpired, isFridge, quantity);
+        this.id = id;
         this.brand = brand;
         this.nutritionGrade = nutritionGrade;
     }
@@ -20,6 +22,10 @@ public class OpenFood extends Food {
     public void setExpirationDate(String date){
         LocalDate ld = LocalDate.parse(date);
         this.expirationDate = ld;
+    }
+
+    public String getId(){
+        return this.id;
     }
 
     public String getBrand(){

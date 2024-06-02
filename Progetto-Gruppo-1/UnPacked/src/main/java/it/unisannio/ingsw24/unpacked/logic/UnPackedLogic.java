@@ -1,6 +1,6 @@
 package it.unisannio.ingsw24.unpacked.logic;
 
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 
 import java.util.Map;
 

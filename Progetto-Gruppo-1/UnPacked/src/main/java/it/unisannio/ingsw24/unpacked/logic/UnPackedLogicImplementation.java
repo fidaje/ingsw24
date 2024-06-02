@@ -2,7 +2,7 @@ package it.unisannio.ingsw24.unpacked.logic;
 
 import java.util.Map;
 
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAO;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAOMySQL;
 

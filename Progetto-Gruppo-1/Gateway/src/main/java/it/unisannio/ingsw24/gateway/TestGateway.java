@@ -1,9 +1,8 @@
 package it.unisannio.ingsw24.gateway;
 
-import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 
 import java.util.Map;
 

@@ -2,7 +2,7 @@ package it.unisannio.ingsw24.unpacked.presentation;
 
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogic;
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogicImplementation;
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

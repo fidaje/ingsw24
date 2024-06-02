@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.unisannio.ingsw24.entities.OpenFood;
 import it.unisannio.ingsw24.entities.UnPackedFood;
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -32,12 +32,13 @@ public class GatewayLogicImplementation implements GatewayLogic{
         unPackedAddress = "http://" + unPackedHost + ":" + unPackedPort;
     }
 
+
+    // probabilmente questo metodo deve essere un POST verso l'istanza della MongoPantry dell'utente, il GET va fatto a parte
     @Override
     public UnPackedFood getUnPackedFood(String name, boolean isFridge, int quantity){
         UnPackedMySQL upms = this.getUnPackedFoodMySQL(name);
 
-
-        return new UnPackedFood(name, Integer.toString(upms.getID()), false, isFridge,  quantity, upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
+        return new UnPackedFood(name, upms.getID(), false, isFridge,  quantity, upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
     }
 
 

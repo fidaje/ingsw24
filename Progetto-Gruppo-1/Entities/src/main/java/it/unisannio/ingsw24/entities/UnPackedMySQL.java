@@ -1,11 +1,8 @@
-package it.unisannio.ingsw24.unpacked.persistance;
-
-import it.unisannio.ingsw24.entities.Category;
+package it.unisannio.ingsw24.entities;
 
 public class UnPackedMySQL {
 
     private int id;
-
     private String name;
     private int averageExipireDays;
     private Category category;

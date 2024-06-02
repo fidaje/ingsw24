@@ -5,11 +5,13 @@ import java.time.LocalDate;
 
 public class UnPackedFood extends Food {
 
-    Category type;
-    String averageExpirationDays;
+    private int id;
+    private Category type;
+    private String averageExpirationDays;
 
-    public UnPackedFood(String name, String id, boolean isExpired, boolean isFridge, int quantity, Category type, String averageExpirationDays) {
-        super(name, id, isExpired, isFridge, quantity);
+    public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category type, String averageExpirationDays) {
+        super(name, isExpired, isFridge, quantity);
+        this.id = id;
         this.type = type;
         this.averageExpirationDays = averageExpirationDays;
         setExpirationDate(this.averageExpirationDays);
@@ -20,6 +22,10 @@ public class UnPackedFood extends Food {
         int expirationDays = Integer.parseInt(days);
         LocalDate today = LocalDate.now();
         expirationDate = today.plusDays(expirationDays);
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     public String getAverageExpirationDays(){

@@ -3,7 +3,7 @@ package it.unisannio.ingsw24.gateway.presentation;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
