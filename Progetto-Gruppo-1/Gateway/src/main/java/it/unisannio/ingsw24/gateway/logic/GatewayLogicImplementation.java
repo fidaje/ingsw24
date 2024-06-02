@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.gateway.logic;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.unisannio.ingsw24.entities.OpenFood;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
@@ -9,6 +10,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class GatewayLogicImplementation implements GatewayLogic{
@@ -30,7 +33,15 @@ public class GatewayLogicImplementation implements GatewayLogic{
     }
 
     @Override
-    public UnPackedFood getUnPackedFood(String name) {
+    public UnPackedFood getUnPackedFood(String name, boolean isFridge, int quantity){
+        UnPackedMySQL upms = this.getUnPackedFoodMySQL(name);
+
+
+        return new UnPackedFood(name, Integer.toString(upms.getID()), false, isFridge,  quantity, upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
+    }
+
+
+    private UnPackedMySQL getUnPackedFoodMySQL(String name) {
         try{
             String URL = String.format(unPackedAddress + "/api/unpacked/" + name);
             OkHttpClient client = new OkHttpClient();
@@ -48,16 +59,39 @@ public class GatewayLogicImplementation implements GatewayLogic{
             Gson gson = new Gson();
             String body = response.body().string();
             UnPackedMySQL upms = gson.fromJson(body, UnPackedMySQL.class);
-
-
-            int avgExpDays = upms.getAverageExipireDays();
-            String avgString = Integer.toString(avgExpDays);
-
-            return new UnPackedFood(upms.getName(), upms.getID(), false, false, 1, upms.getCategory(), avgString);
+            return upms;
 
         } catch (IOException e){
             e.printStackTrace();
         }
+        return null;
+    }
+
+
+    @Override
+    public Map<String, UnPackedMySQL> getAllUnPackedFood(){
+        try {
+            String URL = String.format(unPackedAddress + "/api/unpacked");
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if(response.code() != 200){
+                return null; //factory(?)
+            }
+
+            Gson gson = new Gson();
+            String body = response.body().string();
+            Map<String, UnPackedMySQL> f = gson.fromJson(body, new TypeToken<Map<String, UnPackedMySQL>>() {}.getType());
+            return new HashMap<>(f);
+
+        } catch (IOException e){
+        e.printStackTrace();
+    }
         return null;
     }
 

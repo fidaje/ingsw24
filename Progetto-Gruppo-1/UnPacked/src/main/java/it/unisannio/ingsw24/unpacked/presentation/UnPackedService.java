@@ -7,6 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Map;
+
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/unpacked")
@@ -16,6 +18,12 @@ public class UnPackedService {
 
     public UnPackedService() {
         this.logic = new UnPackedLogicImplementation();
+    }
+
+    @GET
+    public Response getAllUnPackedMySQL(){
+        Map<String, UnPackedMySQL> unPackedMySQLs = logic.getAllUnPackedMySQL();
+        return Response.ok(unPackedMySQLs).build();
     }
 
     @GET

@@ -45,7 +45,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
         //String cat = resultSet.getString(ELEMENT_CATEGORY);
 
-        return new UnPackedMySQL(resultSet.getString(ELEMENT_UNIQUE_ID),
+        return new UnPackedMySQL(resultSet.getInt(ELEMENT_UNIQUE_ID),
                 resultSet.getString(ELEMENT_NAME),
                 resultSet.getInt(ELEMENT_AVERAGE_EXPIRY_DAYS),
                 Category.valueOf(resultSet.getString(ELEMENT_CATEGORY).toUpperCase()));
@@ -148,7 +148,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         List<String> names = this.getAllUnPackedMySQLNames();
         for( String name : names){
             UnPackedMySQL upf = this.getUnPackedMySQL(name);
-            UnPackedMySQLs.put(upf.getID(), upf);
+            UnPackedMySQLs.put(upf.getName(), upf);
         }
 
         return UnPackedMySQLs;
