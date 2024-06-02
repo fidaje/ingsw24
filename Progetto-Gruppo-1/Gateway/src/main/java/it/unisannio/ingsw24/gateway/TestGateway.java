@@ -1,10 +1,10 @@
 package it.unisannio.ingsw24.gateway;
 
+import it.unisannio.ingsw24.entities.Food;
+import it.unisannio.ingsw24.entities.OpenFood;
+import it.unisannio.ingsw24.entities.OpenFoodPantry;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
-import it.unisannio.ingsw24.entities.UnPackedMySQL;
-
-import java.util.Map;
 
 public class TestGateway {
 
@@ -12,17 +12,9 @@ public class TestGateway {
 
         GatewayLogic l = new GatewayLogicImplementation();
 
-        Map<String, UnPackedMySQL> m = ((GatewayLogicImplementation) l).getAllUnPackedFood();
-        int i = 0;
+        Food f = l.getOpenFoodPantry("3017624010701", "2024-12-12" , false, 4);
 
-        for(String s : m.keySet()) {
-            System.out.println(m.get(s));
-            System.out.println(m.get(s).getName());
-            i++;
-            if (i == 10) break;
-        }
-
-        System.out.println(m.keySet().size());
+        System.out.println(f);
 
         //UnPackedFood u = l.getUnPackedFood("mela", true, 22);
 

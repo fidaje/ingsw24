@@ -1,5 +1,6 @@
 package it.unisannio.ingsw24.gateway.presentation;
 
+import it.unisannio.ingsw24.entities.OpenFoodPantry;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
@@ -21,8 +22,9 @@ public class GatewayService {
         this.logic = new GatewayLogicImplementation();
     }
 
+    //forse è POST
     @GET
-    @Path("{name}")
+    @Path("/unpacked/{name}")
     public Response getUnPackedFood(@PathParam("name") String name){
         boolean isFridge = false;
         int quantity = 1;
@@ -30,6 +32,17 @@ public class GatewayService {
         if (upf == null)
             return Response.status(404, "Food " + name + " doesn't exist").build();
         return Response.ok(upf).build();
+    }
+
+    @GET
+    @Path("/openfood/{barcode}")
+    public Response getOpenFood(@PathParam("barcode") String barcode){
+        String date = "2024-12-12";
+        boolean isFridge = false;
+        int quantity = 8;
+        OpenFoodPantry ofp = logic.getOpenFoodPantry(barcode, date, isFridge, quantity);
+
+        return Response.ok(ofp).build();
     }
 
     @GET

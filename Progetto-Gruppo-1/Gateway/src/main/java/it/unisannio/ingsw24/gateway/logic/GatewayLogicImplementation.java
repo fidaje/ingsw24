@@ -2,14 +2,13 @@ package it.unisannio.ingsw24.gateway.logic;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.unisannio.ingsw24.entities.OpenFood;
-import it.unisannio.ingsw24.entities.UnPackedFood;
-import it.unisannio.ingsw24.entities.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ import java.util.Map;
 public class GatewayLogicImplementation implements GatewayLogic{
 
     private final String unPackedAddress;
-    //private final String openFoodAddress;
+    private final String openFoodAddress;
 
 
     public GatewayLogicImplementation(){
@@ -30,6 +29,8 @@ public class GatewayLogicImplementation implements GatewayLogic{
             unPackedPort = "8082";
         }
         unPackedAddress = "http://" + unPackedHost + ":" + unPackedPort;
+
+        openFoodAddress = "https://world.openfoodfacts.net/api/v2/product/";
     }
 
 
@@ -38,7 +39,8 @@ public class GatewayLogicImplementation implements GatewayLogic{
     public UnPackedFood getUnPackedFood(String name, boolean isFridge, int quantity){
         UnPackedMySQL upms = this.getUnPackedFoodMySQL(name);
 
-        return new UnPackedFood(name, upms.getID(), false, isFridge,  quantity, upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
+        return new UnPackedFood(name, upms.getID(), false, isFridge,  quantity,
+                upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
     }
 
 
@@ -96,8 +98,40 @@ public class GatewayLogicImplementation implements GatewayLogic{
         return null;
     }
 
-    @Override
-    public OpenFood getOpenFood() {
+    private OpenFood getOpenFood(String barcode) {
+        try{
+           // 3017624010701?fields=product_name,nutrition_grades,brands
+            String URL = String.format(openFoodAddress + barcode + "?fields=product_name,nutrition_grades,brands");
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if(response.code() != 200){
+                return null; //factory(?)
+            }
+
+            Gson gson = new Gson();
+            String body = response.body().string();
+            OpenFood op = gson.fromJson(body, OpenFood.class);
+            return op;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         return null;
+    }
+
+
+    //probabilmente un POST
+    @Override
+    public OpenFoodPantry getOpenFoodPantry(String barcode, String date, boolean isFridge, int quantity){
+        OpenFood of = this.getOpenFood(barcode);
+
+        return new OpenFoodPantry(of.getProduct().getProductName(), barcode, LocalDate.parse(date),
+                false, isFridge, quantity, of.getProduct().getBrands(), of.getProduct().getNutritionGrades());
     }
 }
