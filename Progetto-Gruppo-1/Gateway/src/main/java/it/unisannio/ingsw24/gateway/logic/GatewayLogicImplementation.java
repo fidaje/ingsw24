@@ -1,7 +1,11 @@
 package it.unisannio.ingsw24.gateway.logic;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import it.unisannio.ingsw24.entities.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -9,8 +13,10 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+
 
 
 public class GatewayLogicImplementation implements GatewayLogic{
@@ -37,14 +43,15 @@ public class GatewayLogicImplementation implements GatewayLogic{
     // probabilmente questo metodo deve essere un POST verso l'istanza della MongoPantry dell'utente, il GET va fatto a parte
     @Override
     public UnPackedFood getUnPackedFood(String name, boolean isFridge, int quantity){
-        UnPackedMySQL upms = this.getUnPackedFoodMySQL(name);
+        UnPackedFood upf = this.getUnPackedFood(name);
+        upf.setQuantity(quantity);
+        upf.setIsFridge(isFridge);
 
-        return new UnPackedFood(name, upms.getID(), false, isFridge,  quantity,
-                upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
+        return upf;
     }
 
 
-    private UnPackedMySQL getUnPackedFoodMySQL(String name) {
+    private UnPackedFood getUnPackedFood(String name) {
         try{
             String URL = String.format(unPackedAddress + "/api/unpacked/" + name);
             OkHttpClient client = new OkHttpClient();
@@ -59,10 +66,10 @@ public class GatewayLogicImplementation implements GatewayLogic{
                 return null; //factory(?)
             }
 
-            Gson gson = new Gson();
+            Gson gson = GsonProvider.createGson();
             String body = response.body().string();
-            UnPackedMySQL upms = gson.fromJson(body, UnPackedMySQL.class);
-            return upms;
+            UnPackedFood upf = gson.fromJson(body, UnPackedFood.class);
+            return upf;
 
         } catch (IOException e){
             e.printStackTrace();
@@ -128,10 +135,36 @@ public class GatewayLogicImplementation implements GatewayLogic{
 
     //probabilmente un POST
     @Override
-    public OpenFoodPantry getOpenFoodPantry(String barcode, String date, boolean isFridge, int quantity){
+    public PackedFood getOpenFoodPantry(String barcode, String date, boolean isFridge, int quantity){
         OpenFood of = this.getOpenFood(barcode);
 
-        return new OpenFoodPantry(of.getProduct().getProductName(), barcode, LocalDate.parse(date),
+        return new PackedFood(of.getProduct().getProductName(), barcode, LocalDate.parse(date),
                 false, isFridge, quantity, of.getProduct().getBrands(), of.getProduct().getNutritionGrades());
+    }
+}
+
+
+
+
+
+class GsonProvider {
+    public static Gson createGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .create();
+    }
+}
+
+class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    @Override
+    public void write(JsonWriter out, LocalDate value) throws IOException {
+        out.value(value.format(formatter));
+    }
+
+    @Override
+    public LocalDate read(JsonReader in) throws IOException {
+        return LocalDate.parse(in.nextString(), formatter);
     }
 }

@@ -60,6 +60,10 @@ public abstract class Food {
         return this.quantity;
     }
 
+    public void setIsFridge(boolean isFridge){
+        this.isFridge = isFridge;
+    }
+
     public String toString(){
         return "Name: " + name + " Expiration Date: " + expirationDate + " Is Expired: " + isExpired + " Is Fridge: " + isFridge + " Quantity: " + quantity;
     }

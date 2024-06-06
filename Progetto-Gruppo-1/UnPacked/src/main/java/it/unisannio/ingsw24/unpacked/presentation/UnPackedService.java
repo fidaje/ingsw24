@@ -1,5 +1,6 @@
 package it.unisannio.ingsw24.unpacked.presentation;
 
+import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogic;
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogicImplementation;
 import it.unisannio.ingsw24.entities.UnPackedMySQL;
@@ -28,8 +29,8 @@ public class UnPackedService {
 
     @GET
     @Path("{name}")
-    public Response getUnPackedMySQL(@PathParam("name") String name){
-        UnPackedMySQL f = logic.getUnPackedMySQL(name);
+    public Response getUnPackedFood(@PathParam("name") String name){
+        UnPackedFood f = logic.getUnPackedFood(name);
         if (f == null)
             return Response.status(404, "Food " + name + " doesn't exist").build();
         return Response.ok(f).build();

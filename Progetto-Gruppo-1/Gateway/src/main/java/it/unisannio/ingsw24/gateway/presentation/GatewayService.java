@@ -1,10 +1,9 @@
 package it.unisannio.ingsw24.gateway.presentation;
 
-import it.unisannio.ingsw24.entities.OpenFoodPantry;
+import it.unisannio.ingsw24.entities.PackedFood;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
-import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -40,14 +39,15 @@ public class GatewayService {
         String date = "2024-12-12";
         boolean isFridge = false;
         int quantity = 8;
-        OpenFoodPantry ofp = logic.getOpenFoodPantry(barcode, date, isFridge, quantity);
+        PackedFood ofp = logic.getOpenFoodPantry(barcode, date, isFridge, quantity);
 
         return Response.ok(ofp).build();
     }
 
     @GET
     public Response getAllUnPackedMySQL(){
-        Map<String, UnPackedMySQL> m = logic.getAllUnPackedFood();
-        return Response.ok(m).build();
+      /*  Map<String, UnPackedMySQL> m = logic.getAllUnPackedFood();
+        return Response.ok(m).build();*/
+        return null;
     }
 }

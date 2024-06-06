@@ -1,8 +1,6 @@
 package it.unisannio.ingsw24.gateway;
 
 import it.unisannio.ingsw24.entities.Food;
-import it.unisannio.ingsw24.entities.OpenFood;
-import it.unisannio.ingsw24.entities.OpenFoodPantry;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
 
