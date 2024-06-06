@@ -2,7 +2,7 @@ package it.unisannio.ingsw24.unpacked.persistance;
 
 import it.unisannio.ingsw24.entities.UnPackedMySQL;
 
-import java.util.Map;
+import java.util.List;
 
 public interface UnPackedDAO {
 
@@ -22,7 +22,7 @@ public interface UnPackedDAO {
 
     int createUnPackedMySQL(String name, int averageExpiryDays, String category);
 
-    Map<String, UnPackedMySQL> getAllUnPackedMySQL();
+    List<String> getAllUnPackedMySQLNames();
 
     public int getNextId();
 

@@ -1,5 +1,6 @@
 package it.unisannio.ingsw24.unpacked.logic;
 
+import java.util.List;
 import java.util.Map;
 
 import it.unisannio.ingsw24.entities.UnPackedFood;
@@ -27,8 +28,8 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     }
 
     @Override
-    public Map<String, UnPackedMySQL> getAllUnPackedMySQL() {
-        return this.upd.getAllUnPackedMySQL();
+    public List<String> getAllUnPackedMySQLNames() {
+        return this.upd.getAllUnPackedMySQLNames();
     }
 
     @Override

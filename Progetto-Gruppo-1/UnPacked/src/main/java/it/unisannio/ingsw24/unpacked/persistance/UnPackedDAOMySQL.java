@@ -123,7 +123,8 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
 
-    private List<String> getAllUnPackedMySQLNames(){
+    @Override
+    public List<String> getAllUnPackedMySQLNames(){
 
         List<String> names = new ArrayList<>();
 
@@ -139,21 +140,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return names;
     }
 
-
-    
-
-    @Override
-    public Map<String, UnPackedMySQL> getAllUnPackedMySQL() {
-        
-        Map<String, UnPackedMySQL> UnPackedMySQLs = new HashMap<>();
-        List<String> names = this.getAllUnPackedMySQLNames();
-        for( String name : names){
-            UnPackedMySQL upf = this.getUnPackedMySQL(name);
-            UnPackedMySQLs.put(upf.getName(), upf);
-        }
-
-        return UnPackedMySQLs;
-    }
 
     
     // Il tipo di ritorno dovrebbe essere boolean, come parametri si dovrebbero passare 
