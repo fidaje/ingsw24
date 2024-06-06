@@ -15,6 +15,7 @@
         <module>UnPacked</module>
         <module>Entities</module>
         <module>Pantry</module>
+        <module>Packed</module>
     </modules>
 
     <properties>

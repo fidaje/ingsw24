@@ -22,12 +22,12 @@ import java.util.Map;
 public class GatewayLogicImplementation implements GatewayLogic{
 
     private final String unPackedAddress;
-    private final String openFoodAddress;
+    private final String packedFoodAddress;
 
 
     public GatewayLogicImplementation(){
-        String unPackedHost = System.getenv("WORKSHOP_HOST");
-        String unPackedPort = System.getenv("WORKSHOP_PORT");
+        String unPackedHost = System.getenv("UNPACKED_HOST");
+        String unPackedPort = System.getenv("UNPACKED_PORT");
         if (unPackedHost == null) {
             unPackedHost = "localhost";
         }
@@ -36,7 +36,16 @@ public class GatewayLogicImplementation implements GatewayLogic{
         }
         unPackedAddress = "http://" + unPackedHost + ":" + unPackedPort;
 
-        openFoodAddress = "https://world.openfoodfacts.net/api/v2/product/";
+        String packedHost = System.getenv("PACKED_HOST");
+        String packedPort = System.getenv("PACKED_PORT");
+        if (packedHost == null) {
+            packedHost = "127.0.0.1";
+        }
+        if (packedPort == null) {
+            packedPort = "8085";
+        }
+
+        packedFoodAddress = "http://" + packedHost + ":" + packedPort;
     }
 
 
@@ -44,6 +53,7 @@ public class GatewayLogicImplementation implements GatewayLogic{
     @Override
     public UnPackedFood getUnPackedFood(String name, boolean isFridge, int quantity){
         UnPackedFood upf = this.getUnPackedFood(name);
+        assert upf != null;
         upf.setQuantity(quantity);
         upf.setIsFridge(isFridge);
 
@@ -78,6 +88,7 @@ public class GatewayLogicImplementation implements GatewayLogic{
     }
 
 
+    //ora deve essere una List<String>
     @Override
     public Map<String, UnPackedMySQL> getAllUnPackedFood(){
         try {
@@ -105,10 +116,10 @@ public class GatewayLogicImplementation implements GatewayLogic{
         return null;
     }
 
-    private OpenFood getOpenFood(String barcode) {
+    private PackedFood getPackedFood(String barcode) {
         try{
            // 3017624010701?fields=product_name,nutrition_grades,brands
-            String URL = String.format(openFoodAddress + barcode + "?fields=product_name,nutrition_grades,brands");
+            String URL = String.format(packedFoodAddress + "/api/packed/" + barcode);
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
@@ -121,10 +132,10 @@ public class GatewayLogicImplementation implements GatewayLogic{
                 return null; //factory(?)
             }
 
-            Gson gson = new Gson();
+            Gson gson = GsonProvider.createGson();
             String body = response.body().string();
-            OpenFood op = gson.fromJson(body, OpenFood.class);
-            return op;
+            PackedFood pf = gson.fromJson(body, PackedFood.class);
+            return pf;
 
         } catch (IOException e){
             e.printStackTrace();
@@ -135,11 +146,16 @@ public class GatewayLogicImplementation implements GatewayLogic{
 
     //probabilmente un POST
     @Override
-    public PackedFood getOpenFoodPantry(String barcode, String date, boolean isFridge, int quantity){
-        OpenFood of = this.getOpenFood(barcode);
+    public PackedFood getPackedFood(String barcode, String date, boolean isFridge, int quantity){
+        PackedFood pf = this.getPackedFood(barcode);
 
-        return new PackedFood(of.getProduct().getProductName(), barcode, LocalDate.parse(date),
-                false, isFridge, quantity, of.getProduct().getBrands(), of.getProduct().getNutritionGrades());
+        assert pf != null;
+
+        pf.setExpirationDate(date);
+        pf.setIsFridge(isFridge);
+        pf.setQuantity(quantity);
+
+        return pf;
     }
 }
 

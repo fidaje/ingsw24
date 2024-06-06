@@ -10,7 +10,7 @@ public class TestGateway {
 
         GatewayLogic l = new GatewayLogicImplementation();
 
-        Food f = l.getOpenFoodPantry("3017624010701", "2024-12-12" , false, 4);
+        Food f = l.getPackedFood("3017624010701", "2024-12-12" , false, 4);
 
         System.out.println(f);
 
