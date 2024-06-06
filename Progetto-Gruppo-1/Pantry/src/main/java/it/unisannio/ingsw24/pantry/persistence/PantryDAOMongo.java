@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.pantry.persistence;
 
 import com.mongodb.DuplicateKeyException;
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -59,8 +60,7 @@ public class PantryDAOMongo implements PantryDAO {
         return true;
     }
 
-    private static Pantry pantryFromDocument(Document d){
-
+    private Pantry pantryFromDocument(Document d){
         return new Pantry(d.getInteger(OWNER_ID), (List<Food>) d.get(FOODS), (List<Integer>) d.get(GUESTS));
     }
 
@@ -81,9 +81,30 @@ public class PantryDAOMongo implements PantryDAO {
         return false;
     }
 
+    public int getNextId(){
+        Document result = collection.find().sort(new Document(PANTRY_ID, -1)).first();
+        if (result == null) return 1;
+        else return result.getInteger(PANTRY_ID) + 1;
+    }
+
+
+    private Document pantryToDocument(Pantry pantry) {
+        return new Document(PANTRY_ID, getNextId())
+                .append(OWNER_ID, pantry.getIdOwner())
+                .append(FOODS, new ArrayList<>())
+                .append(GUESTS, new ArrayList<>());
+    }
+
     @Override
-    public Long createPantry(Pantry p) {
-        return null;
+    public int createPantry(Pantry p) {
+        try {
+            Document pantryDocument = pantryToDocument(p);
+            this.collection.insertOne(pantryDocument);
+            return p.getIdOwner();
+        } catch (MongoWriteException e){
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 

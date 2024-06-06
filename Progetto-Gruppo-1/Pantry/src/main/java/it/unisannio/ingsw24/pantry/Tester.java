@@ -10,7 +10,11 @@ public class Tester {
 
         PantryDAOMongo pantryDAO = new PantryDAOMongo();
 
-        Pantry p = pantryDAO.getPantry(2);
+        // Pantry p = pantryDAO.getPantry(2);
+
+        Pantry p = new Pantry(3);
+
+        pantryDAO.createPantry(p);
 
         System.out.println(p);
 

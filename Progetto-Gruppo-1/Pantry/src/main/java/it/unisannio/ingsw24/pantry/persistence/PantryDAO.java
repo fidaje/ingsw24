@@ -25,7 +25,7 @@ public interface PantryDAO {
 
     boolean closeConnection();
 
-    Long createPantry(Pantry p);
+    int createPantry(Pantry p);
 
     List<Pantry> getPantries(int id);
 

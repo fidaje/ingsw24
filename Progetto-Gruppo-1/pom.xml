@@ -14,6 +14,7 @@
         <module>Gateway</module>
         <module>UnPacked</module>
         <module>Entities</module>
+        <module>Pantry</module>
     </modules>
 
     <properties>
