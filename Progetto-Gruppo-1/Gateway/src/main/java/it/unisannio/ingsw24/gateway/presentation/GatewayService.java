@@ -8,6 +8,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/gateway")
@@ -41,9 +43,8 @@ public class GatewayService {
     }
 
     @GET
-    public Response getAllUnPackedMySQL(){
-      /*  Map<String, UnPackedMySQL> m = logic.getAllUnPackedFood();
-        return Response.ok(m).build();*/
-        return null;
+    public Response getAllUnPackedNames(){
+        List<String> m = logic.getAllUnPackedFoodNames();
+        return Response.ok(m).build();
     }
 }

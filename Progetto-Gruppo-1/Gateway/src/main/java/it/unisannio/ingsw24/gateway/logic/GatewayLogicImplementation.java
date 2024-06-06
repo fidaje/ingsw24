@@ -14,7 +14,9 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -90,7 +92,7 @@ public class GatewayLogicImplementation implements GatewayLogic{
 
     //ora deve essere una List<String>
     @Override
-    public Map<String, UnPackedMySQL> getAllUnPackedFood(){
+    public List<String> getAllUnPackedFoodNames(){
         try {
             String URL = String.format(unPackedAddress + "/api/unpacked");
             OkHttpClient client = new OkHttpClient();
@@ -107,8 +109,8 @@ public class GatewayLogicImplementation implements GatewayLogic{
 
             Gson gson = new Gson();
             String body = response.body().string();
-            Map<String, UnPackedMySQL> f = gson.fromJson(body, new TypeToken<Map<String, UnPackedMySQL>>() {}.getType());
-            return new HashMap<>(f);
+            List<String> l = gson.fromJson(body, new TypeToken<List<String>>() {}.getType());
+            return new ArrayList<>(l);
 
         } catch (IOException e){
         e.printStackTrace();
