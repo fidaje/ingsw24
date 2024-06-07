@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>Packed</artifactId>
-    <version>0.1</version>
+    <packaging>jar</packaging>
     <name>Packed</name>
 
     <properties>

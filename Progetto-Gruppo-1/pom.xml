@@ -16,6 +16,7 @@
         <module>Entities</module>
         <module>Pantry</module>
         <module>Packed</module>
+        <module>User</module>
     </modules>
 
     <properties>
