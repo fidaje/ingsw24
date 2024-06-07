@@ -14,6 +14,8 @@ public class MyUser {
         this.roles = roles;
     }
 
+    public MyUser(){}
+
     public String getUsername(){
         return this.username;
     }
