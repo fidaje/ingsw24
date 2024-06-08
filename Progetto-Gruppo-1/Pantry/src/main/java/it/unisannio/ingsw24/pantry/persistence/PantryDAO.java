@@ -13,7 +13,7 @@ public interface PantryDAO {
 
     String PANTRY_ID = "_id";
 
-    String OWNER_ID = "OwnerID";
+    String OWNER_USERNAME = "Owner_Username";
 
     String FOODS = "Foods";
 

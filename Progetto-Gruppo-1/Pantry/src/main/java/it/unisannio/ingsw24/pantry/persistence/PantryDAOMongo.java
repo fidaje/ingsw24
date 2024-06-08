@@ -65,12 +65,15 @@ public class PantryDAOMongo implements PantryDAO {
     }
 
     private Pantry pantryFromDocument(Document d){
-        return new Pantry(d.getInteger(OWNER_ID), (List<Food>) d.get(FOODS), (List<Integer>) d.get(GUESTS));
+        return new Pantry(d.getInteger(PANTRY_ID),
+                d.getString(OWNER_USERNAME),
+                (List<Food>) d.get(FOODS),
+                (List<String>) d.get(GUESTS) );
     }
 
     public Pantry getPantry(int id){
         List<Pantry> pantries = new ArrayList<>();
-        for(Document current : this.collection.find(eq(PANTRY_ID,id))){
+        for(Document current : this.collection.find(eq(PANTRY_ID, id))){
             Pantry p = pantryFromDocument(current);
             pantries.add(p);
         }
@@ -94,7 +97,7 @@ public class PantryDAOMongo implements PantryDAO {
 
     private Document pantryToDocument(Pantry pantry) {
         return new Document(PANTRY_ID, getNextId())
-                .append(OWNER_ID, pantry.getIdOwner())
+                .append(OWNER_USERNAME, pantry.getOwnerUsername())
                 .append(FOODS, new ArrayList<>())
                 .append(GUESTS, new ArrayList<>());
     }
@@ -104,7 +107,7 @@ public class PantryDAOMongo implements PantryDAO {
         try {
             Document pantryDocument = pantryToDocument(p);
             this.collection.insertOne(pantryDocument);
-            return p.getIdOwner();
+            return p.getId();
         } catch (MongoWriteException e){
             e.printStackTrace();
         }
@@ -178,6 +181,16 @@ public class PantryDAOMongo implements PantryDAO {
 
     @Override
     public boolean deletePantry(int id) {
+        try {
+            if (getPantry(id) != null) {
+                collection.findOneAndDelete(eq(PANTRY_ID, id));
+                return true;
+            }
+        } catch (MongoException e) {
+            e.printStackTrace();
+            return false;
+        }
         return false;
+
     }
 }
