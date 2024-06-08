@@ -27,15 +27,15 @@ public interface PantryDAO {
 
     int createPantry(Pantry p);
 
-    List<Pantry> getPantries(int id);
+    List<Pantry> getPantries(String ownerUsername);
 
-    boolean updateFoods(Food f);
+    boolean updateFoods(int pantryId, Food f);
 
-    boolean updateGuests(int idGuest);
+    boolean updateGuests(int pantryId, String username);
 
-    boolean deleteFoodByName(String name);
+    boolean deleteFoodByName(int pantryId, String name);
 
-    boolean deleteGuestByID(int id);
+    boolean deleteGuestByUsername(int pantryId, String username);
 
     boolean deletePantry(int id);
 

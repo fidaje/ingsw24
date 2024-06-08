@@ -44,8 +44,6 @@ public class UserDAOMongo implements UserDAO {
         this.createDB();
     }
 
-
-
     @Override
     public boolean dropDB() {
         database.drop();
@@ -70,13 +68,21 @@ public class UserDAOMongo implements UserDAO {
 
     private static MyUser userFromDocument(Document d){
         List<String> list = d.getList(ELEMENT_ROLES, String.class);
-        return new MyUser(d.getString(ELEMENT_USERNAME), d.getString(ELEMENT_PASSWORD), new ArrayList<>(list));
+        return new MyUser(d.getInteger(ELEMENT_ID), d.getString(ELEMENT_USERNAME), d.getString(ELEMENT_PASSWORD), new ArrayList<>(list));
     }
 
-    private static Document userToDocument(MyUser u){
-        return new Document(ELEMENT_USERNAME, u.getUsername())
+    private Document userToDocument(MyUser u){
+        return new Document(ELEMENT_ID, getNextId())
+                .append(ELEMENT_USERNAME, u.getUsername())
                 .append(ELEMENT_PASSWORD, u.getPassword())
                 .append(ELEMENT_ROLES, u.getRoles());
+    }
+
+
+    public int getNextId(){
+        Document result = collection.find().sort(new Document(ELEMENT_ID, -1)).first();
+        if (result == null) return 1;
+        else return result.getInteger(ELEMENT_ID) + 1;
     }
 
     @Override

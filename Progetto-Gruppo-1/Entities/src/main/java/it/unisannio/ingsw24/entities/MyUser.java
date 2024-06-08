@@ -4,17 +4,23 @@ import java.util.ArrayList;
 
 public class MyUser {
 
+    private int id;
     private String username;
     private String password;
     private ArrayList<String> roles;
 
-    public MyUser(String username, String password, ArrayList<String> roles){
+    public MyUser(int id, String username, String password, ArrayList<String> roles){
+        this.id = id;
         this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
     public MyUser(){}
+
+    public int getId(){
+        return this.id;
+    }
 
     public String getUsername(){
         return this.username;
@@ -26,6 +32,10 @@ public class MyUser {
 
     public String getPassword(){
         return this.password;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public void setPassword(String nPass){
@@ -41,6 +51,6 @@ public class MyUser {
     }
 
     public String toString(){
-        return "Username: " + this.username + " Roles: " + this.roles;
+        return "_id: " + this.id + " Username: " + this.username + " Roles: " + this.roles;
     }
 }

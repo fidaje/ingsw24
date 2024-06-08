@@ -1,6 +1,8 @@
 package it.unisannio.ingsw24.pantry.persistence;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DuplicateKeyException;
+import com.mongodb.MongoException;
 import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -8,6 +10,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+
 import it.unisannio.ingsw24.entities.Food;
 import it.unisannio.ingsw24.entities.Pantry;
 import org.bson.Document;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.*;
 
 public class PantryDAOMongo implements PantryDAO {
 
@@ -78,7 +82,8 @@ public class PantryDAOMongo implements PantryDAO {
 
     @Override
     public boolean closeConnection() {
-        return false;
+        mongoClient.close();
+        return true;
     }
 
     public int getNextId(){
@@ -86,7 +91,6 @@ public class PantryDAOMongo implements PantryDAO {
         if (result == null) return 1;
         else return result.getInteger(PANTRY_ID) + 1;
     }
-
 
     private Document pantryToDocument(Pantry pantry) {
         return new Document(PANTRY_ID, getNextId())
@@ -107,29 +111,68 @@ public class PantryDAOMongo implements PantryDAO {
         return 0;
     }
 
-
     @Override
-    public List<Pantry> getPantries(int id) {
-        return null;
+    public List<Pantry> getPantries(String ownerUsername) {
+
+        ArrayList<Pantry> pentris = new ArrayList<>();
+
+        for(Document d : this.collection.find(eq(OWNER_USERNAME, ownerUsername))){
+            Pantry p = pantryFromDocument(d);
+            pentris.add(p);
+        }
+
+        // assert pentris.size() > 1;
+        return pentris;
     }
 
     @Override
-    public boolean updateFoods(Food f) {
+    public boolean updateFoods(int pantryId, Food f) {
+
+        try{
+            this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(FOODS,f.toDocument()));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
-    public boolean updateGuests(int idGuest) {
+    public boolean updateGuests(int pantryId, String username) {
+        try{
+            this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(GUESTS, username));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
-    public boolean deleteFoodByName(String name) {
+    public boolean deleteFoodByName(int pantryId, String name) {
+
+        try{
+            this.collection.updateOne(new Document(PANTRY_ID, pantryId),  pull(FOODS, new Document("name",name)));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
-    public boolean deleteGuestByID(int id) {
+    public boolean deleteGuestByUsername(int pantryId, String username) {
+
+        try{
+            this.collection.updateOne(new Document(PANTRY_ID, pantryId),  pull(GUESTS, username));
+            return true;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         return false;
     }
 

@@ -1,5 +1,7 @@
 package it.unisannio.ingsw24.entities;
 
+import org.bson.Document;
+
 import java.time.LocalDate;
 
 public class PackedFood extends Food {
@@ -38,5 +40,13 @@ public class PackedFood extends Food {
 
     public String toString(){
         return super.toString() + "ID: " + this.id + " Brand: " + this.brand + " Nutrition Grade: " + this.nutritionGrade;
+    }
+
+    @Override
+    public Document toDocument() {
+        return super.toDocument()
+                .append("id", id)
+                .append("Brand", brand)
+                .append("NutritionGrade", nutritionGrade);
     }
 }

@@ -5,49 +5,63 @@ import java.util.List;
 
 public class Pantry {
 
+    private int id;
     private List<Food> fuds;
-    private int idOwner;
-    private List<Integer> idGuests;
+    private String ownerUsername;
+    private List<String> guestsUsernames;
 
-    public Pantry(int idOwner){
-        this.idOwner = idOwner;
+    public Pantry(){
+    }
+
+    public Pantry(String ownerUsername){
+        this.ownerUsername = ownerUsername;
         this.fuds = new ArrayList<>();
-        this.idGuests = new ArrayList<>();
+        this.guestsUsernames = new ArrayList<>();
+        this.id = 0;
     }
 
-    public Pantry(int idOwner, List<Food> f, List<Integer> g){
-        this.idOwner = idOwner;
+    public Pantry(int id, String ownerUsername, List<Food> f, List<String> g){
+        this.ownerUsername = ownerUsername;
         this.fuds = f;
-        this.idGuests = g;
+        this.guestsUsernames = g;
+        this.id = id;
     }
 
-    public int getIdOwner(){
-        return this.idOwner;
+    public int getId(){
+        return this.id;
+    }
+
+    public String getOwnerUsername(){
+        return this.ownerUsername;
     }
 
     public List<Food> getFuds(){
         return this.fuds;
     }
 
-    public List<Integer> getIdGuests(){
-        return this.idGuests;
+    public List<String> getGuestsUsernames(){
+        return this.guestsUsernames;
     }
 
     public void addFood(Food f){
         this.fuds.add(f);
     }
 
-    public void addGuest(int idGuest){
-        this.idGuests.add(idGuest);
+    public boolean removeFood(Food f){
+        return this.fuds.remove(f);
     }
 
-    public int removeGuest(int idGuest){
-        return this.idGuests.remove(idGuest);
+    public void addGuest(String guestUsername){
+        this.guestsUsernames.add(guestUsername);
+    }
+
+    public boolean removeGuest(String guestUsername){
+        return this.guestsUsernames.remove(guestUsername);
     }
 
     public String toString(){
-        return "Owner ID: " + this.idOwner + " Foods len: " + this.fuds.size()
-                + " Guests len: " + this.idGuests.size();
+        return "Owner ID: " + this.ownerUsername + " Foods len: " + this.fuds.size()
+                + " Guests len: " + this.guestsUsernames.size();
     }
 
 }

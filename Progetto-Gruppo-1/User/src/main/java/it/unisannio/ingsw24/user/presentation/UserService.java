@@ -27,7 +27,7 @@ public class UserService {
         String username = logic.createUser(user);
 
         if (username != null){
-            URI uri = UriBuilder.fromPath("/users/" + username).build();
+            URI uri = UriBuilder.fromPath("/users/{username}").build(username);
             return Response.created(uri).build();
         }
         else{

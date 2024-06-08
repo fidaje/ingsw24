@@ -1,5 +1,7 @@
 package it.unisannio.ingsw24.entities;
 
+import org.bson.Document;
+
 import java.time.LocalDate;
 
 
@@ -34,5 +36,13 @@ public class UnPackedFood extends Food {
 
     public String toString(){
         return super.toString() + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.type;
+    }
+
+    @Override
+    public Document toDocument() {
+        return super.toDocument()
+                .append("id", id)
+                .append("Category", type)
+                .append("AverageExpirationDays", averageExpirationDays);
     }
 }

@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.entities;
 
 import java.time.LocalDate;
+import org.bson.Document;
 
 public abstract class Food {
 
@@ -66,5 +67,13 @@ public abstract class Food {
 
     public String toString(){
         return "Name: " + name + " Expiration Date: " + expirationDate + " Is Expired: " + isExpired + " Is Fridge: " + isFridge + " Quantity: " + quantity;
+    }
+
+    public Document toDocument(){
+        return new Document("name", name)
+                .append("expirationDate", expirationDate.toString())
+                .append("isExpired", isExpired)
+                .append("isFridge", isFridge)
+                .append("quantity", quantity);
     }
 }

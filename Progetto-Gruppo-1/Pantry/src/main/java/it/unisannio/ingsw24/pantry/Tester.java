@@ -1,8 +1,10 @@
 package it.unisannio.ingsw24.pantry;
 
-import it.unisannio.ingsw24.entities.Pantry;
+import it.unisannio.ingsw24.entities.*;
 import it.unisannio.ingsw24.pantry.persistence.PantryDAO;
 import it.unisannio.ingsw24.pantry.persistence.PantryDAOMongo;
+
+import java.time.LocalDate;
 
 public class Tester {
 
@@ -10,13 +12,23 @@ public class Tester {
 
         PantryDAOMongo pantryDAO = new PantryDAOMongo();
 
-        // Pantry p = pantryDAO.getPantry(2);
+        /*Food f = new UnPackedFood("Cibo",2,false, true,
+                2, Category.BAKERY, "15");
 
-        Pantry p = new Pantry(3);
+        Food f1 = new PackedFood("Verstanpen", "8080", LocalDate.now(), false, false, 12, "Ferrero", "A");
 
-        pantryDAO.createPantry(p);
+        System.out.println(f);
 
-        System.out.println(p);
+        boolean b = pantryDAO.updateFoods(1, f1);*/
+
+        // boolean b = pantryDAO.deleteFoodByName(1, "Cibo");
+        boolean b = pantryDAO.deleteGuestByUsername(1, "Tano");
+
+        pantryDAO.deletePantry(2);
+
+        System.out.println(b);
+
+
 
     }
 }
