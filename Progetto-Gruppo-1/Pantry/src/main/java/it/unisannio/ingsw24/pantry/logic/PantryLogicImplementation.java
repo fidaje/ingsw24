@@ -41,6 +41,21 @@ public class PantryLogicImplementation implements PantryLogic {
     }
 
     @Override
+    public int checkAndSetIsExpiredFoods(){
+        return this.pantryDataManager.checkAndSetIsExpiredFoods();
+    }
+
+    @Override
+    public List<Food> getFoods(int pantryId){
+        return this.pantryDataManager.getFoods(pantryId);
+    }
+
+    @Override
+    public List<Food> getExpiredFoods(int pantryId){
+        return this.pantryDataManager.getExpiredFoods(pantryId);
+    }
+
+    @Override
     public boolean deleteFoodByName(int pantryId, String name) {
         return this.pantryDataManager.deleteFoodByName(pantryId, name);
     }

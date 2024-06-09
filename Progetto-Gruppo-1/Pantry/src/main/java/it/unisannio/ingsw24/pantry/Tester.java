@@ -1,10 +1,9 @@
 package it.unisannio.ingsw24.pantry;
 
 import it.unisannio.ingsw24.entities.*;
-import it.unisannio.ingsw24.pantry.persistence.PantryDAO;
 import it.unisannio.ingsw24.pantry.persistence.PantryDAOMongo;
 
-import java.time.LocalDate;
+import java.util.List;
 
 public class Tester {
 
@@ -22,10 +21,17 @@ public class Tester {
         boolean b = pantryDAO.updateFoods(1, f1);*/
 
         // boolean b = pantryDAO.deleteFoodByName(1, "Cibo");
-        int id = pantryDAO.createPantry(new Pantry("tanucco"));
+        //int id = pantryDAO.createPantry(new Pantry("tanucco"));
 
+        // int row = pantryDAO.checkIsExpiredFoods();
 
-        System.out.println(id);
+        List<Food> fs = pantryDAO.getExpiredFoods(1);
+
+        for(Food f : fs){
+            System.out.println(f);
+        }
+
+        System.out.println(fs.size());
 
 
 

@@ -35,6 +35,12 @@ public interface PantryDAO {
 
     boolean updateGuests(int pantryId, String username);
 
+    int checkAndSetIsExpiredFoods();
+
+    List<Food> getFoods(int pantryId);
+
+    List<Food> getExpiredFoods(int pantryId);
+
     boolean deleteFoodByName(int pantryId, String name);
 
     boolean deleteGuestByUsername(int pantryId, String username);

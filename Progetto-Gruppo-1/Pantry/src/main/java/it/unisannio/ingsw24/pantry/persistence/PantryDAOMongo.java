@@ -10,13 +10,14 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 
-import it.unisannio.ingsw24.entities.Food;
-import it.unisannio.ingsw24.entities.Pantry;
+import it.unisannio.ingsw24.entities.*;
 import org.bson.Document;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;
 
@@ -42,8 +43,8 @@ public class PantryDAOMongo implements PantryDAO {
         this.mongoDatabase = mongoClient.getDatabase(DATABASE_NAME);
         this.collection = mongoDatabase.getCollection(COLLECTION);
         this.createDB();
-
     }
+
     @Override
     public boolean dropDB() {
         mongoDatabase.drop();
@@ -151,6 +152,81 @@ public class PantryDAOMongo implements PantryDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public int checkAndSetIsExpiredFoods(){
+
+        String expDate = null;
+        int row = 0;
+
+        for(Document current : this.collection.find()){
+            List<Document> foods = (List<Document>) current.get(FOODS);
+            for(Document food : foods) {
+                expDate = food.getString("expirationDate");
+                if (LocalDate.parse(expDate).isBefore(LocalDate.now())) {
+
+                    String foodName = food.getString("name");
+                    Document update = new Document("$set", new Document("Foods.$.isExpired", true));
+                    this.collection.updateOne(and(eq(PANTRY_ID, current.getInteger(PANTRY_ID)), eq("Foods.name", foodName)), update);
+
+                    row++;
+                }
+            }
+        }
+
+        return row;
+    }
+
+    @Override
+    public List<Food> getFoods(int pantryId) {
+        ArrayList<Food> foods = new ArrayList<>();
+
+        for (Document current : this.collection.find(eq(PANTRY_ID, pantryId))) {
+            List<Document> foodsDocument = (List<Document>) current.get(FOODS);
+            for (Document food : foodsDocument) {
+                if (food.containsKey("brand"))
+                    foods.add(packedFoodFromDocument(food));
+                if (food.containsKey("category"))
+                    foods.add(unPackedFoodFromDocument(food));
+            }
+        }
+        return foods;
+    }
+
+    @Override
+    public List<Food> getExpiredFoods(int pantryId){
+        List<Food> foods = getFoods(pantryId);
+        ArrayList<Food> expiredFoods = new ArrayList<>();
+
+        for(Food food : foods){
+            if (food.getIsExpired())
+                expiredFoods.add(food);
+        }
+
+        return expiredFoods;
+    }
+
+    private PackedFood packedFoodFromDocument(Document document){
+        return new PackedFood(document.getString("name"),
+                document.getString("id"),
+                LocalDate.parse(document.getString("expirationDate")),
+                document.getBoolean("isExpired"),
+                document.getBoolean("isFridge"),
+                document.getInteger("quantity"),
+                document.getString("brand"),
+                document.getString("nutritionGrade"));
+    }
+
+    private UnPackedFood unPackedFoodFromDocument(Document document){
+        return new UnPackedFood(document.getString("name"),
+                document.getInteger("id"),
+                document.getBoolean("isExpired"),
+                document.getBoolean("isFridge"),
+                document.getInteger("quantity"),
+                Category.valueOf(document.getString("category")),
+                document.getString("averageExpirationDays"),
+                LocalDate.parse(document.getString("expirationDate")));
     }
 
     @Override

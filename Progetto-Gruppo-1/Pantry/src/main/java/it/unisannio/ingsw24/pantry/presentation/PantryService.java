@@ -1,5 +1,6 @@
 package it.unisannio.ingsw24.pantry.presentation;
 
+import it.unisannio.ingsw24.entities.Food;
 import it.unisannio.ingsw24.entities.PackedFood;
 import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.entities.UnPackedFood;
@@ -56,6 +57,28 @@ public class PantryService {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @GET
+    @Path("{pantryId}/foods")
+    public Response getFoods(@PathParam("pantryId") int pantryId){
+        List<Food> foods = logic.getFoods(pantryId);
+
+        if (foods != null)
+            return Response.ok(foods).build();
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("{pantryId}/expiredFoods")
+    public Response getExpiredFoods(@PathParam("pantryId") int pantryId){
+        List<Food> foods = logic.getExpiredFoods(pantryId);
+
+        if (foods != null)
+            return Response.ok(foods).build();
+
+        return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
 
     @PUT
     @Path("/{pantryId}/foods/unpacked")
@@ -80,6 +103,11 @@ public class PantryService {
         return Response.ok(result).build();
     }
 
+    @PUT
+    public Response checkAndSetIsExpiredFoods(){
+        int row = this.logic.checkAndSetIsExpiredFoods();
+        return Response.ok(row).build();
+    }
 
     @DELETE
     @Path("{pantryId}/foods/{foodName}")
