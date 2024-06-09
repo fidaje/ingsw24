@@ -23,6 +23,13 @@ public class UnPackedFood extends Food {
         setExpirationDate(this.averageExpirationDays);
     }
 
+    public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category type, String averageExpirationDays, LocalDate expirationDate) {
+        super(name, expirationDate, isExpired, isFridge, quantity);
+        this.id = id;
+        this.type = type;
+        this.averageExpirationDays = averageExpirationDays;
+    }
+
     @Override
     public void setExpirationDate(String days) {
         int expirationDays = Integer.parseInt(days);
@@ -62,7 +69,7 @@ public class UnPackedFood extends Food {
     public Document toDocument() {
         return super.toDocument()
                 .append("id", id)
-                .append("Category", type)
-                .append("AverageExpirationDays", averageExpirationDays);
+                .append("category", type)
+                .append("averageExpirationDays", averageExpirationDays);
     }
 }
