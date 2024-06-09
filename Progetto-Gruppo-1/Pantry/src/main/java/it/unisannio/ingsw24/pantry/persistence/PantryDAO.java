@@ -27,6 +27,8 @@ public interface PantryDAO {
 
     int createPantry(Pantry p);
 
+    Pantry getPantry(int pantryId);
+
     List<Pantry> getPantries(String ownerUsername);
 
     boolean updateFoods(int pantryId, Food f);

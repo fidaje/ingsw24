@@ -22,11 +22,10 @@ public class Tester {
         boolean b = pantryDAO.updateFoods(1, f1);*/
 
         // boolean b = pantryDAO.deleteFoodByName(1, "Cibo");
-        boolean b = pantryDAO.deleteGuestByUsername(1, "Tano");
+        int id = pantryDAO.createPantry(new Pantry("tanucco"));
 
-        pantryDAO.deletePantry(2);
 
-        System.out.println(b);
+        System.out.println(id);
 
 
 

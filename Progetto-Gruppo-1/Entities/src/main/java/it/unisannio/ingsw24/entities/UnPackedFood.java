@@ -11,6 +11,10 @@ public class UnPackedFood extends Food {
     private Category type;
     private String averageExpirationDays;
 
+    public UnPackedFood(){
+        super();
+    }
+
     public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category type, String averageExpirationDays) {
         super(name, isExpired, isFridge, quantity);
         this.id = id;
@@ -30,8 +34,24 @@ public class UnPackedFood extends Food {
         return this.id;
     }
 
+    public Category getType() {
+        return this.type;
+    }
+
     public String getAverageExpirationDays(){
         return this.averageExpirationDays;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setType(Category type) {
+        this.type = type;
+    }
+
+    public void setAverageExpirationDays(String averageExpirationDays){
+        this.averageExpirationDays = averageExpirationDays;
     }
 
     public String toString(){

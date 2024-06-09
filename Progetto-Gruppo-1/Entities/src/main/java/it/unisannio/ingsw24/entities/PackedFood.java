@@ -10,8 +10,9 @@ public class PackedFood extends Food {
     private String id;
     private String nutritionGrade;
 
-    //private Image image;
-
+    public PackedFood(){
+        super();
+    }
 
     public PackedFood(String name, String id, LocalDate expirationDate, boolean isExpired, boolean isFridge, int quantity, String brand, String nutritionGrade) {
         super(name, expirationDate, isExpired, isFridge, quantity);
@@ -26,16 +27,28 @@ public class PackedFood extends Food {
         this.expirationDate = ld;
     }
 
-    public String getId(){
-        return this.id;
-    }
-
     public String getBrand(){
         return this.brand;
     }
 
+    public String getId(){
+        return this.id;
+    }
+
     public String getNutritionGrade(){
         return this.nutritionGrade;
+    }
+
+    public void setBrand(String brand){
+        this.brand = brand;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setNutritionGrade(String nutritionGrade) {
+        this.nutritionGrade = nutritionGrade;
     }
 
     public String toString(){
