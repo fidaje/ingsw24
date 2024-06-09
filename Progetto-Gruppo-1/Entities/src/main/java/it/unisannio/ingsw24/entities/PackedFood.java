@@ -52,14 +52,14 @@ public class PackedFood extends Food {
     }
 
     public String toString(){
-        return super.toString() + "ID: " + this.id + " Brand: " + this.brand + " Nutrition Grade: " + this.nutritionGrade;
+        return super.toString() + " ID: " + this.id + " Brand: " + this.brand + " Nutrition Grade: " + this.nutritionGrade;
     }
 
     @Override
     public Document toDocument() {
         return super.toDocument()
                 .append("id", id)
-                .append("Brand", brand)
-                .append("NutritionGrade", nutritionGrade);
+                .append("brand", brand)
+                .append("nutritionGrade", nutritionGrade);
     }
 }
