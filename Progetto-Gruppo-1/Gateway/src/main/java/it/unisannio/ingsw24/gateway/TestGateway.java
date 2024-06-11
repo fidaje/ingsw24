@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.gateway;
 
 import it.unisannio.ingsw24.entities.Food;
+import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
 
@@ -10,9 +11,9 @@ public class TestGateway {
 
         GatewayLogic l = new GatewayLogicImplementation();
 
-        Food f = l.getPackedFood("3017624010701", "2024-12-12" , false, 4);
+        Pantry p = l.getPantry(1);
 
-        System.out.println(f);
+        System.out.println("Pantry non c'è " );
 
         //UnPackedFood u = l.getUnPackedFood("mela", true, 22);
 

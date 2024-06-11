@@ -10,24 +10,24 @@ import it.unisannio.ingsw24.entities.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 
-public class GatewayLogicImplementation implements GatewayLogic{
+public class GatewayLogicImplementation implements GatewayLogic {
 
     private final String unPackedAddress;
     private final String packedFoodAddress;
+    private final String pantryAddress;
 
 
-    public GatewayLogicImplementation(){
+    public GatewayLogicImplementation() {
         String unPackedHost = System.getenv("UNPACKED_HOST");
         String unPackedPort = System.getenv("UNPACKED_PORT");
         if (unPackedHost == null) {
@@ -46,55 +46,26 @@ public class GatewayLogicImplementation implements GatewayLogic{
         if (packedPort == null) {
             packedPort = "8085";
         }
-
         packedFoodAddress = "http://" + packedHost + ":" + packedPort;
-    }
 
-
-    // probabilmente questo metodo deve essere un POST verso l'istanza della MongoPantry dell'utente, il GET va fatto a parte
-    @Override
-    public UnPackedFood getUnPackedFood(String name, boolean isFridge, int quantity){
-        UnPackedFood upf = this.getUnPackedFood(name);
-        assert upf != null;
-        upf.setQuantity(quantity);
-        upf.setIsFridge(isFridge);
-
-        return upf;
-    }
-
-
-    private UnPackedFood getUnPackedFood(String name) {
-        try{
-            String URL = String.format(unPackedAddress + "/api/unpacked/" + name);
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = new Request.Builder()
-                    .url(URL)
-                    .get()
-                    .build();
-            Response response = client.newCall(request).execute();
-
-            if(response.code() != 200){
-                return null; //factory(?)
-            }
-
-            Gson gson = GsonProvider.createGson();
-            String body = response.body().string();
-            UnPackedFood upf = gson.fromJson(body, UnPackedFood.class);
-            return upf;
-
-        } catch (IOException e){
-            e.printStackTrace();
+        String pantryHost = System.getenv("PANTRY_HOST");
+        String pantryPort = System.getenv("PANTRY_PORT");
+        if (pantryHost == null) {
+            pantryHost = "127.0.0.1";
         }
-        return null;
+        if (pantryPort == null) {
+            pantryPort = "8084";
+        }
+
+        pantryAddress = "http://" + pantryHost + ":" + pantryPort;
     }
 
 
-    //ora deve essere una List<String>
     @Override
-    public List<String> getAllUnPackedFoodNames(){
+    public Pantry getPantry(int pantryId) {
+
         try {
-            String URL = String.format(unPackedAddress + "/api/unpacked");
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId);
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
@@ -102,87 +73,67 @@ public class GatewayLogicImplementation implements GatewayLogic{
                     .get()
                     .build();
             Response response = client.newCall(request).execute();
-
-            if(response.code() != 200){
-                return null; //factory(?)
+            if (response.code() != 200) {
+                return null;
             }
 
-            Gson gson = new Gson();
             String body = response.body().string();
-            List<String> l = gson.fromJson(body, new TypeToken<List<String>>() {}.getType());
-            return new ArrayList<>(l);
+            JSONObject jsonObject = new JSONObject(body);
 
-        } catch (IOException e){
-        e.printStackTrace();
-    }
-        return null;
-    }
+            Pantry pantry = new Pantry();
+            List<Food> foods = new ArrayList<>();
+            pantry.setId(pantryId);
 
-    private PackedFood getPackedFood(String barcode) {
-        try{
-           // 3017624010701?fields=product_name,nutrition_grades,brands
-            String URL = String.format(packedFoodAddress + "/api/packed/" + barcode);
-            OkHttpClient client = new OkHttpClient();
+            String ownerUsername = jsonObject.getString("ownerUsername");
+            pantry.setOwnerUsername(ownerUsername);
 
-            Request request = new Request.Builder()
-                    .url(URL)
-                    .get()
-                    .build();
-            Response response = client.newCall(request).execute();
+            JSONArray fudsArray = jsonObject.getJSONArray("fuds");
+            for (int i = 0; i < fudsArray.length(); i++) {
+                JSONObject fudObject = fudsArray.getJSONObject(i);
+                String name = fudObject.getString("name");
+                String expirationDate = fudObject.getString("expirationDate");
+                boolean isExpired = fudObject.getBoolean("isExpired");
+                boolean isFridge = fudObject.getBoolean("isFridge");
+                int quantity = fudObject.getInt("quantity");
+                if (fudObject.has("brand")) {
+                    String id = fudObject.getString("id");
+                    String brand = fudObject.getString("brand");  // 'optString' è usato per valori opzionali
+                    String nutritionGrade = fudObject.getString("nutritionGrade");
 
-            if(response.code() != 200){
-                return null; //factory(?)
+                    PackedFood pf = new PackedFood(name, id, LocalDate.parse(expirationDate), isExpired, isFridge, quantity, brand, nutritionGrade);
+                    foods.add(pf);
+                }
+
+                if (fudObject.has("category")) {
+                    int id = fudObject.getInt("id");
+                    String category = fudObject.getString("category");
+                    String averageExpirationDays = fudObject.getString("averageExpirationDays");
+                    UnPackedFood upf = new UnPackedFood(name, id, isExpired, isFridge, quantity, Category.valueOf(category), averageExpirationDays);
+                    foods.add(upf);
+                }
             }
 
-            Gson gson = GsonProvider.createGson();
-            String body = response.body().string();
-            PackedFood pf = gson.fromJson(body, PackedFood.class);
-            return pf;
+            pantry.setFuds(foods);
 
-        } catch (IOException e){
-            e.printStackTrace();
+            List<String> guests = new ArrayList<>();
+
+            JSONArray guestsArray = jsonObject.getJSONArray("guestsUsernames");
+            for (int i = 0; i < guestsArray.length(); i++) {
+                String guest = guestsArray.getString(i);
+                guests.add(guest);
+            }
+
+            pantry.setGuestsUsernames(guests);
+
+            return pantry;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
 
-    //probabilmente un POST
-    @Override
-    public PackedFood getPackedFood(String barcode, String date, boolean isFridge, int quantity){
-        PackedFood pf = this.getPackedFood(barcode);
-
-        assert pf != null;
-
-        pf.setExpirationDate(date);
-        pf.setIsFridge(isFridge);
-        pf.setQuantity(quantity);
-
-        return pf;
-    }
-}
 
 
 
-
-
-class GsonProvider {
-    public static Gson createGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-    }
-}
-
-class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
-    @Override
-    public void write(JsonWriter out, LocalDate value) throws IOException {
-        out.value(value.format(formatter));
-    }
-
-    @Override
-    public LocalDate read(JsonReader in) throws IOException {
-        return LocalDate.parse(in.nextString(), formatter);
-    }
 }

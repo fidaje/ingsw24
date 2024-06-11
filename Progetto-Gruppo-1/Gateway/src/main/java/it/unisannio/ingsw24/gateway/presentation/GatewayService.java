@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.gateway.presentation;
 
 import it.unisannio.ingsw24.entities.PackedFood;
+import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
@@ -21,16 +22,16 @@ public class GatewayService {
         this.logic = new GatewayLogicImplementation();
     }
 
-    //forse è POST
     @GET
-    @Path("/unpacked/{name}")
-    public Response getUnPackedFood(@PathParam("name") String name, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
-        UnPackedFood upf = logic.getUnPackedFood(name, isFridge, quantity);
-        if (upf == null)
-            return Response.status(404, "Food " + name + " doesn't exist").build();
-        return Response.ok(upf).build();
+    @Path("{pantryId}")
+    public Response getPantry(@PathParam("pantryId") int pantryId){
+        Pantry pantry = logic.getPantry(pantryId);
+        if (pantry == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(pantry).build();
     }
 
+    /*
     @GET
     @Path("/openfood/{barcode}")
     public Response getOpenFood(@PathParam("barcode") String barcode, @QueryParam("date") String date, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
@@ -46,5 +47,5 @@ public class GatewayService {
     public Response getAllUnPackedNames(){
         List<String> m = logic.getAllUnPackedFoodNames();
         return Response.ok(m).build();
-    }
+    }*/
 }
