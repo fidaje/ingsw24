@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.pantry;
 
 import it.unisannio.ingsw24.pantry.presentation.*;
+import it.unisannio.ingsw24.pantry.schedule.SchedulerSetup;
 import jakarta.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,7 @@ public class PantryApplication extends ResourceConfig {
 
     public static void main(String[] args) {
         SpringApplication.run(PantryApplication.class, args);
+        SchedulerSetup.main(args);
     }
 
 }

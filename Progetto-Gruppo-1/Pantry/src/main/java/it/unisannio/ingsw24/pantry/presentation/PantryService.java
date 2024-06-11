@@ -103,12 +103,6 @@ public class PantryService {
         return Response.ok(result).build();
     }
 
-    @PUT
-    public Response checkAndSetIsExpiredFoods(){
-        int row = this.logic.checkAndSetIsExpiredFoods();
-        return Response.ok(row).build();
-    }
-
     @DELETE
     @Path("{pantryId}/foods/{foodName}")
     public Response deleteFoodByName(@PathParam("pantryId") int pantryId, @PathParam("foodName") String foodName){
@@ -132,5 +126,4 @@ public class PantryService {
         if (result) return Response.noContent().build();
         return Response.serverError().build();
     }
-
 }
