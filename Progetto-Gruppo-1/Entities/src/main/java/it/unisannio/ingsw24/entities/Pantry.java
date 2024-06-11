@@ -43,6 +43,22 @@ public class Pantry {
         return this.guestsUsernames;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
+
+    public void setFuds(List<Food> fuds) {
+        this.fuds = fuds;
+    }
+
+    public void setGuestsUsernames(List<String> guestsUsernames) {
+        this.guestsUsernames = guestsUsernames;
+    }
+
     public void addFood(Food f){
         this.fuds.add(f);
     }
