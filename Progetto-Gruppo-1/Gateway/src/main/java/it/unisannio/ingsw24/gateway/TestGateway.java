@@ -11,7 +11,9 @@ public class TestGateway {
 
         GatewayLogic l = new GatewayLogicImplementation();
 
-        Pantry p = l.getPantry(1);
+        //Pantry p = l.getPantries("tanuccio");
+
+        System.out.println();
 
         System.out.println("Pantry non c'è " );
 

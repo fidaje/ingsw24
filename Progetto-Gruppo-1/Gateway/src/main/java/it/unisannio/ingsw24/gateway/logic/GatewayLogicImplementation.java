@@ -3,7 +3,6 @@ package it.unisannio.ingsw24.gateway.logic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import it.unisannio.ingsw24.entities.*;
@@ -15,6 +14,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +59,6 @@ public class GatewayLogicImplementation implements GatewayLogic {
 
         pantryAddress = "http://" + pantryHost + ":" + pantryPort;
     }
-
 
     @Override
     public Pantry getPantry(int pantryId) {
@@ -132,8 +131,181 @@ public class GatewayLogicImplementation implements GatewayLogic {
         }
     }
 
+    @Override
+    public List<Pantry> getPantries(String ownerUsername){
+
+        try {
+            String URL = String.format(pantryAddress + "/api/pantry/pantries/" + ownerUsername);
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.code() != 200) {
+                return null;
+            }
+
+            String body = response.body().string();
+
+            List<Pantry> pantries = new ArrayList<>();
+            JSONArray jsonArray = new JSONArray(body);
+
+            for (int i=0; i < jsonArray.length(); i++){
+                JSONObject pantryObject = jsonArray.getJSONObject(i);
+                Pantry pantry = new Pantry();
+
+                pantry.setId(pantryObject.getInt("id"));
+                pantry.setOwnerUsername(ownerUsername);
+
+                JSONArray fudsArray = pantryObject.getJSONArray("fuds");
+                List<Food> foods = new ArrayList<>();
+
+                for (int j = 0; j < fudsArray.length(); j++){
+                    JSONObject fudObject = fudsArray.getJSONObject(j);
+                    foods.add(addFood(fudObject));
+                }
+                pantry.setFuds(foods);
+
+                pantry.setGuestsUsernames(getGuests(pantryObject));
+
+                pantries.add(pantry);
+            }
+
+            return pantries;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Food addFood(JSONObject foodObject) {
+
+        String name = foodObject.getString("name");
+        String expirationDate = foodObject.getString("expirationDate");
+        boolean isExpired = foodObject.getBoolean("isExpired");
+        boolean isFridge = foodObject.getBoolean("isFridge");
+        int quantity = foodObject.getInt("quantity");
+        if (foodObject.has("brand")) {
+            String id = foodObject.getString("id");
+            String brand = foodObject.getString("brand");  // 'optString' è usato per valori opzionali
+            String nutritionGrade = foodObject.getString("nutritionGrade");
+            PackedFood pf = new PackedFood(name, id, LocalDate.parse(expirationDate), isExpired, isFridge, quantity, brand, nutritionGrade);
+            return pf;
+        }
+
+        if (foodObject.has("category")) {
+            int id = foodObject.getInt("id");
+            String category = foodObject.getString("category");
+            String averageExpirationDays = foodObject.getString("averageExpirationDays");
+            UnPackedFood upf = new UnPackedFood(name, id, isExpired, isFridge, quantity, Category.valueOf(category), averageExpirationDays);
+            return upf;
+        }
+
+        return null;
+    }
+
+    private List<String> getGuests(JSONObject pantryObject){
+        JSONArray guestsArray = pantryObject.getJSONArray("guestsUsernames");
+        List<String> guestsUsernames = new ArrayList<>();
+        for (int k = 0; k < guestsArray.length(); k++) {
+            guestsUsernames.add(guestsArray.getString(k));
+        }
+        return guestsUsernames;
+    }
+
+    @Override
+    public List<Food> getFoods(int pantryId){
+        try {
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods");
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if(response.code() != 200){
+                return null; //factory(?)
+            }
+
+            String body = response.body().string();
+            JSONArray jsonArray = new JSONArray(body);
+            List<Food> foods = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject fudObject = jsonArray.getJSONObject(i);
+                foods.add(addFood(fudObject));
+            }
+
+            return foods;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Food> getExpiredFoods(int pantryId){
+
+        try {
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/expiredFoods");
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if(response.code() != 200){
+                return null; //factory(?)
+            }
+
+            String body = response.body().string();
+            JSONArray jsonArray = new JSONArray(body);
+            List<Food> foods = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject fudObject = jsonArray.getJSONObject(i);
+                foods.add(addFood(fudObject));
+            }
+
+            return foods;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+}
 
 
 
+class GsonProvider {
+    public static Gson createGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .create();
+    }
+}
 
+class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    @Override
+    public void write(JsonWriter out, LocalDate value) throws IOException {
+        out.value(value.format(formatter));
+    }
+
+    @Override
+    public LocalDate read(JsonReader in) throws IOException {
+        return LocalDate.parse(in.nextString(), formatter);
+    }
 }

@@ -1,5 +1,6 @@
 package it.unisannio.ingsw24.gateway.presentation;
 
+import it.unisannio.ingsw24.entities.Food;
 import it.unisannio.ingsw24.entities.PackedFood;
 import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.entities.UnPackedFood;
@@ -31,21 +32,32 @@ public class GatewayService {
         return Response.ok(pantry).build();
     }
 
-    /*
     @GET
-    @Path("/openfood/{barcode}")
-    public Response getOpenFood(@PathParam("barcode") String barcode, @QueryParam("date") String date, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
-
-        PackedFood ofp = logic.getPackedFood(barcode, date, isFridge, quantity);
-        if (ofp == null)
-            return Response.status(404, "Food with code " + barcode + " doesn't exist").build();
-
-        return Response.ok(ofp).build();
+    @Path("pantries/{username}")
+    public Response getPantries(@PathParam("username") String ownerUsername){
+        List<Pantry> pantries = logic.getPantries(ownerUsername);
+        if (pantries == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(pantries).build();
     }
 
     @GET
-    public Response getAllUnPackedNames(){
-        List<String> m = logic.getAllUnPackedFoodNames();
-        return Response.ok(m).build();
-    }*/
+    @Path("{pantryId}/foods")
+    public Response getFoods(@PathParam("pantryId") int pantryId){
+        List<Food> foods = logic.getFoods(pantryId);
+        if (foods == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(foods).build();
+    }
+
+    @GET
+    @Path("{pantryId}/expiredFoods")
+    public Response getExpiredFoods(@PathParam("pantryId") int pantryId){
+        List<Food> foods = logic.getExpiredFoods(pantryId);
+        if (foods == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(foods).build();
+    }
+
+
 }
