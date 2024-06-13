@@ -89,40 +89,14 @@ public class GatewayLogicImplementation implements GatewayLogic {
             JSONArray fudsArray = jsonObject.getJSONArray("fuds");
             for (int i = 0; i < fudsArray.length(); i++) {
                 JSONObject fudObject = fudsArray.getJSONObject(i);
-                String name = fudObject.getString("name");
-                String expirationDate = fudObject.getString("expirationDate");
-                boolean isExpired = fudObject.getBoolean("isExpired");
-                boolean isFridge = fudObject.getBoolean("isFridge");
-                int quantity = fudObject.getInt("quantity");
-                if (fudObject.has("brand")) {
-                    String id = fudObject.getString("id");
-                    String brand = fudObject.getString("brand");  // 'optString' è usato per valori opzionali
-                    String nutritionGrade = fudObject.getString("nutritionGrade");
-
-                    PackedFood pf = new PackedFood(name, id, LocalDate.parse(expirationDate), isExpired, isFridge, quantity, brand, nutritionGrade);
-                    foods.add(pf);
-                }
-
-                if (fudObject.has("category")) {
-                    int id = fudObject.getInt("id");
-                    String category = fudObject.getString("category");
-                    String averageExpirationDays = fudObject.getString("averageExpirationDays");
-                    UnPackedFood upf = new UnPackedFood(name, id, isExpired, isFridge, quantity, Category.valueOf(category), averageExpirationDays);
-                    foods.add(upf);
-                }
+                foods.add(addFood(fudObject));
             }
 
             pantry.setFuds(foods);
 
-            List<String> guests = new ArrayList<>();
+            //List<String> guests = new ArrayList<>();
 
-            JSONArray guestsArray = jsonObject.getJSONArray("guestsUsernames");
-            for (int i = 0; i < guestsArray.length(); i++) {
-                String guest = guestsArray.getString(i);
-                guests.add(guest);
-            }
-
-            pantry.setGuestsUsernames(guests);
+            pantry.setGuestsUsernames(getGuests(jsonObject));
 
             return pantry;
 
@@ -190,7 +164,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         int quantity = foodObject.getInt("quantity");
         if (foodObject.has("brand")) {
             String id = foodObject.getString("id");
-            String brand = foodObject.getString("brand");  // 'optString' è usato per valori opzionali
+            String brand = foodObject.getString("brand");
             String nutritionGrade = foodObject.getString("nutritionGrade");
             PackedFood pf = new PackedFood(name, id, LocalDate.parse(expirationDate), isExpired, isFridge, quantity, brand, nutritionGrade);
             return pf;
