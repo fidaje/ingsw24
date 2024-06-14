@@ -6,9 +6,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import it.unisannio.ingsw24.entities.*;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -256,6 +254,41 @@ public class GatewayLogicImplementation implements GatewayLogic {
         }
         return null;
 
+    }
+
+    @Override
+    public Integer updateFoods(int pantryId, Food f){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/unpacked");
+            MediaType mediaType = MediaType.parse("application/json");
+            Gson gson = GsonProvider.createGson();
+            String jsonF = gson.toJson(f);
+            RequestBody body = RequestBody.create(mediaType, jsonF);
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .put(body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 200 ){
+                return null;
+            }
+
+            String location = response.header("Location");
+            String idString = location.substring(location.lastIndexOf("/") + 1);
+            return Integer.parseInt(idString);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateGuests(int pantryId, String username){
+        return false;
     }
 
 }

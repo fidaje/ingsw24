@@ -18,4 +18,8 @@ public interface GatewayLogic {
 
     List<Food> getExpiredFoods(int pantryId);
 
+    Integer updateFoods(int pantryId, Food f);
+
+    boolean updateGuests(int pantryId, String username);
+
 }

@@ -72,4 +72,10 @@ public class UnPackedFood extends Food {
                 .append("category", type)
                 .append("averageExpirationDays", averageExpirationDays);
     }
+
+    @Override
+    public String toJson() {
+        return super.toJson() + "\"id\":" + this.id + ",\"type\":" + this.type + ",\"averageExpirationDays\":" + this.averageExpirationDays + "}";
+    }
+
 }

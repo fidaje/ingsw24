@@ -42,7 +42,7 @@ public class SecurityConfig {
          * */
 //        http.authorizeHttpRequests().requestMatchers("/hello.html").permitAll();
 
-        http.authorizeHttpRequests().requestMatchers("ingsw24/gateway/**").authenticated().and().httpBasic();
+       // http.authorizeHttpRequests().requestMatchers("ingsw24/gateway/**").authenticated().and().httpBasic();
 //        http.authorizeHttpRequests().requestMatchers("/hello").permitAll();
 //        http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic();
         http.authorizeHttpRequests().anyRequest().permitAll();

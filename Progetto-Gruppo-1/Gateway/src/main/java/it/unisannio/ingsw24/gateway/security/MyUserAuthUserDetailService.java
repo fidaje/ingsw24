@@ -67,6 +67,7 @@ public class MyUserAuthUserDetailService implements UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         for(String authority : u.getRoles()){
+            System.out.println(authority);
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         }
 

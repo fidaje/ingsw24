@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public interface UserDAO {
 
-    String DATABASE_NAME = "CUSERS";
+    String DATABASE_NAME = "CUTENTI";
     String COLLECTION = "Users";
     String ELEMENT_ID = "_id";
     String ELEMENT_USERNAME = "username";

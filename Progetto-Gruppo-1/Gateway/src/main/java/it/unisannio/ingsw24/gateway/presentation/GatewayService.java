@@ -6,6 +6,7 @@ import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -57,6 +58,14 @@ public class GatewayService {
         if (foods == null)
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(foods).build();
+    }
+
+    @PUT
+    @Path("/{pantryId}/foods/unpacked")
+    public Response updateFoods(@PathParam("pantryId") int pantryId, UnPackedFood f){
+        Integer result = logic.updateFoods(pantryId, f);
+        if (result != null) return Response.ok(result).build();
+        else return Response.serverError().build();
     }
 
 
