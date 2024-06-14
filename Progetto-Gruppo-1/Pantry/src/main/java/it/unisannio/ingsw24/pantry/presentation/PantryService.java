@@ -84,7 +84,6 @@ public class PantryService {
     @Path("/{pantryId}/foods/unpacked")
     public Response updateFoods(@PathParam("pantryId") int pantryId, UnPackedFood f){
         boolean result = logic.updateFoods(pantryId, f);
-        System.out.println(f);
         if (result) return Response.ok(f).build();
         else return Response.serverError().build();
     }
