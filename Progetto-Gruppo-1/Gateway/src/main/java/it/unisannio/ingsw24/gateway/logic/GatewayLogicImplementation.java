@@ -297,13 +297,3 @@ public class GatewayLogicImplementation implements GatewayLogic {
 }
 
 
-
-class GsonProvider {
-    public static Gson createGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-    }
-}
-
-
