@@ -61,9 +61,23 @@ public class GatewayService {
     }
 
     @PUT
-    @Path("/{pantryId}/foods/unpacked")
-    public Response updateFoods(@PathParam("pantryId") int pantryId, UnPackedFood f){
-        Integer result = logic.updateFoods(pantryId, f);
+    @Path("/{pantryId}/foods/unpacked/{name}")
+    public Response updateFoodsWithUnPacked(@PathParam("pantryId") int pantryId, @PathParam("name") String name, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
+        UnPackedFood upf = logic.getUnPackedFood(name);
+        upf.setIsFridge(isFridge);
+        upf.setQuantity(quantity);
+        Integer result = logic.updateFoods(pantryId, upf, "unpacked");
+        if (result != null) return Response.ok(result).build();
+        else return Response.serverError().build();
+    }
+
+    @PUT
+    @Path("/{pantryId}/foods/packed/{barcode}")
+    public Response updateFoodsWithPacked(@PathParam("pantryId") int pantryId, @PathParam("barcode") String barcode, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
+        PackedFood pf = logic.getPackedFood(barcode);
+        pf.setIsFridge(isFridge);
+        pf.setQuantity(quantity);
+        Integer result = logic.updateFoods(pantryId, pf, "packed");
         if (result != null) return Response.ok(result).build();
         else return Response.serverError().build();
     }

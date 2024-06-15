@@ -257,10 +257,64 @@ public class GatewayLogicImplementation implements GatewayLogic {
     }
 
     @Override
-    public Integer updateFoods(int pantryId, Food f){
+    public UnPackedFood getUnPackedFood(String name){
         try {
             OkHttpClient client = new OkHttpClient();
-            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/unpacked");
+            String URL = String.format(unPackedAddress + "/api/unpacked/" + name);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            ResponseBody bodyResponse = response.body();
+            if (bodyResponse == null)
+                throw new IOException("Response body is null");
+
+            Gson gson = GsonProvider.createGson();
+            String body = response.body().string();
+            UnPackedFood upf = gson.fromJson(body, UnPackedFood.class);
+            return upf;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public PackedFood getPackedFood(String barcode){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(packedFoodAddress + "/api/packed/" + barcode);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            ResponseBody bodyResponse = response.body();
+            if (bodyResponse == null)
+                throw new IOException("Response body is null");
+
+            Gson gson = GsonProvider.createGson();
+            String body = response.body().string();
+            PackedFood pf = gson.fromJson(body, PackedFood.class);
+            return pf;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Integer updateFoods(int pantryId, Food f, String type){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/" + type);
             MediaType mediaType = MediaType.parse("application/json");
             Gson gson = GsonProvider.createGson();
             String jsonF = f.toJson();
