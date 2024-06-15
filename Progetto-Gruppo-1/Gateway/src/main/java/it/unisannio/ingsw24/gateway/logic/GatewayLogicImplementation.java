@@ -263,7 +263,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
             String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/unpacked");
             MediaType mediaType = MediaType.parse("application/json");
             Gson gson = GsonProvider.createGson();
-            String jsonF = gson.toJson(f);
+            String jsonF = f.toJson();
             RequestBody body = RequestBody.create(mediaType, jsonF);
             Request request = new Request.Builder()
                     .url(URL)
@@ -277,15 +277,18 @@ public class GatewayLogicImplementation implements GatewayLogic {
                 return null;
             }
 
-            String location = response.header("Location");
-            String idString = location.substring(location.lastIndexOf("/") + 1);
-            return Integer.parseInt(idString);
+            //String location = response.header("Location");
+            //String idString = location.substring(location.lastIndexOf("/") + 1);
+            //return Integer.parseInt(idString);
+            return 1;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+
 
     public boolean updateGuests(int pantryId, String username){
         return false;
@@ -303,16 +306,4 @@ class GsonProvider {
     }
 }
 
-class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
-    @Override
-    public void write(JsonWriter out, LocalDate value) throws IOException {
-        out.value(value.format(formatter));
-    }
-
-    @Override
-    public LocalDate read(JsonReader in) throws IOException {
-        return LocalDate.parse(in.nextString(), formatter);
-    }
-}
