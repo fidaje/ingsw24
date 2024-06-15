@@ -32,7 +32,7 @@ public class UnPackedFood extends Food {
 
     @Override
     public void setExpirationDate(String days) {
-        int expirationDays = Integer.parseInt(days);
+        int expirationDays = Integer.parseInt(this.averageExpirationDays);
         LocalDate today = LocalDate.now();
         expirationDate = today.plusDays(expirationDays);
     }
@@ -74,8 +74,8 @@ public class UnPackedFood extends Food {
     }
 
     @Override
-    public String toJson() {
-        return super.toJson() + "\"id\":" + this.id + ",\"type\":" + this.type + ",\"averageExpirationDays\":" + this.averageExpirationDays + "}";
+    public String toJson(){
+        return super.toJson() + "\"id\": " + this.id + ",\"type\": \"" + this.type + "\",\"averageExpirationDays\": \"" + this.averageExpirationDays + "\",\"expirationDate\": \"\"}";
     }
 
 }

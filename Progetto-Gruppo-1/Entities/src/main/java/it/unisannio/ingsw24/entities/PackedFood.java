@@ -64,7 +64,8 @@ public class PackedFood extends Food {
     }
 
     @Override
-    public String toJson() {
-        return super.toJson() + "\"id\":" + this.id + ",\"brand\":" + this.brand + ",\"nutritionGrade\":" + this.nutritionGrade + "}";
+    public String toJson(){
+        return super.toJson() + "\"id\": \"" + this.id + "\",\"brand\": \"" + this.brand + "\",\"nutritionGrade\": \"" + this.nutritionGrade + "\",\"expirationDate\": \"" + this.expirationDate + "\"}";
     }
+
 }

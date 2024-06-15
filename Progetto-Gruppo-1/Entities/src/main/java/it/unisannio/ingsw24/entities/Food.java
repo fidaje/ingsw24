@@ -72,15 +72,15 @@ public abstract class Food {
         return "Name: " + name + " Expiration Date: " + expirationDate + " Is Expired: " + isExpired + " Is Fridge: " + isFridge + " Quantity: " + quantity;
     }
 
-    public String toJson(){
-        return "{\"name\":" + this.name + ",\"expirationDate\":" + this.expirationDate.toString() + ",\"isExpired\":" + this.isExpired + ",\"isFridge\":" + this.isFridge + ",\"quantity\":" + this.quantity + ",";
-    }
-
     public Document toDocument(){
         return new Document("name", name)
                 .append("expirationDate", expirationDate.toString())
                 .append("isExpired", isExpired)
                 .append("isFridge", isFridge)
                 .append("quantity", quantity);
+    }
+
+    public String toJson(){
+        return "{\"name\": \"" + this.name + "\",\"isExpired\": " + this.isExpired + ",\"isFridge\": " + this.isFridge + ",\"quantity\": " + this.quantity + ",";
     }
 }
