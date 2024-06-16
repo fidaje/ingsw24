@@ -3,7 +3,6 @@ package it.unisannio.ingsw24.gateway.logic;
 import com.google.gson.Gson;
 import it.unisannio.ingsw24.entities.*;
 import okhttp3.*;
-import org.apache.catalina.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
