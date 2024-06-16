@@ -1,18 +1,14 @@
 package it.unisannio.ingsw24.gateway.logic;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import it.unisannio.ingsw24.entities.*;
 import okhttp3.*;
+import org.apache.catalina.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +19,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
     private final String unPackedAddress;
     private final String packedFoodAddress;
     private final String pantryAddress;
+    private final String userAddress;
 
 
     public GatewayLogicImplementation() {
@@ -54,8 +51,101 @@ public class GatewayLogicImplementation implements GatewayLogic {
         if (pantryPort == null) {
             pantryPort = "8084";
         }
-
         pantryAddress = "http://" + pantryHost + ":" + pantryPort;
+
+        String userHost = System.getenv("USER_HOST");
+        String userPort = System.getenv("USER_PORT");
+        if (userHost == null) {
+            userHost = "127.0.0.1";
+        }
+        if (userPort == null) {
+            userPort = "8089";
+        }
+        userAddress = "http://" + userHost + ":" + userPort;
+    }
+
+    @Override
+    public String createUser(MyUser user){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(userAddress + "/rest/users");
+
+            MediaType mediaType = MediaType.parse("application/json");
+            Gson gson = new Gson();
+            RequestBody body = RequestBody.create(mediaType, gson.toJson(user));
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 201) {
+                return null;
+            }
+
+            return user.getUsername();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public int createPantry(Pantry pantry){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry");
+
+            MediaType mediaType = MediaType.parse("application/json");
+            Gson gson = new Gson();
+            RequestBody body = RequestBody.create(mediaType, gson.toJson(pantry));
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 201) {
+                return 0;
+            }
+
+            return pantry.getId();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public MyUser getUser(String username){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(userAddress + "/rest/users/" + username);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            ResponseBody bodyResponse = response.body();
+            if (bodyResponse == null)
+                throw new IOException("Response body is null");
+
+            Gson gson = new Gson();
+            String body = response.body().string();
+            MyUser u = gson.fromJson(body, MyUser.class);
+            return u;
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -104,10 +194,10 @@ public class GatewayLogicImplementation implements GatewayLogic {
     }
 
     @Override
-    public List<Pantry> getPantries(String ownerUsername){
+    public List<Pantry> getPantries(String username){
 
         try {
-            String URL = String.format(pantryAddress + "/api/pantry/pantries/" + ownerUsername);
+            String URL = String.format(pantryAddress + "/api/pantry/pantries/" + username);
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
@@ -129,7 +219,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
                 Pantry pantry = new Pantry();
 
                 pantry.setId(pantryObject.getInt("id"));
-                pantry.setOwnerUsername(ownerUsername);
+                pantry.setOwnerUsername(pantryObject.getString("ownerUsername"));
 
                 JSONArray fudsArray = pantryObject.getJSONArray("fuds");
                 List<Food> foods = new ArrayList<>();
@@ -316,9 +406,8 @@ public class GatewayLogicImplementation implements GatewayLogic {
             OkHttpClient client = new OkHttpClient();
             String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/" + type);
             MediaType mediaType = MediaType.parse("application/json");
-            Gson gson = GsonProvider.createGson();
-            String jsonF = f.toJson();
-            RequestBody body = RequestBody.create(mediaType, jsonF);
+            String jsonFood = f.toJson();
+            RequestBody body = RequestBody.create(mediaType, jsonFood);
             Request request = new Request.Builder()
                     .url(URL)
                     .put(body)
@@ -342,9 +431,93 @@ public class GatewayLogicImplementation implements GatewayLogic {
         return null;
     }
 
-
-
+    @Override
     public boolean updateGuests(int pantryId, String username){
+        try {
+            MyUser user = getUser(username);
+            if (user != null) {
+                OkHttpClient client = new OkHttpClient();
+                String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/guests");
+                MediaType mediaType = MediaType.parse("application/json");
+                RequestBody body = RequestBody.create(mediaType, username);
+                Request request = new Request.Builder()
+                        .url(URL)
+                        .put(body)
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+
+                Response response = client.newCall(request).execute();
+
+                if (response.code() != 200) {
+                    return false;
+                }
+                return true;
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteFoodByName(int pantryId, String foodName){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/" + foodName);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .delete()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() == 204)
+                return true;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteGuestByUsername(int pantryId, String username){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/guests/" + username);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .delete()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() == 204)
+                return true;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deletePantry(int pantryId){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .delete()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() == 204)
+                return true;
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         return false;
     }
 
