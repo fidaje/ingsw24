@@ -11,14 +11,14 @@ import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 
 import it.unisannio.ingsw24.entities.*;
+import it.unisannio.ingsw24.pantry.exception.GuestException;
 import org.bson.Document;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 
 public class PantryDAOMongo implements PantryDAO {
@@ -145,8 +145,13 @@ public class PantryDAOMongo implements PantryDAO {
     @Override
     public boolean updateGuests(int pantryId, String username) {
         try{
-            this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(GUESTS, username));
-            return true;
+            Pantry pantry = getPantry(pantryId);
+            if (username != pantry.getOwnerUsername() && pantry.getGuestsUsernames().contains(username)) {
+                this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(GUESTS, username));
+                return true;
+            }
+            else
+                throw new GuestException("Guest already exists or is the owner of the pantry");
         }
         catch (Exception e){
             e.printStackTrace();
