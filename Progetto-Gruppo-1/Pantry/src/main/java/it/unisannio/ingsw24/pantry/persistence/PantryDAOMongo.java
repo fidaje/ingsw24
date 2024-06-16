@@ -116,11 +116,11 @@ public class PantryDAOMongo implements PantryDAO {
     }
 
     @Override
-    public List<Pantry> getPantries(String ownerUsername) {
+    public List<Pantry> getPantries(String username) {
 
         ArrayList<Pantry> pentris = new ArrayList<>();
 
-        for(Document d : this.collection.find(eq(OWNER_USERNAME, ownerUsername))){
+        for(Document d : this.collection.find(or(eq(OWNER_USERNAME, username),eq(GUESTS, username)))){
             Pantry p = pantryFromDocument(d);
             pentris.add(p);
         }
