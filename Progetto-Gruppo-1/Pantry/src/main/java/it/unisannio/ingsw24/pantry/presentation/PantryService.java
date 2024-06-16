@@ -99,7 +99,8 @@ public class PantryService {
     @Path("/{pantryId}/guests")
     public Response updateGuests(@PathParam("pantryId") int pantryId, String username){
         boolean result = logic.updateGuests(pantryId, username);
-        return Response.ok(result).build();
+        if (result) return Response.ok().build();
+        else return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     @DELETE

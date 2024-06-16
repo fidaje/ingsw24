@@ -146,7 +146,7 @@ public class PantryDAOMongo implements PantryDAO {
     public boolean updateGuests(int pantryId, String username) {
         try{
             Pantry pantry = getPantry(pantryId);
-            if (username != pantry.getOwnerUsername() && pantry.getGuestsUsernames().contains(username)) {
+            if (!username.equals(pantry.getOwnerUsername()) && !pantry.getGuestsUsernames().contains(username)) {
                 this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(GUESTS, username));
                 return true;
             }
