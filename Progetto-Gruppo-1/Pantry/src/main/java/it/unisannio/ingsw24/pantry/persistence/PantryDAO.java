@@ -39,6 +39,8 @@ public interface PantryDAO {
 
     List<Food> getFoods(int pantryId);
 
+    Food getFoodByName(int pantryId, String name);
+
     List<Food> getExpiredFoods(int pantryId);
 
     boolean deleteFoodByName(int pantryId, String name);

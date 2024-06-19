@@ -51,6 +51,11 @@ public class PantryLogicImplementation implements PantryLogic {
     }
 
     @Override
+    public Food getFoodByName(int pantryId, String name){
+        return this.pantryDataManager.getFoodByName(pantryId, name);
+    }
+
+    @Override
     public List<Food> getExpiredFoods(int pantryId){
         return this.pantryDataManager.getExpiredFoods(pantryId);
     }

@@ -200,6 +200,16 @@ public class PantryDAOMongo implements PantryDAO {
     }
 
     @Override
+    public Food getFoodByName(int pantryId, String name) {
+        List<Food> foods = getFoods(pantryId);
+        for(Food food : foods){
+            if (food.getName().equals(name))
+                return food;
+        }
+        return null;
+    }
+
+    @Override
     public List<Food> getExpiredFoods(int pantryId){
         List<Food> foods = getFoods(pantryId);
         ArrayList<Food> expiredFoods = new ArrayList<>();
