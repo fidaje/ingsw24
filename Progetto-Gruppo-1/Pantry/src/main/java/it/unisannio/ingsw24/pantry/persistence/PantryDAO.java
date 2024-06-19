@@ -49,6 +49,6 @@ public interface PantryDAO {
 
     boolean deletePantry(int id);
 
-
+    boolean checkUsername(int pantryId, String username);
 
 }

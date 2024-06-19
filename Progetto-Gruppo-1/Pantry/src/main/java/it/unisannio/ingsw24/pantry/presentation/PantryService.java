@@ -88,6 +88,14 @@ public class PantryService {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @GET
+    @Path("/check/{pantryId}/{username}")
+    public Response checkUsername(@PathParam("pantryId") int pantryId, @PathParam("username") String username){
+        boolean check = logic.checkUsername(pantryId, username);
+        if (check)
+            return Response.ok().build();
+        return Response.status(Response.Status.FORBIDDEN).build();
+    }
 
     @PUT
     @Path("/{pantryId}/foods/unpacked")

@@ -74,4 +74,9 @@ public class PantryLogicImplementation implements PantryLogic {
     public boolean deletePantry(int id) {
         return this.pantryDataManager.deletePantry(id);
     }
+
+    @Override
+    public boolean checkUsername(int pantryId, String username){
+        return this.pantryDataManager.checkUsername(pantryId, username);
+    }
 }

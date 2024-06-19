@@ -549,6 +549,26 @@ public class GatewayLogicImplementation implements GatewayLogic {
         return false;
     }
 
+    @Override
+    public boolean checkUsername(int pantryId, String username){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/check/" + pantryId + "/" + username);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            if (response.code() == 200)
+                return true;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 
 

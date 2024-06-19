@@ -31,6 +31,5 @@ public interface PantryLogic {
 
     boolean deletePantry(int id);
 
-
-
+    boolean checkUsername(int pantryId, String username);
 }

@@ -37,4 +37,5 @@ public interface GatewayLogic {
 
     boolean deletePantry(int pantryId);
 
+    boolean checkUsername(int pantryId, String username);
 }

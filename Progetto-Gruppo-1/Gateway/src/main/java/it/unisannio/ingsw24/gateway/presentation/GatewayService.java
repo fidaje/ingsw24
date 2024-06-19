@@ -101,10 +101,19 @@ public class GatewayService {
     @GET
     @Path("{pantryId}/foods")
     public Response getFoods(@PathParam("pantryId") int pantryId){
-        List<Food> foods = logic.getFoods(pantryId);
-        if (foods == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(foods).build();
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkUsername(pantryId, username)){
+            List<Food> foods = logic.getFoods(pantryId);
+            if (foods == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok(foods).build();
+        }
+
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @GET
