@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         //http.httpBasic(Customizer.withDefaults());
-        http.csrf().disable();
+        http.csrf(csrf -> csrf.disable());
         /*
          * No authentication needed
          * */
@@ -42,10 +42,13 @@ public class SecurityConfig {
          * */
 //        http.authorizeHttpRequests().requestMatchers("/hello.html").permitAll();
 
-       // http.authorizeHttpRequests().requestMatchers("ingsw24/gateway/**").authenticated().and().httpBasic();
+        //http.authorizeHttpRequests().requestMatchers("/ingsw24/gateway/**").authenticated().and().httpBasic();
 //        http.authorizeHttpRequests().requestMatchers("/hello").permitAll();
-//        http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic();
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.authorizeHttpRequests()
+                .requestMatchers("/ingsw24/gateway/user/**").permitAll()
+                .anyRequest().authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
+
+      //  http.authorizeHttpRequests().anyRequest().permitAll();
 
 
         return http.build();
