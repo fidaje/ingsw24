@@ -8,25 +8,25 @@ import java.time.LocalDate;
 public class UnPackedFood extends Food {
 
     private int id;
-    private Category type;
+    private Category category;
     private String averageExpirationDays;
 
     public UnPackedFood(){
         super();
     }
 
-    public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category type, String averageExpirationDays) {
+    public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category category, String averageExpirationDays) {
         super(name, isExpired, isFridge, quantity);
         this.id = id;
-        this.type = type;
+        this.category = category;
         this.averageExpirationDays = averageExpirationDays;
         setExpirationDate(this.averageExpirationDays);
     }
 
-    public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category type, String averageExpirationDays, LocalDate expirationDate) {
+    public UnPackedFood(String name, int id, boolean isExpired, boolean isFridge, int quantity, Category category, String averageExpirationDays, LocalDate expirationDate) {
         super(name, expirationDate, isExpired, isFridge, quantity);
         this.id = id;
-        this.type = type;
+        this.category = category;
         this.averageExpirationDays = averageExpirationDays;
     }
 
@@ -41,8 +41,8 @@ public class UnPackedFood extends Food {
         return this.id;
     }
 
-    public Category getType() {
-        return this.type;
+    public Category getCategory() {
+        return this.category;
     }
 
     public String getAverageExpirationDays(){
@@ -53,8 +53,8 @@ public class UnPackedFood extends Food {
         this.id = id;
     }
 
-    public void setType(Category type) {
-        this.type = type;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void setAverageExpirationDays(String averageExpirationDays){
@@ -62,20 +62,20 @@ public class UnPackedFood extends Food {
     }
 
     public String toString(){
-        return super.toString() + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.type;
+        return super.toString() + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.category;
     }
 
     @Override
     public Document toDocument() {
         return super.toDocument()
                 .append("id", id)
-                .append("category", type)
+                .append("category", category)
                 .append("averageExpirationDays", averageExpirationDays);
     }
 
     @Override
     public String toJson(){
-        return super.toJson() + "\"id\": " + this.id + ",\"category\": \"" + this.type + "\",\"averageExpirationDays\": \"" + this.averageExpirationDays + "\",\"expirationDate\": \"\"}";
+        return super.toJson() + "\"id\": " + this.id + ",\"category\": \"" + this.category + "\",\"averageExpirationDays\": \"" + this.averageExpirationDays + "\",\"expirationDate\": \"\"}";
     }
 
 }
