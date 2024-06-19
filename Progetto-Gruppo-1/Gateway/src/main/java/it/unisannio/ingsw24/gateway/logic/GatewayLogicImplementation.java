@@ -265,14 +265,6 @@ public class GatewayLogicImplementation implements GatewayLogic {
             return upf;
         }
 
-        if (foodObject.has("type")) {
-            int id = foodObject.getInt("id");
-            String category = foodObject.getString("type");
-            String averageExpirationDays = foodObject.getString("averageExpirationDays");
-            UnPackedFood upf = new UnPackedFood(name, id, isExpired, isFridge, quantity, Category.valueOf(category), averageExpirationDays);
-            return upf;
-        }
-
         return null;
     }
 
