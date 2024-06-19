@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.gateway.presentation;
 
 import it.unisannio.ingsw24.entities.*;
+import it.unisannio.ingsw24.gateway.exception.UserNotValidException;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
 import jakarta.annotation.security.RolesAllowed;
@@ -8,6 +9,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.net.URI;
 import java.util.List;
@@ -55,16 +58,40 @@ public class GatewayService {
 
     @GET
     @Path("pantry/{pantryId}")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response getPantry(@PathParam("pantryId") int pantryId){
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
         Pantry pantry = logic.getPantry(pantryId);
+
         if (pantry == null)
             return Response.status(Response.Status.NOT_FOUND).build();
+
+        boolean checkOwner = username.equals(pantry.getOwnerUsername());
+        boolean checkGuest = pantry.getGuestsUsernames().contains(username);
+
+        try {
+            if (!checkOwner && !checkGuest)
+                throw new UserNotValidException("User isn't owner or guest");
+        } catch (UserNotValidException e){
+                e.printStackTrace();
+                return Response.status(Response.Status.FORBIDDEN).build();
+            }
+
         return Response.ok(pantry).build();
     }
 
     @GET
-    @Path("pantries/{username}")
-    public Response getPantries(@PathParam("username") String username){
+    @Path("pantries")
+    @RolesAllowed({"OWNER", "GUEST"})
+    public Response getPantries(){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
         List<Pantry> pantries = logic.getPantries(username);
         if (pantries == null)
             return Response.status(Response.Status.NOT_FOUND).build();
