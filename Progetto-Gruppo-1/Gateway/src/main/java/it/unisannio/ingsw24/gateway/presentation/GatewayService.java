@@ -108,6 +108,15 @@ public class GatewayService {
     }
 
     @GET
+    @Path("{pantryId}/foods/{foodName}")
+    public Response getFoodFromPantryByName(@PathParam("pantryId") int pantryId, @PathParam ("foodName") String foodName){
+        Food food = logic.getFoodFromPantryByName(pantryId, foodName);
+        if (food == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(food).build();
+    }
+
+    @GET
     @Path("{pantryId}/expiredFoods")
     public Response getExpiredFoods(@PathParam("pantryId") int pantryId){
         List<Food> foods = logic.getExpiredFoods(pantryId);

@@ -19,6 +19,8 @@ public interface GatewayLogic {
 
     List<Food> getFoods(int pantryId);
 
+    Food getFoodFromPantryByName(int pantryId, String name);
+
     List<Food> getExpiredFoods(int pantryId);
 
     UnPackedFood getUnPackedFood(String name);

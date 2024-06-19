@@ -176,7 +176,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
             JSONArray fudsArray = jsonObject.getJSONArray("fuds");
             for (int i = 0; i < fudsArray.length(); i++) {
                 JSONObject fudObject = fudsArray.getJSONObject(i);
-                foods.add(addFood(fudObject));
+                foods.add(foodFromJson(fudObject));
             }
 
             pantry.setFuds(foods);
@@ -225,7 +225,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
 
                 for (int j = 0; j < fudsArray.length(); j++){
                     JSONObject fudObject = fudsArray.getJSONObject(j);
-                    foods.add(addFood(fudObject));
+                    foods.add(foodFromJson(fudObject));
                 }
                 pantry.setFuds(foods);
 
@@ -242,7 +242,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         return null;
     }
 
-    private Food addFood(JSONObject foodObject) {
+    private Food foodFromJson(JSONObject foodObject) {
 
         String name = foodObject.getString("name");
         String expirationDate = foodObject.getString("expirationDate");
@@ -260,6 +260,14 @@ public class GatewayLogicImplementation implements GatewayLogic {
         if (foodObject.has("category")) {
             int id = foodObject.getInt("id");
             String category = foodObject.getString("category");
+            String averageExpirationDays = foodObject.getString("averageExpirationDays");
+            UnPackedFood upf = new UnPackedFood(name, id, isExpired, isFridge, quantity, Category.valueOf(category), averageExpirationDays);
+            return upf;
+        }
+
+        if (foodObject.has("type")) {
+            int id = foodObject.getInt("id");
+            String category = foodObject.getString("type");
             String averageExpirationDays = foodObject.getString("averageExpirationDays");
             UnPackedFood upf = new UnPackedFood(name, id, isExpired, isFridge, quantity, Category.valueOf(category), averageExpirationDays);
             return upf;
@@ -299,10 +307,39 @@ public class GatewayLogicImplementation implements GatewayLogic {
 
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject fudObject = jsonArray.getJSONObject(i);
-                foods.add(addFood(fudObject));
+                foods.add(foodFromJson(fudObject));
             }
 
             return foods;
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Food getFoodFromPantryByName(int pantryId, String name){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/" + name);
+
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .get()
+                    .build();
+            Response response = client.newCall(request).execute();
+
+            ResponseBody bodyResponse = response.body();
+            if (bodyResponse == null)
+                throw new IOException("Response body is null");
+
+            String responseBodyString = bodyResponse.string();
+
+            JSONObject fudObject = new JSONObject(responseBodyString);
+            Food f = foodFromJson(fudObject);
+            
+            return f;
 
         } catch (IOException e){
             e.printStackTrace();
@@ -333,7 +370,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
 
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject fudObject = jsonArray.getJSONObject(i);
-                foods.add(addFood(fudObject));
+                foods.add(foodFromJson(fudObject));
             }
 
             return foods;
