@@ -75,7 +75,7 @@ public class UnPackedFood extends Food {
 
     @Override
     public String toJson(){
-        return super.toJson() + "\"id\": " + this.id + ",\"type\": \"" + this.type + "\",\"averageExpirationDays\": \"" + this.averageExpirationDays + "\",\"expirationDate\": \"\"}";
+        return super.toJson() + "\"id\": " + this.id + ",\"category\": \"" + this.type + "\",\"averageExpirationDays\": \"" + this.averageExpirationDays + "\",\"expirationDate\": \"\"}";
     }
 
 }
