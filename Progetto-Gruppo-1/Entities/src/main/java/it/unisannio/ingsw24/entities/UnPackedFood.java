@@ -3,6 +3,7 @@ package it.unisannio.ingsw24.entities;
 import org.bson.Document;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 
 public class UnPackedFood extends Food {
@@ -62,7 +63,18 @@ public class UnPackedFood extends Food {
     }
 
     public String toString(){
-        return super.toString() + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.category;
+        return super.toString() + " ID: " + this.id + " Average Expire Days:" + this.averageExpirationDays + " Category: " + this.category;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        UnPackedFood upf = (UnPackedFood) o;
+        return super.equals(upf) && this.id == upf.getId();
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), id);
     }
 
     @Override

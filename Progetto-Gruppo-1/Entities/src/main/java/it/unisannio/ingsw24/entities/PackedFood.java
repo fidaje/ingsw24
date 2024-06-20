@@ -3,6 +3,7 @@ package it.unisannio.ingsw24.entities;
 import org.bson.Document;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class PackedFood extends Food {
 
@@ -53,6 +54,17 @@ public class PackedFood extends Food {
 
     public String toString(){
         return super.toString() + " ID: " + this.id + " Brand: " + this.brand + " Nutrition Grade: " + this.nutritionGrade;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        PackedFood pf = (PackedFood) o;
+        return super.equals(pf) && this.id.equals(pf.getId());
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(super.hashCode(), id);
     }
 
     @Override

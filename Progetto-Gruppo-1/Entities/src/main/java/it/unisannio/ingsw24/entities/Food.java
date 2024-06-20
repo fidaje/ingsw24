@@ -68,6 +68,17 @@ public abstract class Food {
         this.quantity = quantity;
     }
 
+    @Override
+    public boolean equals(Object o){
+        Food food = (Food) o;
+        return this.name.equals(food.getName());
+    }
+
+    @Override
+    public int hashCode(){
+        return this.name.hashCode();
+    }
+
     public String toString(){
         return "Name: " + name + " Expiration Date: " + expirationDate + " Is Expired: " + isExpired + " Is Fridge: " + isFridge + " Quantity: " + quantity;
     }
