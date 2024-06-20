@@ -100,6 +100,7 @@ public class GatewayService {
 
     @GET
     @Path("{pantryId}/foods")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response getFoods(@PathParam("pantryId") int pantryId){
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -118,74 +119,138 @@ public class GatewayService {
 
     @GET
     @Path("{pantryId}/foods/{foodName}")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response getFoodFromPantryByName(@PathParam("pantryId") int pantryId, @PathParam ("foodName") String foodName){
-        Food food = logic.getFoodFromPantryByName(pantryId, foodName);
-        if (food == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(food).build();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkUsername(pantryId, username)) {
+            Food food = logic.getFoodFromPantryByName(pantryId, foodName);
+            if (food == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok(food).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @GET
     @Path("{pantryId}/expiredFoods")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response getExpiredFoods(@PathParam("pantryId") int pantryId){
-        List<Food> foods = logic.getExpiredFoods(pantryId);
-        if (foods == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(foods).build();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkUsername(pantryId, username)) {
+            List<Food> foods = logic.getExpiredFoods(pantryId);
+            if (foods == null)
+                return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok(foods).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Path("/{pantryId}/foods/unpacked/{name}")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response updateFoodsWithUnPacked(@PathParam("pantryId") int pantryId, @PathParam("name") String name, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
-        UnPackedFood upf = logic.getUnPackedFood(name);
-        upf.setIsFridge(isFridge);
-        upf.setQuantity(quantity);
-        Integer result = logic.updateFoods(pantryId, upf, "unpacked");
-        if (result != null) return Response.ok(result).build();
-        else return Response.serverError().build();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkUsername(pantryId, username)) {
+            UnPackedFood upf = logic.getUnPackedFood(name);
+            upf.setIsFridge(isFridge);
+            upf.setQuantity(quantity);
+            Integer result = logic.updateFoods(pantryId, upf, "unpacked");
+            if (result != null) return Response.ok(result).build();
+            else return Response.serverError().build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Path("/{pantryId}/foods/packed/{barcode}")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response updateFoodsWithPacked(@PathParam("pantryId") int pantryId, @PathParam("barcode") String barcode, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
-        PackedFood pf = logic.getPackedFood(barcode);
-        pf.setIsFridge(isFridge);
-        pf.setQuantity(quantity);
-        Integer result = logic.updateFoods(pantryId, pf, "packed");
-        if (result != null) return Response.ok(result).build();
-        else return Response.serverError().build();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkUsername(pantryId, username)) {
+            PackedFood pf = logic.getPackedFood(barcode);
+            pf.setIsFridge(isFridge);
+            pf.setQuantity(quantity);
+            Integer result = logic.updateFoods(pantryId, pf, "packed");
+            if (result != null) return Response.ok(result).build();
+            else return Response.serverError().build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @PUT
     @Path("/{pantryId}/guests")
-    public Response updateGuests(@PathParam("pantryId") int pantryId, String username){
-        boolean result = logic.updateGuests(pantryId, username);
-        if (result) return Response.ok(result).build();
-        else return Response.status(Response.Status.BAD_REQUEST).build();
+    @RolesAllowed({"OWNER"})
+    public Response updateGuests(@PathParam("pantryId") int pantryId, String guestUsername){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkOwner(pantryId, username)) {
+            boolean result = logic.updateGuests(pantryId, guestUsername);
+            if (result) return Response.ok(result).build();
+            else return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Path("{pantryId}/foods/{foodName}")
+    @RolesAllowed({"OWNER", "GUEST"})
     public Response deleteFoodByName(@PathParam("pantryId") int pantryId, @PathParam("foodName") String foodName){
-        boolean result = logic.deleteFoodByName(pantryId, foodName);
-        if (result) return Response.noContent().build();
-        return Response.serverError().build();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkUsername(pantryId, username)) {
+            boolean result = logic.deleteFoodByName(pantryId, foodName);
+            if (result) return Response.noContent().build();
+            return Response.serverError().build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Path("{pantryId}/guests/{username}")
-    public Response deleteGuestByUsername(@PathParam("pantryId") int pantryId, @PathParam("username") String username){
-        boolean result = logic.deleteGuestByUsername(pantryId, username);
-        if (result) return Response.noContent().build();
-        return Response.serverError().build();
+    @RolesAllowed({"OWNER"})
+    public Response deleteGuestByUsername(@PathParam("pantryId") int pantryId, @PathParam("username") String guestUsername){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkOwner(pantryId, username)) {
+            boolean result = logic.deleteGuestByUsername(pantryId, guestUsername);
+            if (result) return Response.noContent().build();
+            return Response.serverError().build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
     @DELETE
     @Path("{pantryId}")
+    @RolesAllowed({"OWNER"})
     public Response deletePantry(@PathParam("pantryId") int pantryId){
-        boolean result = logic.deletePantry(pantryId);
-        if (result) return Response.noContent().build();
-        return Response.serverError().build();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.checkOwner(pantryId, username)) {
+            boolean result = logic.deletePantry(pantryId);
+            if (result) return Response.noContent().build();
+            return Response.serverError().build();
+        }
+        return Response.status(Response.Status.FORBIDDEN).build();
     }
 
 }
