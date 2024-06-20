@@ -37,6 +37,8 @@ public interface PantryDAO {
 
     int checkAndSetIsExpiredFoods();
 
+    void sendMail();
+
     List<Food> getFoods(int pantryId);
 
     Food getFoodByName(int pantryId, String name);

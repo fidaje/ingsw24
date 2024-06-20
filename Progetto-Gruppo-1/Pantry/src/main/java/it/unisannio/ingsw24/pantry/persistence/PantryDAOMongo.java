@@ -17,6 +17,11 @@ import org.bson.Document;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
@@ -181,6 +186,60 @@ public class PantryDAOMongo implements PantryDAO {
         }
 
         return row;
+    }
+
+    @Override
+    public void sendMail(){
+        String sender = "sprinstrim@gmail.com";
+        String host = "smtp.gmail.com";
+        String subject = "Exired Foods";
+        Properties p = new Properties();
+
+        p.put("mail.smtp.host", host);
+        p.put("port", 465);
+
+        p.put("mail.smtp.auth", "true");
+        p.put("mail.smtp.starttls.enable", "true");
+        p.put("mail.smtp.ssl.enable", "true");
+        p.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        Session s = Session.getInstance(p, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(sender, "hhfwggnslkqljgli");
+            }
+        });
+        MimeMessage mail = new MimeMessage(s);
+
+        for(Document current : this.collection.find()){
+            String message = "These foods are expired:\n";
+            List<String> expiredFoods = new ArrayList<>();
+            String receiver = current.getString(OWNER_USERNAME);
+            List<Document> foods = (List<Document>) current.get(FOODS);
+            for(Document food : foods) {
+                if (food.getBoolean("isExpired")) {
+                    String foodName = food.getString("name");
+                    expiredFoods.add(foodName);
+                    message += "- " + foodName + "\n";
+                }
+            }
+            if (expiredFoods.isEmpty())
+                continue;
+
+            try {
+                mail.setFrom(new InternetAddress(sender));
+                mail.addRecipients(Message.RecipientType.TO, receiver);
+
+                mail.setSubject(subject);
+                mail.setText(message);
+
+                Transport.send(mail);
+                System.out.println("Sent");
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
     }
 
     @Override

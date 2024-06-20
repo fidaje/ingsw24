@@ -11,8 +11,8 @@ public class SchedulerSetup {
             SchedulerFactory schedulerFactory = new StdSchedulerFactory();
             Scheduler scheduler = schedulerFactory.getScheduler();
 
-            JobDetail job = JobBuilder.newJob(CheckExpiredFoodsJob.class)
-                    .withIdentity("checkExpiredFoodsJob", "group1")
+            JobDetail job = JobBuilder.newJob(ExpiredFoodsJob.class)
+                    .withIdentity("expiredFoodsJob", "group1")
                     .build();
 
             Trigger trigger = TriggerBuilder.newTrigger()

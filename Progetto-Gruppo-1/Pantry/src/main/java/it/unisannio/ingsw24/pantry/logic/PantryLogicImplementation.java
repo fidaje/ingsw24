@@ -46,6 +46,11 @@ public class PantryLogicImplementation implements PantryLogic {
     }
 
     @Override
+    public void sendMail(){
+        this.pantryDataManager.sendMail();
+    }
+
+    @Override
     public List<Food> getFoods(int pantryId){
         return this.pantryDataManager.getFoods(pantryId);
     }
