@@ -1,6 +1,7 @@
 package it.unisannio.ingsw24.unpacked.persistance;
 
 import it.unisannio.ingsw24.entities.Category;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
 
         //String cat = resultSet.getString(ELEMENT_CATEGORY);
 
-        return new UnPackedMySQL(resultSet.getString(ELEMENT_UNIQUE_ID),
+        return new UnPackedMySQL(resultSet.getInt(ELEMENT_UNIQUE_ID),
                 resultSet.getString(ELEMENT_NAME),
                 resultSet.getInt(ELEMENT_AVERAGE_EXPIRY_DAYS),
                 Category.valueOf(resultSet.getString(ELEMENT_CATEGORY).toUpperCase()));
@@ -122,7 +123,8 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
     }
 
 
-    private List<String> getAllUnPackedMySQLNames(){
+    @Override
+    public List<String> getAllUnPackedMySQLNames(){
 
         List<String> names = new ArrayList<>();
 
@@ -138,21 +140,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return names;
     }
 
-
-    
-
-    @Override
-    public Map<String, UnPackedMySQL> getAllUnPackedMySQL() {
-        
-        Map<String, UnPackedMySQL> UnPackedMySQLs = new HashMap<>();
-        List<String> names = this.getAllUnPackedMySQLNames();
-        for( String name : names){
-            UnPackedMySQL upf = this.getUnPackedMySQL(name);
-            UnPackedMySQLs.put(upf.getID(), upf);
-        }
-
-        return UnPackedMySQLs;
-    }
 
     
     // Il tipo di ritorno dovrebbe essere boolean, come parametri si dovrebbero passare 

@@ -1,8 +1,10 @@
 package it.unisannio.ingsw24.unpacked.logic;
 
+import java.util.List;
 import java.util.Map;
 
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedFood;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAO;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAOMySQL;
 
@@ -20,13 +22,14 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     }
 
     @Override
-    public UnPackedMySQL getUnPackedMySQL(String name) {
-        return this.upd.getUnPackedMySQL(name);
+    public UnPackedFood getUnPackedFood(String name) {
+        UnPackedMySQL upms = this.upd.getUnPackedMySQL(name);
+        return new UnPackedFood(upms.getName(), upms.getID(), false, false, 1, upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
     }
 
     @Override
-    public Map<String, UnPackedMySQL> getAllUnPackedMySQL() {
-        return this.upd.getAllUnPackedMySQL();
+    public List<String> getAllUnPackedMySQLNames() {
+        return this.upd.getAllUnPackedMySQLNames();
     }
 
     @Override

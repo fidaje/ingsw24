@@ -1,15 +1,17 @@
 package it.unisannio.ingsw24.unpacked.logic;
 
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedFood;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 
+import java.util.List;
 import java.util.Map;
 
 
 public interface UnPackedLogic {
 
     int createUnPackedMySQL(String name, int averageExpiryDays, String category);
-    UnPackedMySQL getUnPackedMySQL(String name);
-    Map<String, UnPackedMySQL> getAllUnPackedMySQL();
+    UnPackedFood getUnPackedFood(String name);
+    List<String> getAllUnPackedMySQLNames();
     boolean updateUnPackedMySQL(int ID, int averageExpiryDays);
     boolean deleteUnPackedMySQL(int ID);
 

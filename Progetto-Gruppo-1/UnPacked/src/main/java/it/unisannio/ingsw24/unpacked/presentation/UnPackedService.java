@@ -1,11 +1,15 @@
 package it.unisannio.ingsw24.unpacked.presentation;
 
+import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogic;
 import it.unisannio.ingsw24.unpacked.logic.UnPackedLogicImplementation;
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
+import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
+import java.util.Map;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -19,9 +23,15 @@ public class UnPackedService {
     }
 
     @GET
+    public Response getAllUnPackedMySQL(){
+        List<String> unPackedMySQLs = logic.getAllUnPackedMySQLNames();
+        return Response.ok(unPackedMySQLs).build();
+    }
+
+    @GET
     @Path("{name}")
-    public Response getUnPackedMySQL(@PathParam("name") String name){
-        UnPackedMySQL f = logic.getUnPackedMySQL(name);
+    public Response getUnPackedFood(@PathParam("name") String name){
+        UnPackedFood f = logic.getUnPackedFood(name);
         if (f == null)
             return Response.status(404, "Food " + name + " doesn't exist").build();
         return Response.ok(f).build();

@@ -1,22 +1,21 @@
-package it.unisannio.ingsw24.unpacked.persistance;
-
-import it.unisannio.ingsw24.entities.Category;
+package it.unisannio.ingsw24.entities;
 
 public class UnPackedMySQL {
 
-    private String ID, name;
+    private int id;
+    private String name;
     private int averageExipireDays;
     private Category category;
 
-    public UnPackedMySQL(String ID, String name, int averageExipireDays, Category category){
-        this.ID = ID;
+    public UnPackedMySQL(int id, String name, int averageExipireDays, Category category){
+        this.id = id;
         this.name = name;
         this.averageExipireDays = averageExipireDays;
         this.category = category;
     }
 
-    public String getID() {
-        return this.ID;
+    public int getID() {
+        return this.id;
     }
 
     public String getName(){
@@ -32,6 +31,6 @@ public class UnPackedMySQL {
     }
 
     public String toString() {
-        return "ID: " + this.ID + "\nName: " + this.name + "\nAverage Exipire Days: "+ this.averageExipireDays + "\nCategory: " + this.category ;
+        return "ID: " + this.id + "\nName: " + this.name + "\nAverage Exipire Days: "+ this.averageExipireDays + "\nCategory: " + this.category ;
     }
 }

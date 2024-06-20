@@ -1,11 +1,9 @@
 package it.unisannio.ingsw24.unpacked;
 
-import it.unisannio.ingsw24.unpacked.persistance.UnPackedMySQL;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAO;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAOMySQL;
 
 import java.sql.SQLException;
-import java.util.List;
 
 
 public class TestMySQL {

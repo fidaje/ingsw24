@@ -19,3 +19,13 @@ Gaetano Oliva <br>
 ## Diagramma UML
 ![Diagramma UML](images/class_diagram.png)
 
+## Info 
+
+### Porte dei micro servisis
+<ul>
+<li> Gateway ==> 8080 </li>
+<li> UnPacked ==> 8082 </li>
+<li> Pantry ==> 8084 </li>
+<li> Packed ==> 8085 </li>
+<li> User ==> 8089 </li>
+</ul>

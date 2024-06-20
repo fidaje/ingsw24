@@ -1,36 +1,44 @@
 package it.unisannio.ingsw24.entities;
 
-import java.time.LocalDate;
+public class OpenFood {
 
-public class OpenFood extends Food {
+    private String code;
+    private Product product;
+    private int status;
+    private String status_verbose;
 
-    private String brand;
-    private String nutritionGrade;
-
-    //private Image image;
-
-
-    public OpenFood(String name, String id, LocalDate expirationDate, boolean isExpired, boolean isFridge, int quantity, String brand, String nutritionGrade) {
-        super(name, id, expirationDate, isExpired, isFridge, quantity);
-        this.brand = brand;
-        this.nutritionGrade = nutritionGrade;
+    public String getCode() {
+        return code;
+    }
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    @Override
-    public void setExpirationDate(String date){
-        LocalDate ld = LocalDate.parse(date);
-        this.expirationDate = ld;
+    public Product getProduct() {
+        return product;
+    }
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public String getBrand(){
-        return this.brand;
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public String getNutritionGrade(){
-        return this.nutritionGrade;
+    public String getStatusVerbose() {
+        return status_verbose;
+    }
+    public void setStatusVerbose(String status_verbose) {
+        this.status_verbose = status_verbose;
     }
 
     public String toString(){
-        return super.toString() + " Brand: " + this.brand + " Nutrition Grade: " + this.nutritionGrade;
+        return "Code: " + code + "\nProduct name: " + product.getProductName()  + "\nProduct brand: " + product.getBrands() + "\nProduct nutrition grades: " + product.getNutritionGrades() + "\nStatus: " + status + "\nStatus verbose: " + status_verbose + "\n";
     }
+
 }
+
+
