@@ -25,7 +25,7 @@ public class PackedLogicImplemetation implements PackedLogic{
 
     private OpenFood getOpenFood(String barcode) {
         try{
-            // 3017624010701?fields=product_name,nutrition_grades,brands
+
             String URL = String.format(openFoodAddress + barcode + "?fields=product_name,nutrition_grades,brands");
             OkHttpClient client = new OkHttpClient();
 

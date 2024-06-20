@@ -17,6 +17,11 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     }
 
     @Override
+    public int getNextId(){
+        return this.upd.getNextId();
+    }
+
+    @Override
     public int createUnPackedMySQL(String name, int averageExpiryDays, String category) {
         return this.upd.createUnPackedMySQL(name, averageExpiryDays, category);
     }
@@ -24,6 +29,8 @@ public class UnPackedLogicImplementation implements UnPackedLogic{
     @Override
     public UnPackedFood getUnPackedFood(String name) {
         UnPackedMySQL upms = this.upd.getUnPackedMySQL(name);
+        if (upms == null)
+            return null;
         return new UnPackedFood(upms.getName(), upms.getID(), false, false, 1, upms.getCategory(), Integer.toString(upms.getAverageExipireDays()));
     }
 
