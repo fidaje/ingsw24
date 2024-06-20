@@ -1,0 +1,67 @@
+services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+    environment:
+      - UNPACKED_HOST=unpacked
+      - PACKED_HOST=packed
+      - PANTRY_HOST=pantry
+      - USER_HOST=user
+
+  user:
+    build:
+      context: ./user
+      dockerfile: Dockerfile
+    container_name: user
+    ports:
+      - "8089:8089"
+    networks:
+      - backend
+    environment:
+      - MONGO_ADDRESS=mongo-ingsw
+
+
+  packed:
+    build:
+      context: ./packed
+      dockerfile: Dockerfile
+    container_name: packed
+    ports:
+      - "8085:8085"
+    networks:
+      - backend
+
+
+  unpacked:
+    build:
+      context: ./unpacked
+      dockerfile: Dockerfile
+    container_name: unpacked
+    ports:
+      - "8082:8082"
+    networks:
+      - backend
+    environment:
+      - MYSQL_ADDRESS=mysql
+
+  pantry:
+    build:
+      context: ./pantry
+      dockerfile: Dockerfile
+    container_name: pantry
+    ports:
+      - "8084:8084"
+    networks:
+      - backend
+    environment:
+      - MONGO_ADDRESS=mongo-ingsw
+
+networks:
+  backend:
+    external: true

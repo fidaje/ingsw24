@@ -25,7 +25,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         String unPackedHost = System.getenv("UNPACKED_HOST");
         String unPackedPort = System.getenv("UNPACKED_PORT");
         if (unPackedHost == null) {
-            unPackedHost = "localhost";
+            unPackedHost = "127.0.0.1";
         }
         if (unPackedPort == null) {
             unPackedPort = "8082";
