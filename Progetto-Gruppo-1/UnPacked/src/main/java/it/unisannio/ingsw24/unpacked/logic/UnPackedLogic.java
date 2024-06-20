@@ -1,10 +1,8 @@
 package it.unisannio.ingsw24.unpacked.logic;
 
 import it.unisannio.ingsw24.entities.UnPackedFood;
-import it.unisannio.ingsw24.entities.UnPackedMySQL;
 
 import java.util.List;
-import java.util.Map;
 
 
 public interface UnPackedLogic {
