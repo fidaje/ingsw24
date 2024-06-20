@@ -32,4 +32,6 @@ public interface PantryLogic {
     boolean deletePantry(int id);
 
     boolean checkUsername(int pantryId, String username);
+
+    boolean checkOwner(int pantryId, String ownerUsername);
 }

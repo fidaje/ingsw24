@@ -91,11 +91,19 @@ public class PantryService {
     @GET
     @Path("/check/{pantryId}/{username}")
     public Response checkUsername(@PathParam("pantryId") int pantryId, @PathParam("username") String username){
-        boolean check = logic.checkUsername(pantryId, username);
-        if (check)
+        if (logic.checkUsername(pantryId, username))
             return Response.ok().build();
         return Response.status(Response.Status.FORBIDDEN).build();
     }
+
+    @GET
+    @Path("/check/owner/{pantryId}/{username}")
+    public Response checkOwner(@PathParam("pantryId") int pantryId, @PathParam("username") String username) {
+        if (logic.checkOwner(pantryId, username))
+            return Response.ok().build();
+        return Response.status(Response.Status.FORBIDDEN).build();
+    }
+
 
     @PUT
     @Path("/{pantryId}/foods/unpacked")

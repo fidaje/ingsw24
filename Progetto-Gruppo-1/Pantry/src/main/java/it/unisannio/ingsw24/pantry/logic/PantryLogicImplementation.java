@@ -79,4 +79,9 @@ public class PantryLogicImplementation implements PantryLogic {
     public boolean checkUsername(int pantryId, String username){
         return this.pantryDataManager.checkUsername(pantryId, username);
     }
+
+    @Override
+    public boolean checkOwner(int pantryId, String ownerUsername){
+        return this.pantryDataManager.checkOwner(pantryId, ownerUsername);
+    }
 }

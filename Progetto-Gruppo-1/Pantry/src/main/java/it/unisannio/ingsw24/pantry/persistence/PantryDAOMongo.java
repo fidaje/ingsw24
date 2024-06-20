@@ -288,8 +288,12 @@ public class PantryDAOMongo implements PantryDAO {
     @Override
     public boolean checkUsername(int pantryId, String username){
         Pantry pantry = getPantry(pantryId);
-        if (pantry.getOwnerUsername().equals(username) || pantry.getGuestsUsernames().contains(username))
-            return true;
-        return false;
+        return pantry.getOwnerUsername().equals(username) || pantry.getGuestsUsernames().contains(username);
+    }
+
+    @Override
+    public boolean checkOwner(int pantryId, String ownerUsername){
+        Pantry pantry = getPantry(pantryId);
+        return pantry.getOwnerUsername().equals(ownerUsername);
     }
 }

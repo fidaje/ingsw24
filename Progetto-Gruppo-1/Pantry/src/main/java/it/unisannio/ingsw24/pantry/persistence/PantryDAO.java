@@ -51,4 +51,5 @@ public interface PantryDAO {
 
     boolean checkUsername(int pantryId, String username);
 
+    boolean checkOwner(int pantryId, String ownerUsername);
 }
