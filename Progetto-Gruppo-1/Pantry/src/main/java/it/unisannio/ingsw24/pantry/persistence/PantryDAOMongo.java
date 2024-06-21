@@ -95,6 +95,7 @@ public class PantryDAOMongo implements PantryDAO {
         return true;
     }
 
+    @Override
     public int getNextId(){
         Document result = collection.find().sort(new Document(PANTRY_ID, -1)).first();
         if (result == null) return 1;

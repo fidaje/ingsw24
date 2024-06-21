@@ -19,6 +19,8 @@ public interface PantryDAO {
 
     String GUESTS = "Guests";
 
+    int getNextId();
+
     boolean dropDB();
 
     boolean createDB();

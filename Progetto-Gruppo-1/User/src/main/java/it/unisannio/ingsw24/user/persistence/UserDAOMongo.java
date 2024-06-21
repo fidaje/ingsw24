@@ -79,6 +79,7 @@ public class UserDAOMongo implements UserDAO {
     }
 
 
+    @Override
     public int getNextId(){
         Document result = collection.find().sort(new Document(ELEMENT_ID, -1)).first();
         if (result == null) return 1;

@@ -32,4 +32,10 @@ public class UserLogicImpl implements UserLogic{
     public boolean deleteUser(String username) {
         return dataManagerMongo.killUser(username);
     }
+
+    @Override
+    public int getNextId(){
+        return this.dataManagerMongo.getNextId();
+    }
+
 }

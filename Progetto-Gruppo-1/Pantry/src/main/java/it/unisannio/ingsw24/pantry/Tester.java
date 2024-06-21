@@ -13,8 +13,5 @@ public class Tester {
 
         pantryDAO.sendMail();
 
-
-
-
     }
 }

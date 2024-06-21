@@ -14,6 +14,8 @@ public interface UserLogic {
 
     boolean deleteUser(String username);
 
+    int getNextId();
+
 
 
 }

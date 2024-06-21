@@ -28,9 +28,9 @@ public class UnPackedLogicImplementationTest {
             unPackedLogic = new UnPackedLogicImplementation();
             up1Id = unPackedLogic.getNextId();
             assertTrue(up1Id > 0);
-            int unPacked = unPackedLogic.createUnPackedMySQL("nicola", 30, "OTHERS");
+            int unPacked = unPackedLogic.createUnPackedMySQL("fiorentina di SM", 30, "OTHERS");
             assertEquals(up1Id, unPacked);
-            upf1 = new UnPackedFood("nicola", up1Id, false, false, 1, Category.OTHERS, "30");
+            upf1 = new UnPackedFood("fiorentina di SM", up1Id, false, false, 1, Category.OTHERS, "30");
             init = true;
         }
     }
@@ -38,20 +38,20 @@ public class UnPackedLogicImplementationTest {
     @Test
     @Order(1)
     void createUnPackedMySQL(){
-        assertEquals(0, unPackedLogic.createUnPackedMySQL("nicola", 30, "OTHERS"));
+        assertEquals(0, unPackedLogic.createUnPackedMySQL("fiorentina di SM", 30, "OTHERS"));
     }
 
     @Test
     @Order(2)
     void getUnPackedFood() {
-        UnPackedFood upf = unPackedLogic.getUnPackedFood("nicola");
+        UnPackedFood upf = unPackedLogic.getUnPackedFood("fiorentina di SM");
         assertEquals(upf1, upf);
     }
 
     @Test
     @Order(3)
     void updateUnPackedMySQL(){
-        assertTrue(unPackedLogic.updateUnPackedMySQL(up1Id, 44));
+        assertTrue(unPackedLogic.updateUnPackedMySQL(up1Id, 4));
     }
 
     @Test

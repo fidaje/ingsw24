@@ -5,14 +5,12 @@ services:
       dockerfile: Dockerfile
     container_name: gateway
     ports:
-      - "8080:8080"
-    networks:
-      - backend
+      - "0.0.0.0:8080:8080"
     environment:
-      - UNPACKED_HOST=unpacked
-      - PACKED_HOST=packed
-      - PANTRY_HOST=pantry
-      - USER_HOST=user
+      - UNPACKED_HOST=host.docker.internal
+      - PACKED_HOST=host.docker.internal
+      - PANTRY_HOST=host.docker.internal
+      - USER_HOST=host.docker.internal
 
   user:
     build:
@@ -20,11 +18,9 @@ services:
       dockerfile: Dockerfile
     container_name: user
     ports:
-      - "8089:8089"
-    networks:
-      - backend
+      - "0.0.0.0:8089:8089"
     environment:
-      - MONGO_ADDRESS=mongo-ingsw
+      - MONGO_ADDRESS=host.docker.internal
 
 
   packed:
@@ -33,9 +29,8 @@ services:
       dockerfile: Dockerfile
     container_name: packed
     ports:
-      - "8085:8085"
-    networks:
-      - backend
+      - "0.0.0.0:8085:8085"
+
 
 
   unpacked:
@@ -44,11 +39,9 @@ services:
       dockerfile: Dockerfile
     container_name: unpacked
     ports:
-      - "8082:8082"
-    networks:
-      - backend
+      - "0.0.0.0:8082:8082"
     environment:
-      - MYSQL_ADDRESS=mysql
+      - MYSQL_ADDRESS=host.docker.internal
 
   pantry:
     build:
@@ -56,12 +49,6 @@ services:
       dockerfile: Dockerfile
     container_name: pantry
     ports:
-      - "8084:8084"
-    networks:
-      - backend
+      - "0.0.0.0:8084:8084"
     environment:
-      - MONGO_ADDRESS=mongo-ingsw
-
-networks:
-  backend:
-    external: true
+      - MONGO_ADDRESS=host.docker.internal

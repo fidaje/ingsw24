@@ -13,6 +13,7 @@ public interface UserDAO {
     String ELEMENT_PASSWORD = "password";
     String ELEMENT_ROLES = "roles";
 
+    int getNextId();
     boolean dropDB();
     boolean createDB();
 

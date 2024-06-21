@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface PantryLogic {
 
+    int getNextId();
+
     int createPantry(Pantry p);
 
     Pantry getPantry(int pantryId);
