@@ -65,7 +65,6 @@ public class UserDAOMongo implements UserDAO {
         return true;
     }
 
-
     private static MyUser userFromDocument(Document d){
         List<String> list = d.getList(ELEMENT_ROLES, String.class);
         return new MyUser(d.getInteger(ELEMENT_ID), d.getString(ELEMENT_USERNAME), d.getString(ELEMENT_PASSWORD), new ArrayList<>(list));
@@ -96,8 +95,8 @@ public class UserDAOMongo implements UserDAO {
         }
         catch(MongoWriteException e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
