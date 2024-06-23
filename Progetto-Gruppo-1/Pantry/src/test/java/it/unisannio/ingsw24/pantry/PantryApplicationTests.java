@@ -38,6 +38,11 @@ class PantryApplicationTests {
     }
 
     @Test
+    void getPantriesInvalidUsername(){
+        List<Pantry> pantries = pantryLogic.getPantries("notvalidusername@protonmail.com");
+        assertTrue(pantries.isEmpty());
+    }
+    @Test
     @Order(2)
     void createPantry(){
         Pantry p = new Pantry("sprinstream@gmail.com");
@@ -62,9 +67,17 @@ class PantryApplicationTests {
     @Test
     @Order(5)
     void updateFoods(){
-        UnPackedFood unp = new UnPackedFood("fiorentina di SM", -12, false, false, 1, Category.OTHERS, "30");
+        UnPackedFood unp = new UnPackedFood("fiorentina di SM", 121212, false, false, 1, Category.OTHERS, "30");
         boolean result = pantryLogic.updateFoods(pantryId, unp);
         assertTrue(result);
+    }
+
+    @Test
+    void updateFoodsInvalidPantryID(){
+        UnPackedFood unp = new UnPackedFood("fiorentina di SM", 121212, false, false, 1, Category.OTHERS, "30");
+        int notValidID =  pantryLogic.getNextId() + 1;
+        boolean result = pantryLogic.updateFoods(notValidID, unp);
+        assertFalse(result);
     }
 
     @Test
@@ -78,6 +91,13 @@ class PantryApplicationTests {
     @Order(7)
     void addExistingGuest(){
         boolean result = pantryLogic.updateGuests(pantryId, "francescoiuorio8@gmail.com");
+        assertFalse(result);
+    }
+
+    @Test
+    @Order(16)
+    void updateGuestInvalidUsername(){
+        boolean result = pantryLogic.updateGuests(pantryId -1, "voto@gmail.com");
         assertFalse(result);
     }
 
@@ -104,6 +124,23 @@ class PantryApplicationTests {
     }
 
     @Test
+    void getFoodByWrongName(){
+        String foodName = "Gold";
+        Food f = pantryLogic.getFoodByName(1, foodName);
+        assertNull(f);
+    }
+
+
+    // Attualmente funziona perché il metodo GetFoods restituisce una lista vuota
+    // Da vedere se si vuole implementare una eccezione per id pantry non valido
+    @Test
+    void getFoodByNameWrongPantryID(){
+        String foodname = "Gold Bunny";
+        Food f = pantryLogic.getFoodByName(-1, foodname);
+        assertNull(f);
+    }
+
+    @Test
     @Order(11)
     void deleteFoodByName(){
         boolean result = pantryLogic.deleteFoodByName(pantryId,"fiorentina di SM");
@@ -111,10 +148,35 @@ class PantryApplicationTests {
     }
 
     @Test
+    @Order(17)
+    void deleteFoodByWrongName(){
+        boolean result = pantryLogic.deleteFoodByName(pantryId, "cibo");
+        assertFalse(result);
+    }
+
+    @Test
+    void deleteFoodByNameWrongPantryID(){
+        boolean result = pantryLogic.deleteFoodByName(-1, "cibo");
+        assertFalse(result);
+    }
+
+    @Test
     @Order(12)
     void deleteGuestByUsername(){
         boolean result = pantryLogic.deleteGuestByUsername(pantryId, "francescoiuorio8@gmail.com");
         assertTrue(result);
+    }
+
+    @Test
+    void deleteGuestByOwnerUsername(){
+        boolean result = pantryLogic.deleteGuestByUsername(1, "francescoiuorio8@gmail.com");
+        assertFalse(result);
+    }
+
+    @Test
+    void deleteGuestByUsernameWrongPantryID(){
+        boolean result = pantryLogic.deleteGuestByUsername(-1, "francescoiuorio8@gmail.com");
+        assertFalse(result);
     }
 
     @Test
@@ -139,7 +201,7 @@ class PantryApplicationTests {
     }
 
     @Test
-    @Order(16)
+    @Order(18)
     void deletePantry(){
         boolean result = pantryLogic.deletePantry(pantryId);
         assertTrue(result);

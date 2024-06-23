@@ -10,6 +10,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 
+import com.mongodb.client.result.UpdateResult;
 import it.unisannio.ingsw24.entities.*;
 import it.unisannio.ingsw24.pantry.exception.GuestException;
 import org.bson.Document;
@@ -137,15 +138,24 @@ public class PantryDAOMongo implements PantryDAO {
 
     @Override
     public boolean updateFoods(int pantryId, Food f) {
+        try {
+            UpdateResult result = this.collection.updateOne(
+                    new Document(PANTRY_ID, pantryId),
+                    push(FOODS, f.toDocument())
+            );
 
-        try{
-            this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(FOODS,f.toDocument()));
-            return true;
-        }
-        catch (Exception e){
+            // Controlla se è stato trovato e aggiornato un documento
+            if (result.getMatchedCount() > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -153,8 +163,11 @@ public class PantryDAOMongo implements PantryDAO {
         try{
             Pantry pantry = getPantry(pantryId);
             if (!username.equals(pantry.getOwnerUsername()) && !pantry.getGuestsUsernames().contains(username)) {
-                this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(GUESTS, username));
-                return true;
+                UpdateResult result = this.collection.updateOne(new Document(PANTRY_ID, pantryId), push(GUESTS, username));
+                if (result.getMatchedCount() > 0)
+                    return true;
+                else
+                    return false;
             }
             else
                 throw new GuestException("Guest already exists or is the owner of the pantry");
@@ -308,26 +321,30 @@ public class PantryDAOMongo implements PantryDAO {
     public boolean deleteFoodByName(int pantryId, String name) {
 
         try{
-            this.collection.updateOne(new Document(PANTRY_ID, pantryId),  pull(FOODS, new Document("name",name)));
-            return true;
+            UpdateResult result = this.collection.updateOne(
+                    new Document(PANTRY_ID, pantryId),
+                    pull(FOODS, new Document("name",name)));
+
+            return result.getModifiedCount() > 0;
         }
         catch (Exception e){
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean deleteGuestByUsername(int pantryId, String username) {
 
         try{
-            this.collection.updateOne(new Document(PANTRY_ID, pantryId),  pull(GUESTS, username));
-            return true;
+            UpdateResult result =  this.collection.updateOne(new Document(PANTRY_ID, pantryId),  pull(GUESTS, username));
+            return result.getModifiedCount() > 0;
         }
         catch (Exception e){
             e.printStackTrace();
+            return false;
         }
-        return false;
+
     }
 
     @Override
