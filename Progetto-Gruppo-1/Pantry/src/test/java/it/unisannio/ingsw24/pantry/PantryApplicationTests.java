@@ -1,12 +1,12 @@
 package it.unisannio.ingsw24.pantry;
 
-import it.unisannio.ingsw24.pantry.*;
 import it.unisannio.ingsw24.pantry.logic.PantryLogic;
 import it.unisannio.ingsw24.pantry.logic.PantryLogicImplementation;
 import org.junit.jupiter.api.*;
 import it.unisannio.ingsw24.entities.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PantryApplicationTests {
-
     static boolean init = false;
     static int pantryId;
     static PantryLogic pantryLogic;
@@ -24,14 +23,12 @@ class PantryApplicationTests {
         if (!init){
             pantryLogic = new PantryLogicImplementation();
             pantryId = pantryLogic.getNextId();
-            System.out.println(pantryId);
             Pantry p = new Pantry("olivagaetano302@gmail.com");
             int pantry = pantryLogic.createPantry(p);
             assertEquals(pantryId, pantry);
             init = true;
         }
     }
-
 
     @Test
     @Order(1)
@@ -59,7 +56,7 @@ class PantryApplicationTests {
     void getAbsentPantry(){
         int shouldNotExistId = pantryLogic.getNextId();
         Pantry p = pantryLogic.getPantry(shouldNotExistId);
-        assertNull(p, "When making the get request with a non-existing id, you should not correctly obtain the pantry object");
+        assertNull(p, "When making the get request with a non-existing id, you should not obtain the pantry object");
     }
 
     @Test
@@ -79,20 +76,27 @@ class PantryApplicationTests {
 
     @Test
     @Order(7)
+    void addExistingGuest(){
+        boolean result = pantryLogic.updateGuests(pantryId, "francescoiuorio8@gmail.com");
+        assertFalse(result);
+    }
+
+    @Test
+    @Order(8)
     void getFoods(){
         List<Food> foods = pantryLogic.getFoods(2);
         assertFalse(foods.isEmpty());
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     void getFoodsAbsentPantry(){
         List<Food> foods = pantryLogic.getFoods(pantryLogic.getNextId());
         assertTrue(foods.isEmpty());
     }
 
     @Test
-    @Order(9)
+    @Order(10)
     void getFoodByName(){
         String foodName = "Gold Bunny";
         Food f = pantryLogic.getFoodByName(1, foodName);
@@ -100,44 +104,42 @@ class PantryApplicationTests {
     }
 
     @Test
-    @Order(10)
+    @Order(11)
     void deleteFoodByName(){
         boolean result = pantryLogic.deleteFoodByName(pantryId,"fiorentina di SM");
         assertTrue(result);
     }
 
     @Test
-    @Order(11)
+    @Order(12)
     void deleteGuestByUsername(){
         boolean result = pantryLogic.deleteGuestByUsername(pantryId, "francescoiuorio8@gmail.com");
         assertTrue(result);
     }
 
     @Test
-    @Order(12)
+    @Order(13)
     void checkUsername(){
         boolean result = pantryLogic.checkUsername(pantryId, "francescoiuorio8@gmail.com");
         assertFalse(result);
     }
 
-
     @Test
-    @Order(13)
+    @Order(14)
     void checkOwner(){
         boolean result = pantryLogic.checkOwner(pantryId, "olivagaetano302@gmail.com");
         assertTrue(result);
     }
 
-
     @Test
-    @Order(14)
+    @Order(15)
     void getExpiredFoods(){
         List<Food> foods = pantryLogic.getExpiredFoods(pantryId);
         assertTrue(foods.isEmpty());
     }
 
     @Test
-    @Order(14)
+    @Order(16)
     void deletePantry(){
         boolean result = pantryLogic.deletePantry(pantryId);
         assertTrue(result);
@@ -148,7 +150,5 @@ class PantryApplicationTests {
         int rows = pantryLogic.checkAndSetIsExpiredFoods();
         assertTrue(rows > 0);
     }
-
-
 
 }
