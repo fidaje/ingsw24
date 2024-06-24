@@ -25,8 +25,8 @@ public class MyUserAuthUserDetailService implements UserDetailsService {
     static String userAddress;
 
     public MyUserAuthUserDetailService(){
-        String host = System.getenv("USERS_HOST");
-        String port = System.getenv("USERS_PORT");
+        String host = System.getenv("USER_HOST");
+        String port = System.getenv("USER_PORT");
 
         if (host == null){
             host = "localhost";
