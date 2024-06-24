@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -314,7 +316,9 @@ public class GatewayLogicImplementation implements GatewayLogic {
     public Food getFoodFromPantryByName(int pantryId, String name){
         try {
             OkHttpClient client = new OkHttpClient();
-            String URL = String.format(pantryAddress + "/api/pantry/" + pantryId + "/foods/" + name);
+            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8.toString()).replace("+", "%20");
+            String URL = String.format("%s/api/pantry/%s/foods/%s", pantryAddress, pantryId, encodedName);
+
 
             Request request = new Request.Builder()
                     .url(URL)
