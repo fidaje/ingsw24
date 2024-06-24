@@ -276,7 +276,7 @@ public class PantryDAOMongo implements PantryDAO {
     public Food getFoodByName(int pantryId, String name) {
         List<Food> foods = getFoods(pantryId);
         for(Food food : foods){
-            if (food.getName().equals(name))
+            if (food.getName().equalsIgnoreCase(name))
                 return food;
         }
         return null;
