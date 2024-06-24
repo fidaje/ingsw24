@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pantry - MY PANTRY</title>
+    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Pantry</h1>
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="pantry.html">Pantry</a></li>
+            <li><a href="add-item.html">Add Item</a></li>
+            <li><a href="add-item-barcode.html">Add Item by Barcode</a></li>
+            <li><a href="invite.html">Invite</a></li>
+            <li><a href="join.html">Join</a></li>
+            <li><a href="credentials.html">Credentials</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+<div id="pantryContent"></div>
+
+<!-- Add buttons to trigger the JavaScript functions -->
+<button onclick="createPantry('ownerUsername')">Create Pantry</button>
+<button onclick="getPantry(1)">Get Pantry</button>
+<button onclick="getPantries()">Get Pantries</button>
+<button onclick="updateGuests(1, 'guestUsername')">Update Guests</button>
+<button onclick="deletePantry(1)">Delete Pantry</button>
+
+</body>
+</html>
