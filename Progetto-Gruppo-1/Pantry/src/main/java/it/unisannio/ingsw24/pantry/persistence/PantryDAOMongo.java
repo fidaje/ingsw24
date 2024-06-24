@@ -170,7 +170,7 @@ public class PantryDAOMongo implements PantryDAO {
                     return false;
             }
             else
-                throw new GuestException("Guest already exists or is the owner of the pantry");
+                throw new GuestException("Guest: " + username + " already exists or is the owner of the pantry");
         }
         catch (Exception e){
             e.printStackTrace();
