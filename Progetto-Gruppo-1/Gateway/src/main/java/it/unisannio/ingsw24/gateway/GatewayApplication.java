@@ -1,14 +1,13 @@
 package it.unisannio.ingsw24.gateway;
 
 import it.unisannio.ingsw24.gateway.presentation.GatewayService;
-import it.unisannio.ingsw24.gateway.security.SecurityConfig;
 import jakarta.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
-@SpringBootApplication(exclude= MongoDataAutoConfiguration.class)
+@SpringBootApplication(exclude= MongoAutoConfiguration.class)
 @ApplicationPath("ingsw24")
 public class GatewayApplication extends ResourceConfig {
 
