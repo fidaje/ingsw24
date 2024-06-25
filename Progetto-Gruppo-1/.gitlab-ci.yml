@@ -1,0 +1,291 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main'
+#   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+#   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+#   - if: ($CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_BRANCH == "develop") && $MY_VARIABLE
+
+variables:
+  MONGO_ADDRESS: $MONGO_ADDRESS
+  MONGO_PORT: $MONGO_PORT
+  VERSION: "0.1"
+
+stages:
+  - build
+  - test
+  - package
+  - delivery
+  - docker-build
+  - deployment
+
+build-job:
+  stage: build
+  image:
+    name: maven:3.8.2-openjdk-17
+    pull_policy: if-not-present
+  script:
+    - echo "Compiling the code..."
+    - mvn clean compile
+    - echo "Compile complete."
+
+test-job:
+  stage: test
+  needs:
+    - build-job
+  image:
+    name: maven:3.8.2-openjdk-17
+    pull_policy: if-not-present
+  script:
+    - mvn clean verify sonar:sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.token=$SONAR_TOKEN
+
+package-job:
+  stage: package
+  needs:
+    - test-job
+  image:
+    name: maven:3.8.2-openjdk-17
+    pull_policy: if-not-present
+  script:
+    - mvn clean package -Dmaven.test.skip=true
+  artifacts:
+    paths:
+      - Gateway/target/*.jar
+      - User/target/*.jar
+      - Pantry/target/*.jar
+      - Packed/target/*.jar
+      - UnPacked/target/*.jar
+
+delivery-job:
+  stage: delivery
+  needs:
+    - package-job
+  image:
+    name: curlimages/curl:latest
+    pull_policy: if-not-present
+  script:
+    - 'curl -k --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file Gateway/target/Gateway-${VERSION}.jar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/Gateway/Gateway-${VERSION}.jar"'
+    - 'curl -k --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file User/target/User-${VERSION}.jar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/User/User-${VERSION}.jar"'
+    - 'curl -k --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file Pantry/target/Pantry-${VERSION}.jar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/Pantry/Pantry-${VERSION}.jar"'
+    - 'curl -k --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file Packed/target/Packed-${VERSION}.jar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/Packed/Packed-${VERSION}.jar"'
+    - 'curl -k --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file UnPacked/target/UnPacked-${VERSION}.jar "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${CI_PROJECT_NAME}/UnPacked/UnPacked-${VERSION}.jar"'
+
+docker-build-gateway-job:
+  variables:
+    PACKAGE_NAME: gateway
+  image:
+    name: docker
+    pull_policy: if-not-present
+  services:
+    - name: docker:dind
+      pull_policy: if-not-present
+  stage: docker-build
+  needs:
+    - package-job
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - cd Gateway
+    - ls
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - echo "Gateway compile complete"
+
+docker-build-user-job:
+  variables:
+    PACKAGE_NAME: user
+  image:
+    name: docker
+    pull_policy: if-not-present
+  services:
+    - name: docker:dind
+      pull_policy: if-not-present
+  stage: docker-build
+  needs:
+    - package-job
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - cd User
+    - ls
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - echo "User compile complete"
+
+docker-build-packed-job:
+  variables:
+    PACKAGE_NAME: packed
+  image:
+    name: docker
+    pull_policy: if-not-present
+  services:
+    - name: docker:dind
+      pull_policy: if-not-present
+  stage: docker-build
+  needs:
+    - package-job
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - cd Gateway
+    - ls
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - echo "Packed compile complete"
+
+docker-build-unpacked-job:
+  variables:
+    PACKAGE_NAME: unpacked
+  image:
+    name: docker
+    pull_policy: if-not-present
+  services:
+    - name: docker:dind
+      pull_policy: if-not-present
+  stage: docker-build
+  needs:
+    - package-job
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - cd Gateway
+    - ls
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - echo "UnPacked compile complete"
+
+docker-build-pantry-job:
+  variables:
+    PACKAGE_NAME: pantry
+  image:
+    name: docker
+    pull_policy: if-not-present
+  services:
+    - name: docker:dind
+      pull_policy: if-not-present
+  stage: docker-build
+  needs:
+    - package-job
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - cd Gateway
+    - ls
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - echo "Pantry compile complete"
+
+deploy-gateway-job:
+  stage: deployment
+  needs:
+    - docker-build-gateway-job
+  image:
+    name: alpine
+    pull_policy: if-not-present
+  before_script:
+    - echo "Setting environment..."
+    - apk add sshpass
+    - apk add openssh-client
+    - eval $(ssh-agent -s)
+    - ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+    - sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$MACHINE_IP ls
+    - sshpass -p $SSH_PASSWORD ssh-copy-id $SSH_USER@$MACHINE_IP
+  script:
+    - echo "Deploying application..."
+    - ssh $SSH_USER@$MACHINE_IP 'docker kill gateway || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8080:8080 --name gateway --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/gateway:0.1'
+    - echo "Application successfully deployed."
+
+
+deploy-user-job:
+  stage: deployment
+  needs:
+    - docker-build-user-job
+  image:
+    name: alpine
+    pull_policy: if-not-present
+  before_script:
+    - echo "Setting environment..."
+    - apk add sshpass
+    - apk add openssh-client
+    - eval $(ssh-agent -s)
+    - ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+    - sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$MACHINE_IP ls
+    - sshpass -p $SSH_PASSWORD ssh-copy-id $SSH_USER@$MACHINE_IP
+  script:
+    - echo "Deploying application..."
+    - ssh $SSH_USER@$MACHINE_IP 'docker kill user || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker rm user || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8089:8089 --name user --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/user:0.1'
+    - echo "Application successfully deployed."
+
+deploy-packed-job:
+  stage: deployment
+  needs:
+    - docker-build-packed-job
+  image:
+    name: alpine
+    pull_policy: if-not-present
+  before_script:
+    - echo "Setting environment..."
+    - apk add sshpass
+    - apk add openssh-client
+    - eval $(ssh-agent -s)
+    - ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+    - sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$MACHINE_IP ls
+    - sshpass -p $SSH_PASSWORD ssh-copy-id $SSH_USER@$MACHINE_IP
+  script:
+    - echo "Deploying application..."
+    - ssh $SSH_USER@$MACHINE_IP 'docker kill packed || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker rm packed || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8085:8085 --name packed --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/packed:0.1'
+    - echo "Application successfully deployed."
+
+deploy-unpacked-job:
+  stage: deployment
+  needs:
+    - docker-build-unpacked-job
+  image:
+    name: alpine
+    pull_policy: if-not-present
+  before_script:
+    - echo "Setting environment..."
+    - apk add sshpass
+    - apk add openssh-client
+    - eval $(ssh-agent -s)
+    - ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+    - sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$MACHINE_IP ls
+    - sshpass -p $SSH_PASSWORD ssh-copy-id $SSH_USER@$MACHINE_IP
+  script:
+    - echo "Deploying application..."
+    - ssh $SSH_USER@$MACHINE_IP 'docker kill unpacked || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker rm unpacked || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8082:8082 --name unpacked --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/unpacked:0.1'
+    - echo "Application successfully deployed."
+
+deploy-pantry-job:
+  stage: deployment
+  needs:
+    - docker-build-pantry-job
+  image:
+    name: alpine
+    pull_policy: if-not-present
+  before_script:
+    - echo "Setting environment..."
+    - apk add sshpass
+    - apk add openssh-client
+    - eval $(ssh-agent -s)
+    - ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+    - sshpass -p $SSH_PASSWORD ssh -o StrictHostKeyChecking=no $SSH_USER@$MACHINE_IP ls
+    - sshpass -p $SSH_PASSWORD ssh-copy-id $SSH_USER@$MACHINE_IP
+  script:
+    - echo "Deploying application..."
+    - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8084:8084 --name pantry --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/pantry:0.1'
+    - echo "Application successfully deployed."
