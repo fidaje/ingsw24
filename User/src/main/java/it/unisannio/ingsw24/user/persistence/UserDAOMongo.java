@@ -15,7 +15,6 @@ import org.bson.Document;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 

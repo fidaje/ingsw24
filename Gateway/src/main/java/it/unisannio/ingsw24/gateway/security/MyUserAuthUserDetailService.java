@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.http.HttpClient;
 import java.util.HashSet;
 import java.util.Set;
 

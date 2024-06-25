@@ -4,8 +4,6 @@ import it.unisannio.ingsw24.pantry.logic.PantryLogic;
 import it.unisannio.ingsw24.pantry.logic.PantryLogicImplementation;
 import org.junit.jupiter.api.*;
 import it.unisannio.ingsw24.entities.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
