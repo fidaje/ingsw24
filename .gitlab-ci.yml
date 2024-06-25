@@ -198,7 +198,7 @@ deploy-gateway-job:
     - echo "Deploying application..."
     - ssh $SSH_USER@$MACHINE_IP 'docker kill gateway || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
-    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8080:8080 --name gateway --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/gateway:0.1'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8080:8080 --name gateway --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo\ 1/Progetto\ Gruppo\ 1/gateway:0.1'
     - echo "Application successfully deployed."
 
 
@@ -221,7 +221,7 @@ deploy-user-job:
     - echo "Deploying application..."
     - ssh $SSH_USER@$MACHINE_IP 'docker kill user || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm user || true'
-    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8089:8089 --name user --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/user:0.1'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8089:8089 --name user --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo\ 1/Progetto\ Gruppo\ 1/user:0.1'
     - echo "Application successfully deployed."
 
 deploy-packed-job:
@@ -243,7 +243,7 @@ deploy-packed-job:
     - echo "Deploying application..."
     - ssh $SSH_USER@$MACHINE_IP 'docker kill packed || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm packed || true'
-    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8085:8085 --name packed --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/packed:0.1'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8085:8085 --name packed --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo\ 1/Progetto\ Gruppo\ 1/packed:0.1'
     - echo "Application successfully deployed."
 
 deploy-unpacked-job:
@@ -265,7 +265,7 @@ deploy-unpacked-job:
     - echo "Deploying application..."
     - ssh $SSH_USER@$MACHINE_IP 'docker kill unpacked || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm unpacked || true'
-    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8082:8082 --name unpacked --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/unpacked:0.1'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8082:8082 --name unpacked --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo\ 1/Progetto\ Gruppo\ 1/unpacked:0.1'
     - echo "Application successfully deployed."
 
 deploy-pantry-job:
@@ -287,5 +287,5 @@ deploy-pantry-job:
     - echo "Deploying application..."
     - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
-    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8084:8084 --name pantry --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo 1/Progetto Gruppo 1/pantry:0.1'
+    - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8084:8084 --name pantry --pull=always gitlab.services.ding.unisannio.it:5050/INGSW24-Gruppo\ 1/Progetto\ Gruppo\ 1/pantry:0.1'
     - echo "Application successfully deployed."
