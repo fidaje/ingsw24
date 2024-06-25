@@ -222,7 +222,6 @@ public class PantryDAOMongo implements PantryDAO {
                 return new PasswordAuthentication(sender, "hhfwggnslkqljgli");
             }
         });
-        MimeMessage mail = new MimeMessage(s);
 
         for(Document current : this.collection.find()){
             String message = "These foods are expired:\n";
@@ -240,6 +239,7 @@ public class PantryDAOMongo implements PantryDAO {
                 continue;
 
             try {
+                MimeMessage mail = new MimeMessage(s);
                 mail.setFrom(new InternetAddress(sender));
                 mail.addRecipients(Message.RecipientType.TO, receiver);
 
