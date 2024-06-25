@@ -87,7 +87,7 @@ docker-build-gateway-job:
   script:
     - cd Gateway
     - ls
-    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
     - echo "Gateway compile complete"
 
@@ -109,7 +109,7 @@ docker-build-user-job:
   script:
     - cd User
     - ls
-    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
     - echo "User compile complete"
 
@@ -131,7 +131,7 @@ docker-build-packed-job:
   script:
     - cd Gateway
     - ls
-    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
     - echo "Packed compile complete"
 
@@ -153,7 +153,7 @@ docker-build-unpacked-job:
   script:
     - cd Gateway
     - ls
-    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
     - echo "UnPacked compile complete"
 
@@ -175,7 +175,7 @@ docker-build-pantry-job:
   script:
     - cd Gateway
     - ls
-    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
+    - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
     - echo "Pantry compile complete"
 
