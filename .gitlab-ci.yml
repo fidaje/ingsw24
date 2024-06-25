@@ -196,7 +196,7 @@ deploy-gateway-job:
     - sshpass -p $SSH_PASSWORD ssh-copy-id $SSH_USER@$MACHINE_IP
   script:
     - echo "Deploying application..."
-    - ssh $SSH_USER@$MACHINE_IP 'docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY'
+    - ssh $SSH_USER@$MACHINE_IP 'echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY'
     - ssh $SSH_USER@$MACHINE_IP 'docker kill gateway || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker run -d -p 0.0.0.0:8080:8080 --name gateway --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/gateway:0.1'
