@@ -5,10 +5,10 @@
 
 
     <groupId>it.unisannio.ingsw24</groupId>
-    <artifactId>Progetto-Gruppo-1</artifactId>
+    <artifactId>progetto-gruppo-1</artifactId>
     <version>0.1</version>
     <packaging>pom</packaging>
-    <name>Progetto-Gruppo-1</name>
+    <name>progetto-gruppo-1</name>
 
     <modules>
         <module>Gateway</module>

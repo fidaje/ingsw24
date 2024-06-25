@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>it.unisannio.ingsw24</groupId>
-        <artifactId>Progetto-Gruppo-1</artifactId>
+        <artifactId>progetto-gruppo-1</artifactId>
         <version>0.1</version>
     </parent>
 

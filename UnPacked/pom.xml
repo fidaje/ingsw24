@@ -5,14 +5,17 @@
 
     <parent>
         <groupId>it.unisannio.ingsw24</groupId>
-        <artifactId>Progetto-Gruppo-1</artifactId>
+        <artifactId>progetto-gruppo-1</artifactId>
         <version>0.1</version>
     </parent>
 
-    <artifactId>User</artifactId>
+    <artifactId>UnPacked</artifactId>
     <packaging>jar</packaging>
-    <name>User</name>
-    <description>User</description>
+    <name>UnPacked</name>
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -26,19 +29,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
-
     <dependencies>
-
-        <dependency>
-            <groupId>it.unisannio.ingsw24</groupId>
-            <artifactId>Entities</artifactId>
-            <version>0.1</version>
-            <scope>compile</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
@@ -51,18 +42,24 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>it.unisannio.ingsw24</groupId>
+            <artifactId>Entities</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
                 <executions>
                     <execution>
                         <goals>
@@ -70,9 +67,21 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <mainClass>it.unisannio.ingsw24.unpacked.TestMySQL</mainClass>
+                </configuration>
+            </plugin>
+
         </plugins>
+
+
     </build>
+
 
 </project>

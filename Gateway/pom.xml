@@ -2,22 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>it.unisannio.ingsw24</groupId>
-        <artifactId>Progetto-Gruppo-1</artifactId>
+        <artifactId>progetto-gruppo-1</artifactId>
         <version>0.1</version>
     </parent>
-
-    <artifactId>Packed</artifactId>
-    <packaging>jar</packaging>
-    <name>Packed</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <start-class>it.unisannio.ingsw24.packed.PackedApplication</start-class>
     </properties>
+
+    <artifactId>Gateway</artifactId>
+    <packaging>jar</packaging>
+    <name>Gateway</name>
 
     <dependencyManagement>
         <dependencies>
@@ -43,23 +41,50 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>it.unisannio.ingsw24</groupId>
+            <artifactId>Entities</artifactId>
+            <version>0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.12.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.4.0</version>
+        </dependency>
         <dependency>
             <groupId>it.unisannio.ingsw24</groupId>
-            <artifactId>Entities</artifactId>
+            <artifactId>UnPacked</artifactId>
             <version>0.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>6.3.0</version>
         </dependency>
     </dependencies>
 
@@ -68,10 +93,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>it.unisannio.ingsw24.packed.PackedApplication</mainClass>
-                    <layout>JAR</layout>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -79,6 +100,7 @@
                         </goals>
                     </execution>
                 </executions>
+
             </plugin>
         </plugins>
     </build>
