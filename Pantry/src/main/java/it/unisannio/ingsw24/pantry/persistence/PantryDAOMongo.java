@@ -36,6 +36,9 @@ public class PantryDAOMongo implements PantryDAO {
     private final MongoDatabase mongoDatabase;
     private final MongoCollection<Document> collection;
 
+    /**
+     * Default constructor that creates a connection to the MongoDB database
+     */
     public PantryDAOMongo(){
         if (host == null){
             host = "127.0.0.1";
@@ -70,6 +73,11 @@ public class PantryDAOMongo implements PantryDAO {
         return true;
     }
 
+    /**
+     * This method converts a Document object to a Pantry object
+     * @param d the Document object to convert
+     * @return the Pantry object
+     */
     private Pantry pantryFromDocument(Document d){
         return new Pantry(d.getInteger(PANTRY_ID),
                 d.getString(OWNER_USERNAME),
@@ -103,6 +111,11 @@ public class PantryDAOMongo implements PantryDAO {
         else return result.getInteger(PANTRY_ID) + 1;
     }
 
+    /**
+     * This method converts a Pantry object to a Document object
+     * @param pantry the Pantry object to convert
+     * @return the Document object
+     */
     private Document pantryToDocument(Pantry pantry) {
         return new Document(PANTRY_ID, getNextId())
                 .append(OWNER_USERNAME, pantry.getOwnerUsername())
@@ -295,6 +308,11 @@ public class PantryDAOMongo implements PantryDAO {
         return expiredFoods;
     }
 
+    /**
+     * This method converts a Document object to a PackedFood object
+     * @param document the Document object to convert
+     * @return the PackedFood object
+     */
     private PackedFood packedFoodFromDocument(Document document){
         return new PackedFood(document.getString("name"),
                 document.getString("id"),
@@ -306,6 +324,11 @@ public class PantryDAOMongo implements PantryDAO {
                 document.getString("nutritionGrade"));
     }
 
+    /**
+     * This method converts a Document object to an UnPackedFood object
+     * @param document the Document object to convert
+     * @return the UnPackedFood object
+     */
     private UnPackedFood unPackedFoodFromDocument(Document document){
         return new UnPackedFood(document.getString("name"),
                 document.getInteger("id"),

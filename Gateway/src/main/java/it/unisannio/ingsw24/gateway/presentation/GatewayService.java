@@ -11,10 +11,14 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.net.URI;
 import java.util.List;
 
+/**
+ * This class is the RESTful service for the Gateway entity.
+ * It is responsible for the communication between the client and the server.
+ * The operations that can be performed are POST, GET, PUT and DELETE.
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/gateway")
@@ -22,10 +26,18 @@ public class GatewayService {
 
     GatewayLogic logic;
 
+    /**
+     * This constructor creates a new GatewayLogicImplementation object.
+     */
     public GatewayService(){
         this.logic = new GatewayLogicImplementation();
     }
 
+    /**
+     * This method creates a new user.
+     * @param user the user to be created.
+     * @return a response with the status of the operation.
+     */
     @POST
     @Path("/user")
     public Response createUser(MyUser user){
@@ -36,6 +48,11 @@ public class GatewayService {
         return Response.created(uri).build();
     }
 
+    /**
+     * This method creates a new pantry.
+     * @param ownerUsername the username of the owner of the pantry.
+     * @return a response with the status of the operation.
+     */
     @POST
     @Path("/pantry/{ownerUsername}")
     public Response createPantry(@PathParam("ownerUsername") String ownerUsername){
@@ -151,6 +168,13 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method adds a new UnPackedFood object to the pantry with the given id.
+     * @param pantryId the id of the pantry.
+     * @param name the name of the UnPackedFood object.
+     * @param isFridge the boolean value that indicates if the food is in the fridge.
+     * @param quantity the quantity of the food.
+     */
     @PUT
     @Path("/{pantryId}/foods/unpacked/{name}")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -170,6 +194,14 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method add a packed food to the pantry with the given id and the given barcode.
+     * @param pantryId the id of the pantry.
+     * @param barcode the barcode of the packed food.
+     * @param isFridge the boolean value that indicates if the food is in the fridge.
+     * @param quantity the quantity of the food.
+     * @return a response with the status of the operation.
+     */
     @PUT
     @Path("/{pantryId}/foods/packed/{barcode}")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -189,6 +221,12 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method updates the guests of the pantry with the given id, if the user is the owner.
+     * @param pantryId the id of the pantry.
+     * @param guestUsername the username of the guest.
+     * @return a response with the status of the operation.
+     */
     @PUT
     @Path("/{pantryId}/guests")
     @RolesAllowed({"OWNER"})
@@ -205,6 +243,12 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method deletes the food with the given name from the pantry
+     * @param pantryId the id of the pantry.
+     * @param foodName the name of the food.
+     * @return a response with the status of the operation.
+     */
     @DELETE
     @Path("{pantryId}/foods/{foodName}")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -221,6 +265,12 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method deletes the guest with the given username from the pantry, if the user is the owner.
+     * @param pantryId
+     * @param guestUsername
+     * @return a response with the status of the operation.
+     */
     @DELETE
     @Path("{pantryId}/guests/{username}")
     @RolesAllowed({"OWNER"})
@@ -237,6 +287,11 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method deletes the pantry with the given id, if the user is the owner.
+     * @param pantryId
+     * @return a response with the status of the operation.
+     */
     @DELETE
     @Path("{pantryId}")
     @RolesAllowed({"OWNER"})

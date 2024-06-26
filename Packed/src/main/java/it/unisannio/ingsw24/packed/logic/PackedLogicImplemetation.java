@@ -10,19 +10,29 @@ import it.unisannio.ingsw24.entities.PackedFood;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This class implements the PackedLogic interface, providing the methods to interact with the packed food database.
+ */
 public class PackedLogicImplemetation implements PackedLogic{
 
     private final String openFoodAddress;
 
+    /**
+     * This constructor initializes the openFoodAddress field.
+     */
     public PackedLogicImplemetation(){
         openFoodAddress = "https://world.openfoodfacts.net/api/v2/product/";
     }
 
+    /**
+     * This method returns the OpenFood object with the given barcode.
+     * @param barcode the barcode of the packed food
+     * @return the OpenFood object with the given barcode
+     */
     private OpenFood getOpenFood(String barcode) {
         try{
 
@@ -71,6 +81,9 @@ class GsonProvider {
     }
 }
 
+/**
+ * We need to create a custom TypeAdapter for LocalDate because Gson does not support it by default.
+ */
 class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 

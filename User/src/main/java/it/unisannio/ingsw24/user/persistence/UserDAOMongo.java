@@ -12,12 +12,14 @@ import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
 import it.unisannio.ingsw24.entities.MyUser;
 import org.bson.Document;
-
-import static com.mongodb.client.model.Filters.eq;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+
+/**
+ * This class is used to interact with the Mongo database and perform operations on the Users collection.
+ */
 public class UserDAOMongo implements UserDAO {
 
     private static String host = System.getenv("MONGO_ADDRESS");
@@ -27,6 +29,10 @@ public class UserDAOMongo implements UserDAO {
     private final MongoDatabase database;
     private final MongoCollection<Document> collection;
 
+
+    /**
+     * This constructor initializes the connection to the database.
+     */
     public UserDAOMongo(){
         if (host == null) {
             host = "127.0.0.1";
@@ -43,12 +49,20 @@ public class UserDAOMongo implements UserDAO {
         this.createDB();
     }
 
+    /**
+     * This method is used to drop the database.
+     * @return True if the database was dropped, false otherwise.
+     */
     @Override
     public boolean dropDB() {
         database.drop();
         return true;
     }
 
+    /**
+     * This method is used to create the database.
+     * @return True if the database was created, false otherwise.
+     */
     @Override
     public boolean createDB() {
         System.out.println("Connecting to mongol with URI: " + URI);
@@ -64,11 +78,21 @@ public class UserDAOMongo implements UserDAO {
         return true;
     }
 
+    /**
+     * This method is used to convert a Document object to a MyUser object.
+     * @param d The Document object to be converted.
+     * @return The MyUser object.
+     */
     private static MyUser userFromDocument(Document d){
         List<String> list = d.getList(ELEMENT_ROLES, String.class);
         return new MyUser(d.getInteger(ELEMENT_ID), d.getString(ELEMENT_USERNAME), d.getString(ELEMENT_PASSWORD), new ArrayList<>(list));
     }
 
+    /**
+     * This method is used to convert a MyUser object to a Document object.
+     * @param u The MyUser object to be converted.
+     * @return The Document object.
+     */
     private Document userToDocument(MyUser u){
         return new Document(ELEMENT_ID, getNextId())
                 .append(ELEMENT_USERNAME, u.getUsername())
@@ -77,6 +101,10 @@ public class UserDAOMongo implements UserDAO {
     }
 
 
+    /**
+     * This method is used to get the next ID to be used in the database.
+     * @return The next ID to be used.
+     */
     @Override
     public int getNextId(){
         Document result = collection.find().sort(new Document(ELEMENT_ID, -1)).first();
@@ -84,6 +112,11 @@ public class UserDAOMongo implements UserDAO {
         else return result.getInteger(ELEMENT_ID) + 1;
     }
 
+    /**
+     * This method is used to create a new user in the database.
+     * @param user The user to be created.
+     * @return The username of the user created.
+     */
     @Override
     public String createUser(MyUser user) {
 
@@ -98,6 +131,11 @@ public class UserDAOMongo implements UserDAO {
         }
     }
 
+    /**
+     * This method is used to get a user from the database.
+     * @param username
+     * @return
+     */
     @Override
     public MyUser getUser(String username) {
         List<MyUser> users = new ArrayList<>();
@@ -110,6 +148,10 @@ public class UserDAOMongo implements UserDAO {
         return users.get(0);
     }
 
+    /**
+     * This method is used to get all the users from the database.
+     * @return An ArrayList of MyUser objects.
+     */
     @Override
     public ArrayList<MyUser> getAllUsers() {
         ArrayList<MyUser> users = new ArrayList<>();
@@ -120,6 +162,11 @@ public class UserDAOMongo implements UserDAO {
         return users;
     }
 
+    /**
+     * This method is used to delete a user from the database.
+     * @param username The username of the user to be deleted.
+     * @return True if the user was deleted, false otherwise.
+     */
     @Override
     public boolean killUser(String username) {
 
@@ -135,6 +182,10 @@ public class UserDAOMongo implements UserDAO {
         return false;
     }
 
+    /**
+     * This method closes the connection to the database.
+     * @return True if the connection was closed, false otherwise.
+     */
     @Override
     public boolean closeConnection() {
         mongoClient.close();

@@ -1,16 +1,21 @@
 package it.unisannio.ingsw24.unpacked.logic;
 
 import java.util.List;
-
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.entities.UnPackedMySQL;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAO;
 import it.unisannio.ingsw24.unpacked.persistance.UnPackedDAOMySQL;
 
+/**
+ * Implementation of the UnPackedLogic interface.
+ */
 public class UnPackedLogicImplementation implements UnPackedLogic{
     
     UnPackedDAO upd;
 
+    /**
+     * Constructor of the class, it initializes the UnPackedDAO object.
+     */
     public UnPackedLogicImplementation(){
         this.upd = new UnPackedDAOMySQL();
     }

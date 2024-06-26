@@ -7,6 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import it.unisannio.ingsw24.unpacked.presentation.UnPackedService;
 
+/**
+ * The UnPackedApplication class is the main class of the UnPacked microservice.
+ * It is responsible for starting the Spring Boot application and registering
+ * the UnPackedService class as a REST resource.
+ */
 @SpringBootApplication
 @ApplicationPath("/api")
 public class UnPackedApplication extends ResourceConfig {

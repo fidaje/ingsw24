@@ -2,13 +2,14 @@ package it.unisannio.ingsw24.unpacked.persistance;
 
 import it.unisannio.ingsw24.entities.Category;
 import it.unisannio.ingsw24.entities.UnPackedMySQL;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.sql.*;
 
+/**
+ * This class is responsible for the communication between the application and the database.
+ * It implements the UnPackedDAO interface.
+ */
 public class UnPackedDAOMySQL implements UnPackedDAO{
 
     private static String host = System.getenv("MYSQL_ADDRESS");
@@ -22,9 +23,11 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
                                 + " VALUES ( ?, ?, ?, ?)";
     private static final String DELETE_UNPACKED = "DELETE FROM " + TABLE + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
     private static final String UPDATE_AVERAGE_EXPIRE_DAYS_UNPACKED = "UPDATE " + TABLE + " SET " + ELEMENT_AVERAGE_EXPIRY_DAYS + " = ?" + " WHERE " + ELEMENT_UNIQUE_ID + " = ?";
-
     private static final String GET_NEXT_ID = "SELECT MAX(" + ELEMENT_UNIQUE_ID + ") as maximum FROM " + TABLE;
 
+    /**
+     * This constructor creates a connection to the database.
+     */
     public UnPackedDAOMySQL(){
         if (host == null) {
             host = "127.0.0.1";
@@ -41,7 +44,12 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         }
     }
 
-    // Parser che crea l'oggetto FoodDAO
+    /**
+     * This method creates an UnPackedMySQL object from a ResultSet.
+     * @param resultSet
+     * @return
+     * @throws SQLException
+     */
     public static UnPackedMySQL UnPackedMySQLFromResultSet(ResultSet resultSet) throws SQLException{
 
         //String cat = resultSet.getString(ELEMENT_CATEGORY);
@@ -67,8 +75,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return 0;
     }
 
-
-
     @Override
     public UnPackedMySQL getUnPackedMySQL(String name) {
         try {
@@ -84,7 +90,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         }
         return null; // FACTORY
     }
-
 
     @Override
     public int createUnPackedMySQL(String name, int averageExpiryDays, String category) {
@@ -106,7 +111,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         }
     }
 
-
     @Override
     public boolean deleteUnPackedMySQL(int ID) {
         try {
@@ -121,7 +125,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
             return false;
         } 
     }
-
 
     @Override
     public List<String> getAllUnPackedMySQLNames(){
@@ -140,16 +143,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
         return names;
     }
 
-
-    
-    // Il tipo di ritorno dovrebbe essere boolean, come parametri si dovrebbero passare 
-    // ID dell'oggetto da modificare e la scadenza media, magari aggiornando la mappa se contiene l'oggetto e non è vuota
-    
-    /* @Override
-    public FoodDAO updateFoodDAO(int averageExpiryDate) {
-        return null;
-    } */
-
     @Override
     public boolean updateUnPackedMySQL(int ID, int averageExpiryDays) {
         try{
@@ -165,7 +158,6 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
             return false;
         }
     }
-
 
     @Override
     public boolean dropDB() {

@@ -8,6 +8,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
+/**
+ * The PantryApplication class is the main class of the Pantry microservice.
+ * It is responsible for starting the Spring Boot application and registering
+ * the PantryService class as a REST resource.
+ */
 @ApplicationPath("api")
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class})
 public class PantryApplication extends ResourceConfig {

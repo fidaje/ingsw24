@@ -4,9 +4,11 @@ import it.unisannio.ingsw24.entities.Food;
 import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.pantry.persistence.PantryDAO;
 import it.unisannio.ingsw24.pantry.persistence.PantryDAOMongo;
-
 import java.util.List;
 
+/**
+ * The PantryLogicImplementation class implements the PantryLogic interface
+ */
 public class PantryLogicImplementation implements PantryLogic {
 
     PantryDAO pantryDataManager;

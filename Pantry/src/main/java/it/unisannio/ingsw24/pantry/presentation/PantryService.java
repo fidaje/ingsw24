@@ -10,10 +10,15 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
-
 import java.net.URI;
 import java.util.List;
 
+
+/**
+ * This class is the RESTful service for the Pantry entity.
+ * It is responsible for the communication between the client and the server.
+ * The operations that can be performed are POST, GET, PUT and DELETE.
+ */
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/pantry")
@@ -21,10 +26,18 @@ public class PantryService {
 
     PantryLogic logic;
 
+    /**
+     * This constructor creates a new PantryLogicImplementation object.
+     */
     public PantryService(){
         this.logic = new PantryLogicImplementation();
     }
 
+    /**
+     * This method creates a new Pantry object in the database.
+     * @param pantry the Pantry object to be created.
+     * @return a response with the status of the operation.
+     */
     @POST
     public Response createPantry(Pantry pantry){
 
@@ -39,6 +52,11 @@ public class PantryService {
         }
     }
 
+    /**
+     * This method returns the Pantry object with the given id.
+     * @param pantryId the id of the Pantry object.
+     * @return the Pantry object with the given id.
+     */
     @GET
     @Path("/{pantryId}")
     public Response getPantry(@PathParam("pantryId") int pantryId){
@@ -46,6 +64,10 @@ public class PantryService {
         return Response.ok(pantry).build();
     }
 
+    /**
+     * This method returns a list of all the Pantry of the given owner.
+     * @return a list of all the Pantry of the given owner.
+     */
     @GET
     @Path("/pantries/{username}")
     public Response getPantries(@PathParam("username") String ownerUsername){
@@ -57,6 +79,11 @@ public class PantryService {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    /**
+     * This method returns a list of all the foods in the Pantry object with the given id.
+     * @param pantryId
+     * @return a list of all the foods in the Pantry object with the given id.
+     */
     @GET
     @Path("{pantryId}/foods")
     public Response getFoods(@PathParam("pantryId") int pantryId){
@@ -68,6 +95,12 @@ public class PantryService {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    /**
+     * This method returns the food with the given name in the Pantry object with the given id.
+     * @param pantryId the id of the Pantry object.
+     * @param foodName the name of the Food object.
+     * @return the food with the given name in the Pantry object with the given id.
+     */
     @GET
     @Path("{pantryId}/foods/{foodName}")
     public Response getFoodByName(@PathParam("pantryId") int pantryId, @PathParam ("foodName") String foodName){
@@ -77,6 +110,11 @@ public class PantryService {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    /**
+     * This method returns a list of all the expired foods in the Pantry object with the given id.
+     * @param pantryId
+     * @return a list of all the expired foods in the Pantry object with the given id.
+     */
     @GET
     @Path("{pantryId}/expiredFoods")
     public Response getExpiredFoods(@PathParam("pantryId") int pantryId){
@@ -88,6 +126,12 @@ public class PantryService {
         return Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    /**
+     * This method checks if the given username is present in the Pantry object with the given id.
+     * @param pantryId
+     * @param username
+     * @return a response with the status of the operation.
+     */
     @GET
     @Path("/check/{pantryId}/{username}")
     public Response checkUsername(@PathParam("pantryId") int pantryId, @PathParam("username") String username){
@@ -96,6 +140,12 @@ public class PantryService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method checks if the given username is the owner of the Pantry object with the given id.
+     * @param pantryId
+     * @param username
+     * @return a response with the status of the operation.
+     */
     @GET
     @Path("/check/owner/{pantryId}/{username}")
     public Response checkOwner(@PathParam("pantryId") int pantryId, @PathParam("username") String username) {
@@ -105,6 +155,12 @@ public class PantryService {
     }
 
 
+    /**
+     * This method updates the Pantry object with the given id with the unpacked food.
+     * @param pantryId the id of the Pantry object.
+     * @param f the UnPackedFood object to be updated.
+     * @return a response with the status of the operation.
+     */
     @PUT
     @Path("/{pantryId}/foods/unpacked")
     public Response updateFoods(@PathParam("pantryId") int pantryId, UnPackedFood f){
@@ -113,6 +169,12 @@ public class PantryService {
         else return Response.serverError().build();
     }
 
+    /**
+     * This method updates the Pantry object with the given id with the packed food.
+     * @param pantryId the id of the Pantry object.
+     * @param f the PackedFood object to be updated.
+     * @return a response with the status of the operation.
+     */
     @PUT
     @Path("/{pantryId}/foods/packed")
     public Response updateFoods(@PathParam("pantryId") int pantryId, PackedFood f){
@@ -120,6 +182,12 @@ public class PantryService {
         return Response.ok(result).build();
     }
 
+    /**
+     * This method add to the Pantry object the given username of the guest.
+     * @param pantryId the id of the Pantry object.
+     * @param username the username to be updated.
+     * @return a response with the status of the operation.
+     */
     @PUT
     @Path("/{pantryId}/guests")
     public Response updateGuests(@PathParam("pantryId") int pantryId, String username){
@@ -128,6 +196,12 @@ public class PantryService {
         else return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
+    /**
+     * This method deletes the food with the given name in the Pantry object with the given id.
+     * @param pantryId the id of the Pantry object.
+     * @param foodName the name of the Food object.
+     * @return a response with the status of the operation.
+     */
     @DELETE
     @Path("{pantryId}/foods/{foodName}")
     public Response deleteFoodByName(@PathParam("pantryId") int pantryId, @PathParam("foodName") String foodName){
@@ -136,6 +210,12 @@ public class PantryService {
         return Response.serverError().build();
     }
 
+    /**
+     * This method deletes the guest with the given username in the Pantry object with the given id.
+     * @param pantryId the id of the Pantry object.
+     * @param username the username of the guest.
+     * @return a response with the status of the operation.
+     */
     @DELETE
     @Path("{pantryId}/guests/{username}")
     public Response deleteGuestByUsername(@PathParam("pantryId") int pantryId, @PathParam("username") String username){
@@ -144,6 +224,11 @@ public class PantryService {
         return Response.serverError().build();
     }
 
+    /**
+     * This method deletes the Pantry object with the given id.
+     * @param pantryId the id of the Pantry object.
+     * @return a response with the status of the operation.
+     */
     @DELETE
     @Path("{pantryId}")
     public Response deletePantry(@PathParam("pantryId") int pantryId){

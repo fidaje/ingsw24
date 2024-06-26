@@ -7,6 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
+/**
+ * The GatewayApplication class is the main class of the Gateway microservice.
+ * It is responsible for starting the Spring Boot application and registering
+ * the GatewayService class as a REST resource.
+ */
 @SpringBootApplication(exclude= MongoAutoConfiguration.class)
 @ApplicationPath("ingsw24")
 public class GatewayApplication extends ResourceConfig {

@@ -7,7 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 
-
+/**
+ * The UserApplication class is the main class of the User microservice.
+ * It is responsible for starting the Spring Boot application and registering
+ * the UserService class as a REST resource.
+ */
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class})
 @ApplicationPath("/rest")
 public class UserApplication extends ResourceConfig {
