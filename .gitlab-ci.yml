@@ -306,7 +306,6 @@ deploy-pantry-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
-    - ssh $SSH_USER@$MACHINE_IP 'git clone git@gitlab.services.ding.unisannio.it:ingsw24-gruppo-1/compose.git'
     - ssh $SSH_USER@$MACHINE_IP 'cd compose'
     - ssh $SSH_USER@$MACHINE_IP "docker compose -f pantry-compose.yml up"
     - echo "Application successfully deployed."
