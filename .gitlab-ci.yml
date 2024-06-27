@@ -306,7 +306,7 @@ deploy-pantry-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -e MONGO_ADDRESS=host.docker.internal -d -p 0.0.0.0:8084:8084 --name pantry --pull=always \ 
-     $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:${VERSION}"
-
+    - ssh $SSH_USER@MACHINE_IP 'git clone https://gitlab.services.ding.unisannio.it/ingsw24-gruppo-1/compose.git'
+    - ssh $SSH_USER@MACHINE_IP 'cd compose'
+    - ssh $SSH_USER@$MACHINE_IP "docker compose -f pantry-compose.yml up"
     - echo "Application successfully deployed."
