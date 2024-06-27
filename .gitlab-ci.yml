@@ -201,12 +201,12 @@ deploy-gateway-job:
     - ssh $SSH_USER@$MACHINE_IP 'docker kill gateway || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
     - ssh $SSH_USER@$MACHINE_IP "
-      docker run -d -p 0.0.0.0:8089:8089 --name user --pull=always \
+      docker run -d -p 0.0.0.0:8089:8089 --name gateway --pull=always \
       -e UNPACKED_HOST=host.docker.internal \
       -e PACKED_HOST=host.docker.internal \
       -e PANTRY_HOST=host.docker.internal \
       -e USER_HOST=host.docker.internal \
-      $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/"
+      $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/gateway:${VERSION}"
 
     - echo "Application successfully deployed."
 
@@ -258,7 +258,6 @@ deploy-packed-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill packed || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm packed || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -d -p 0.0.0.0:8085:8085 --name packed --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/packed:0.1"
     - echo "Application successfully deployed."
 
 deploy-unpacked-job:
@@ -283,7 +282,7 @@ deploy-unpacked-job:
     - ssh $SSH_USER@$MACHINE_IP 'docker kill unpacked || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm unpacked || true'
     - ssh $SSH_USER@$MACHINE_IP "docker run -d -p 0.0.0.0:8082:8082 --name unpacked --pull=always \ 
-      -e MYSQL_ADDRESS=host.docker.internal \$CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/unpacked:0.1"
+      -e MYSQL_ADDRESS=host.docker.internal $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/unpacked:${VERSION}"
     - echo "Application successfully deployed."
 
 deploy-pantry-job:
@@ -308,6 +307,6 @@ deploy-pantry-job:
     - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
     - ssh $SSH_USER@$MACHINE_IP "docker run -d -p 0.0.0.0:8084:8084 --name pantry --pull=always \ 
-      -e MONGO_ADDRESS=host.docker.internal \$CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:0.1"
+      -e MONGO_ADDRESS=host.docker.internal $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:${VERSION}"
 
     - echo "Application successfully deployed."
