@@ -307,6 +307,6 @@ deploy-pantry-job:
     - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
     - ssh $SSH_USER@$MACHINE_IP "docker run -e MONGO_ADDRESS=host.docker.internal -d -p 0.0.0.0:8084:8084 --name pantry --pull=always \ 
-      - $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:${VERSION}"
+     $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:${VERSION}"
 
     - echo "Application successfully deployed."
