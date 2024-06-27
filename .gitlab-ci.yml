@@ -200,7 +200,7 @@ deploy-gateway-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill gateway || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name gateway -p 0.0.0.0:8080:8080 -e UNPACKED_HOST=host.docker.internal  -e PACKED_HOST=host.docker.internal  -e PANTRY_HOST=host.docker.internal  -e USER_HOST=host.docker.internal --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/user:0.1"
+    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name gateway -p 0.0.0.0:8080:8080 -e UNPACKED_HOST=host.docker.internal  -e PACKED_HOST=host.docker.internal  -e PANTRY_HOST=host.docker.internal  -e USER_HOST=host.docker.internal --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/gateway:0.1"
 
     - echo "Application successfully deployed."
 
