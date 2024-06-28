@@ -30,7 +30,7 @@ public class UnPackedDAOMySQL implements UnPackedDAO{
      */
     public UnPackedDAOMySQL(){
         if (host == null) {
-            host = "127.0.0.1";
+            host = "172.31.6.1";
         }
         if (port == null) {
             port = "3306";

@@ -27,7 +27,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         String unPackedHost = System.getenv("UNPACKED_HOST");
         String unPackedPort = System.getenv("UNPACKED_PORT");
         if (unPackedHost == null) {
-            unPackedHost = "127.0.0.1";
+            unPackedHost = "172.31.6.1";
         }
         if (unPackedPort == null) {
             unPackedPort = "8082";
@@ -37,7 +37,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         String packedHost = System.getenv("PACKED_HOST");
         String packedPort = System.getenv("PACKED_PORT");
         if (packedHost == null) {
-            packedHost = "127.0.0.1";
+            packedHost = "172.31.6.1";
         }
         if (packedPort == null) {
             packedPort = "8085";
@@ -47,7 +47,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         String pantryHost = System.getenv("PANTRY_HOST");
         String pantryPort = System.getenv("PANTRY_PORT");
         if (pantryHost == null) {
-            pantryHost = "127.0.0.1";
+            pantryHost = "172.31.6.1";
         }
         if (pantryPort == null) {
             pantryPort = "8084";
@@ -57,7 +57,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
         String userHost = System.getenv("USER_HOST");
         String userPort = System.getenv("USER_PORT");
         if (userHost == null) {
-            userHost = "127.0.0.1";
+            userHost = "172.31.6.1";
         }
         if (userPort == null) {
             userPort = "8089";

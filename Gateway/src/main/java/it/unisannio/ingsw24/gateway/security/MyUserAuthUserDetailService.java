@@ -28,7 +28,7 @@ public class MyUserAuthUserDetailService implements UserDetailsService {
         String port = System.getenv("USER_PORT");
 
         if (host == null){
-            host = "localhost";
+            host = "172.31.6.1";
         }
 
         if (port == null){

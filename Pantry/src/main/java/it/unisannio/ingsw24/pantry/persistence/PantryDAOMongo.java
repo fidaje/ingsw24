@@ -41,7 +41,7 @@ public class PantryDAOMongo implements PantryDAO {
      */
     public PantryDAOMongo(){
         if (host == null){
-            host = "127.0.0.1";
+            host = "172.31.6.1";
         }
         if (port == null){
             port = "27017";

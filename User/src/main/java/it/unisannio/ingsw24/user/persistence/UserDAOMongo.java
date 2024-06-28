@@ -35,7 +35,7 @@ public class UserDAOMongo implements UserDAO {
      */
     public UserDAOMongo(){
         if (host == null) {
-            host = "127.0.0.1";
+            host = "172.31.6.1";
         }
         if (port == null){
             port = "27017";
