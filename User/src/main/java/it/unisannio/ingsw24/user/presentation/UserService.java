@@ -62,6 +62,15 @@ public class UserService {
         return Response.ok(user).build();
     }
 
+    @PUT
+    @Path("{username}")
+    public Response updatePassword(@PathParam("username") String username, String password){
+        boolean result = logic.updatePassword(username, password);
+        if (result)
+            return Response.ok().build();
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
     /**
      * This method deletes a user by username. It receives the username and returns the response of the operation.
      * @param username The username of the user to be deleted.
