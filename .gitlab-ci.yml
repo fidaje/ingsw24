@@ -200,7 +200,7 @@ deploy-user-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill user || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm user || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name user -p 0.0.0.0:8089:8089 -e MONGO_ADDRESS=host.docker.internal --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/user:0.1"
+    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name user -p 0.0.0.0:8089:8089 --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/user:0.1"
 
     - echo "Application successfully deployed."
 
@@ -249,7 +249,7 @@ deploy-unpacked-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill unpacked || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm unpacked || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name unpacked -p 0.0.0.0:8082:8082 -e MYSQL_ADDRESS=host.docker.internal --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/unpacked:${VERSION}"
+    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name unpacked -p 0.0.0.0:8082:8082 --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/unpacked:${VERSION}"
     - echo "Application successfully deployed."
 
 deploy-pantry-job:
@@ -273,7 +273,7 @@ deploy-pantry-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill pantry || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm pantry || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name pantry -p 0.0.0.0:8084:8084 -e MONGO_ADDRESS=host.docker.internal --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:${VERSION}"
+    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name pantry -p 0.0.0.0:8084:8084 --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/pantry:${VERSION}"
     - echo "Application successfully deployed."
 
 deploy-gateway-job:
@@ -301,5 +301,5 @@ deploy-gateway-job:
     - ssh $SSH_USER@$MACHINE_IP "echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY"
     - ssh $SSH_USER@$MACHINE_IP 'docker kill gateway || true'
     - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
-    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name gateway -p 0.0.0.0:8080:8080 -e UNPACKED_HOST=host.docker.internal  -e PACKED_HOST=host.docker.internal  -e PANTRY_HOST=host.docker.internal  -e USER_HOST=host.docker.internal --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/gateway:0.1"
+    - ssh $SSH_USER@$MACHINE_IP "docker run -d --name gateway -p 0.0.0.0:8080:8080 --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/gateway:0.1"
     - echo "Application successfully deployed."
