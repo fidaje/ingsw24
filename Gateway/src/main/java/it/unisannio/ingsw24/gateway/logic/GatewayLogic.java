@@ -27,6 +27,8 @@ public interface GatewayLogic {
 
     PackedFood getPackedFood(String barcode);
 
+    boolean updatePassword(String username, String password);
+
     Integer updateFoods(int pantryId, Food f, String type);
 
     boolean updateGuests(int pantryId, String username);

@@ -433,6 +433,31 @@ public class GatewayLogicImplementation implements GatewayLogic {
     }
 
     @Override
+    public boolean updatePassword(String username, String password){
+        try {
+            OkHttpClient client = new OkHttpClient();
+            String URL = String.format(userAddress + "/rest/users/" + username);
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, password);
+            Request request = new Request.Builder()
+                    .url(URL)
+                    .put(body)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            Response response = client.newCall(request).execute();
+
+            if (response.code() != 400 ){
+                return true;
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public Integer updateFoods(int pantryId, Food f, String type){
         try {
             OkHttpClient client = new OkHttpClient();

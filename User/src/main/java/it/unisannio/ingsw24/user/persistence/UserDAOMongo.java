@@ -10,12 +10,14 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.result.UpdateResult;
 import it.unisannio.ingsw24.entities.MyUser;
 import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.push;
 
 /**
  * This class is used to interact with the Mongo database and perform operations on the Users collection.
@@ -179,6 +181,25 @@ public class UserDAOMongo implements UserDAO {
         catch (MongoException e){
             e.printStackTrace();
         }
+        return false;
+    }
+
+    /**
+     * This method is used to change user's password
+     * @param username is the user that want change password
+     * @param password is the new password
+     * @return True if the password was changed, False otherwise.
+     */
+    @Override
+    public boolean updatePassword(String username, String password){
+
+        Document filter = new Document(ELEMENT_USERNAME, username);
+        Document update = new Document("$set", new Document(ELEMENT_PASSWORD, password));
+        UpdateResult result = this.collection.updateOne(filter, update);
+
+        if (result.getModifiedCount() > 0)
+            return true;
+
         return false;
     }
 

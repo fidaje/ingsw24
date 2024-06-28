@@ -10,8 +10,10 @@ import it.unisannio.ingsw24.entities.Pantry;
 import it.unisannio.ingsw24.entities.UnPackedFood;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
+import it.unisannio.ingsw24.gateway.security.PasswordEncoderPlain;
 import okhttp3.*;
 import it.unisannio.ingsw24.gateway.logic.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -19,6 +21,31 @@ import java.time.format.DateTimeFormatter;
 
 public class TestGateway {
 
+    public static void main(String[] args) throws IOException{
+
+        PasswordEncoder pe = new PasswordEncoderPlain();
+
+        String s = pe.encode("pipppo");
+
+        System.out.println("s = " + s);
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+}
+
+    /*
     public static void main(String[] args) throws IOException {
 
         String unPackedHost = System.getenv("UNPACKED_HOST");
@@ -88,6 +115,6 @@ class GsonProvider {
                 .registerTypeAdapter(LocalDate.class, new it.unisannio.ingsw24.gateway.logic.LocalDateTypeAdapter())
                 .create();
     }
-}
+}*/
 
 

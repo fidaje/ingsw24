@@ -168,6 +168,19 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    @PUT
+    @Path("/users")
+    @RolesAllowed({"OWNER"})
+    public Response updatePassword(String password){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
+        if (logic.updatePassword(username, password))
+            return Response.ok().build();
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
     /**
      * This method adds a new UnPackedFood object to the pantry with the given id.
      * @param pantryId the id of the pantry.

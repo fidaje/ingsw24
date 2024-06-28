@@ -58,6 +58,17 @@ public class UserLogicImpl implements UserLogic{
     }
 
     /**
+     * This method is used to change user's password
+     * @param username is the user that want change password
+     * @param password is the new password
+     * @return True if the password was changed, False otherwise.
+     */
+    @Override
+    public boolean updatePassword(String username, String password){
+        return dataManagerMongo.updatePassword(username, password);
+    }
+
+    /**
      * This method returns the next id to be assigned to a user.
      * @return The next id to be assigned to a user.
      */

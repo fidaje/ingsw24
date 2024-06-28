@@ -43,9 +43,17 @@ public interface UserDAO {
     /**
      * This method is used to delete a user from the database.
      * @param username The username of the user to be deleted.
-     * @return True if the user was deleted, false otherwise.
+     * @return True if the user was deleted, False otherwise.
      */
     boolean killUser(String username);
+
+    /**
+     * This method is used to change user's password
+     * @param username is the user that want change password
+     * @param password is the new password
+     * @return True if the password was changed, False otherwise.
+     */
+    boolean updatePassword(String username, String password);
 
     /**
      * This method closes the connection to the database.
