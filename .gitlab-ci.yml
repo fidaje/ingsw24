@@ -129,7 +129,7 @@ docker-build-packed-job:
     - docker info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - cd Gateway
+    - cd Packed
     - ls
     - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
@@ -151,7 +151,7 @@ docker-build-unpacked-job:
     - docker info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - cd Gateway
+    - cd UnPacked
     - ls
     - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
@@ -173,7 +173,7 @@ docker-build-pantry-job:
     - docker info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - cd Gateway
+    - cd Pantry
     - ls
     - docker build -t "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION" .
     - docker push "$CI_REGISTRY_IMAGE/$PACKAGE_NAME:$VERSION"
