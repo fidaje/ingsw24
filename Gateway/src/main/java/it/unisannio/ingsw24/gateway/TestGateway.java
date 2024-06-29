@@ -1,36 +1,24 @@
 package it.unisannio.ingsw24.gateway;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import it.unisannio.ingsw24.entities.Food;
-import it.unisannio.ingsw24.entities.Pantry;
-import it.unisannio.ingsw24.entities.UnPackedFood;
-import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
-import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
-import it.unisannio.ingsw24.gateway.security.PasswordEncoderPlain;
-import okhttp3.*;
-import it.unisannio.ingsw24.gateway.logic.*;
+import it.unisannio.ingsw24.gateway.security.PasswordEncoderBase64;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class TestGateway {
 
     public static void main(String[] args) throws IOException{
 
-        PasswordEncoder pe = new PasswordEncoderPlain();
+        PasswordEncoder pe = new PasswordEncoderBase64();
 
-        String s = pe.encode("pipppo");
+        String s = pe.encode("big");
+
 
         System.out.println("s = " + s);
 
+        boolean match = pe.matches("pipppo", "cGlwcHBv");
 
-
+        System.out.println("match = " + match);
 
     }
 
