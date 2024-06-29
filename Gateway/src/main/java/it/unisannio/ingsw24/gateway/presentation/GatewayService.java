@@ -228,7 +228,7 @@ public class GatewayService {
     @PUT
     @Path("/{pantryId}/foods/packed/{barcode}")
     @RolesAllowed({"OWNER", "GUEST"})
-    public Response updateFoodsWithPacked(@PathParam("pantryId") int pantryId, @PathParam("barcode") String barcode, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity){
+    public Response updateFoodsWithPacked(@PathParam("pantryId") int pantryId, @PathParam("barcode") String barcode, @QueryParam("isFridge") boolean isFridge, @QueryParam("quantity") int quantity, @QueryParam("expirationDate") String expirationDate){
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String username = securityContext.getAuthentication().getName();
         System.out.println("username in method = " + username);
@@ -237,6 +237,7 @@ public class GatewayService {
             PackedFood pf = logic.getPackedFood(barcode);
             pf.setIsFridge(isFridge);
             pf.setQuantity(quantity);
+            pf.setExpirationDate(expirationDate);
             Integer result = logic.updateFoods(pantryId, pf, "packed");
             if (result != null) return Response.ok(result).build();
             else return Response.serverError().build();
