@@ -44,7 +44,7 @@ public class PantryService {
         int pantryID = logic.createPantry(pantry);
 
         if (pantryID != 0){
-            URI uri = UriBuilder.fromPath("/users/{pantryID}").build(pantryID);
+            URI uri = UriBuilder.fromPath("/pantry/{pantryID}").build(pantryID);
             return Response.created(uri).build();
         }
         else{
