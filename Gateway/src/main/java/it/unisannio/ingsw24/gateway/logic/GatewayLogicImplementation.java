@@ -101,7 +101,7 @@ public class GatewayLogicImplementation implements GatewayLogic {
             String URL = String.format(pantryAddress + "/api/pantry");
 
             MediaType mediaType = MediaType.parse("application/json");
-            Gson gson = new Gson();
+            Gson gson = GsonProvider.createGson();
             RequestBody body = RequestBody.create(mediaType, gson.toJson(pantry));
             Request request = new Request.Builder()
                     .url(URL)
@@ -114,8 +114,11 @@ public class GatewayLogicImplementation implements GatewayLogic {
             if (response.code() != 201) {
                 return 0;
             }
+            
+            String location = response.header("Location");
+            String idString = location.substring(location.lastIndexOf("/")).substring(1);
 
-            return pantry.getId();
+            return Integer.parseInt(idString);
 
         } catch (IOException e) {
             e.printStackTrace();
