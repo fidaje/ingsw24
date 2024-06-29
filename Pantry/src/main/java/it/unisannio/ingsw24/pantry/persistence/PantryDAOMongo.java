@@ -219,7 +219,7 @@ public class PantryDAOMongo implements PantryDAO {
     public void sendMail(){
         String sender = "sprinstrim@gmail.com";
         String host = "smtp.gmail.com";
-        String subject = "Exired Foods";
+        String subject = "Expired Foods";
         Properties p = new Properties();
 
         p.put("mail.smtp.host", host);
