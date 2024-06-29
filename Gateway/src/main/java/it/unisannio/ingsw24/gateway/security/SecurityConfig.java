@@ -68,6 +68,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new PasswordEncoderPlain();
+        return new PasswordEncoderBase64();
     }
 }
