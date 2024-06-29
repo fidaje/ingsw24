@@ -4,6 +4,7 @@ import it.unisannio.ingsw24.entities.*;
 import it.unisannio.ingsw24.gateway.exception.UserNotValidException;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogic;
 import it.unisannio.ingsw24.gateway.logic.GatewayLogicImplementation;
+import it.unisannio.ingsw24.gateway.security.PasswordEncoderBase64;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -41,6 +42,10 @@ public class GatewayService {
     @POST
     @Path("/user")
     public Response createUser(MyUser user){
+
+        String encodedPassword = new PasswordEncoderBase64().encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
         String username = logic.createUser(user);
         if (username == null)
             return Response.serverError().build();
@@ -49,13 +54,16 @@ public class GatewayService {
     }
 
     /**
-     * This method creates a new pantry.
-     * @param ownerUsername the username of the owner of the pantry.
+     * This method creates a new pantry
      * @return a response with the status of the operation.
      */
     @POST
-    @Path("/pantry/{ownerUsername}")
-    public Response createPantry(@PathParam("ownerUsername") String ownerUsername){
+    @Path("/pantry")
+    public Response createPantry(){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String ownerUsername = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + ownerUsername);
+
         Pantry pantry = new Pantry(ownerUsername);
         int pantryId = logic.createPantry(pantry);
         if (pantryId == 0)
@@ -176,7 +184,9 @@ public class GatewayService {
         String username = securityContext.getAuthentication().getName();
         System.out.println("username in method = " + username);
 
-        if (logic.updatePassword(username, password))
+        String encodedPassword = new PasswordEncoderBase64().encode(password);
+
+        if (logic.updatePassword(username, encodedPassword))
             return Response.ok().build();
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
