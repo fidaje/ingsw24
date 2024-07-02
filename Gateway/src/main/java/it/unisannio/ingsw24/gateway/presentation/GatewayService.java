@@ -72,6 +72,11 @@ public class GatewayService {
         return Response.created(uri).build();
     }
 
+    /**
+     * This method returns the user with the given username.
+     * @param username the username of the user.
+     * @return a response with the user.
+     */
     @GET
     @Path("/user/{username}")
     public Response getUser(@PathParam("username") String username){
@@ -81,6 +86,11 @@ public class GatewayService {
         return Response.ok(user).build();
     }
 
+    /**
+     * This method returns the pantry with the given id.
+     * @param pantryId the id of the pantry.
+     * @return a response with the pantry.
+     */
     @GET
     @Path("pantry/{pantryId}")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -109,6 +119,10 @@ public class GatewayService {
         return Response.ok(pantry).build();
     }
 
+    /**
+     * This method returns the list of pantries of the user.
+     * @return a response with the list of pantries.
+     */
     @GET
     @Path("pantries")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -123,6 +137,11 @@ public class GatewayService {
         return Response.ok(pantries).build();
     }
 
+    /**
+     * This method returns the foods of the pantry with the given id.
+     * @param pantryId the id of the pantry.
+     * @return a response with the list of foods.
+     */
     @GET
     @Path("{pantryId}/foods")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -142,6 +161,13 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+
+    /**
+     * This method returns the food with the given name from the pantry with the given id.
+     * @param pantryId the id of the pantry.
+     * @param foodName the name of the food.
+     * @return a response with the food.
+     */
     @GET
     @Path("{pantryId}/foods/{foodName}")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -159,6 +185,12 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+
+    /**
+     * This method returns the foods that are expired.
+     * @param pantryId the id of the pantry.
+     * @return a response with the list of expired foods.
+     */
     @GET
     @Path("{pantryId}/expiredFoods")
     @RolesAllowed({"OWNER", "GUEST"})
@@ -176,6 +208,11 @@ public class GatewayService {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
+    /**
+     * This method updates the password of the user.
+     * @param password the new password.
+     * @return a response with the status of the operation.
+     */
     @PUT
     @Path("/users")
     @RolesAllowed({"OWNER"})
@@ -291,8 +328,8 @@ public class GatewayService {
 
     /**
      * This method deletes the guest with the given username from the pantry, if the user is the owner.
-     * @param pantryId
-     * @param guestUsername
+     * @param pantryId the id of the pantry.
+     * @param guestUsername the username of the guest.
      * @return a response with the status of the operation.
      */
     @DELETE
@@ -313,7 +350,7 @@ public class GatewayService {
 
     /**
      * This method deletes the pantry with the given id, if the user is the owner.
-     * @param pantryId
+     * @param pantryId the id of the pantry.
      * @return a response with the status of the operation.
      */
     @DELETE

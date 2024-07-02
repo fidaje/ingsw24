@@ -5,14 +5,12 @@ import it.unisannio.ingsw24.entities.*;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 public class GatewayLogicImplementation implements GatewayLogic {
@@ -247,6 +245,11 @@ public class GatewayLogicImplementation implements GatewayLogic {
         return null;
     }
 
+    /**
+     * This method creates a Food object from a JSONObject
+     * @param foodObject the JSONObject to be converted
+     * @return the Food object
+     */
     private Food foodFromJson(JSONObject foodObject) {
 
         String name = foodObject.getString("name");
@@ -273,6 +276,11 @@ public class GatewayLogicImplementation implements GatewayLogic {
         return null;
     }
 
+    /**
+     * This method creates a List of guests from a JSONObject
+     * @param pantryObject the JSONObject of the pantry
+     * @return the guests of the pantry
+     */
     private List<String> getGuests(JSONObject pantryObject){
         JSONArray guestsArray = pantryObject.getJSONArray("guestsUsernames");
         List<String> guestsUsernames = new ArrayList<>();

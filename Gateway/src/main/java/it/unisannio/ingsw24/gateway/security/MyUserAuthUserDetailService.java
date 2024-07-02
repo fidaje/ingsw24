@@ -2,7 +2,6 @@ package it.unisannio.ingsw24.gateway.security;
 
 import com.google.gson.Gson;
 import it.unisannio.ingsw24.entities.MyUser;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -13,11 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class is used to authenticate the user.
+ * It implements the UserDetailsService interface and overrides the loadUserByUsername method.
+ * The loadUserByUsername method is called when the user tries to authenticate.
+ * The method returns the user details of the user with the given username.
+ */
 @Service
 public class MyUserAuthUserDetailService implements UserDetailsService {
 

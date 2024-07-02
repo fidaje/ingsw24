@@ -11,6 +11,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * This class is used to configure the security of the server.
+ * It is annotated with @Configuration, @EnableWebSecurity and @EnableMethodSecurity.
+ * The @Configuration annotation indicates that the class is a configuration class.
+ * The @EnableWebSecurity annotation enables the Spring Security web security support.
+ * The @EnableMethodSecurity annotation enables the Spring Security method security support.
+ * The class contains a constructor that initializes the userDetailService attribute.
+ * The class contains a method that returns the security filter chain.
+ * The method disables the CSRF protection and configures the security of the server.
+ * The method configures the security of the server based on the path of the request.
+ * The method returns the security filter chain.
+ * The class contains a method that returns the custom authentication manager.
+ * The method initializes the authentication manager builder and sets the user detail service and the password encoder.
+ * The method returns the authentication manager.
+ * The class contains a method that returns the password encoder.
+ * The method returns a new instance of the PasswordEncoderBase64 class.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, jsr250Enabled = true, proxyTargetClass = true)

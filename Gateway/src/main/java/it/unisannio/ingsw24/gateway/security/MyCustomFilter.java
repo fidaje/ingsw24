@@ -6,9 +6,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 
+/**
+ * This class is used to log the request and response of the server.
+ * It implements the Filter interface and overrides the doFilter method.
+ * The doFilter method logs the request and response of the server.
+ */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class MyCustomFilter implements Filter {

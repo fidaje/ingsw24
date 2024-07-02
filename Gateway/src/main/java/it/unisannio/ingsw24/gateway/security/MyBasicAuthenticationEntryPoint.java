@@ -7,10 +7,16 @@ import org.slf4j.Logger;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * This class is used to handle the authentication procedure.
+ * It extends the BasicAuthenticationEntryPoint class and overrides the commence method.
+ * The commence method is called when the user is not authenticated and the server requires authentication.
+ * The method sets the realm name and the status of the response to SC_UNAUTHORIZED.
+ * It also writes the message of the exception to the response.
+ */
 @Component
 public class MyBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
