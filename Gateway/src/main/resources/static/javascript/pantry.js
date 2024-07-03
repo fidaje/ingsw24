@@ -25,23 +25,23 @@ function buildBody() {
                     pantry.innerHTML = '';
 
                     // Mappare i dati in paragrafi HTML
-                    let content = `<p>ID Dispensa: ${data.id}</p>`;
-                    content += `<p>Proprietario: ${data.ownerUsername}</p>`;
-                    content += `<p>Ospiti: ${data.guestsUsernames.join(', ')}</p>`;
+                    let content = `<p class="id-dispensa">ID Dispensa: ${data.id}</p>`;
+                    content += `<p class="proprietario">Proprietario: <span>${data.ownerUsername}</span></p>`;
+                    content += `<p class="ospiti">Ospiti: <span>${data.guestsUsernames.join(', ')}</span></p>`;
 
                     // Aggiungere i dettagli degli alimenti
-                    content += '<p>Alimenti:</p>';
+                    content += '<p class="alimenti-title">Alimenti:</p>';
                     data.fuds.forEach(fud => {
-                        content += '<p>';
-                        content += `Nome: ${fud.name}<br>`;
-                        content += `Data di scadenza: ${fud.expirationDate}<br>`;
-                        content += `Scaduto: ${fud.isExpired ? 'Sì' : 'No'}<br>`;
-                        content += `Frigo: ${fud.isFridge ? 'Sì' : 'No'}<br>`;
-                        content += `Quantità: ${fud.quantity}<br>`;
-                        if (fud.brand) content += `Marca: ${fud.brand}<br>`;
-                        if (fud.category) content += `Categoria: ${fud.category}<br>`;
-                        if (fud.nutritionGrade) content += `Grado di nutrizione: ${fud.nutritionGrade}<br>`;
-                        content += '</p>';
+                        content += '<div class="food-item">';
+                        content += `<p><span>Nome:</span> ${fud.name}</p>`;
+                        content += `<p><span>Data di scadenza:</span> ${fud.expirationDate}</p>`;
+                        content += `<p><span>Scaduto:</span> ${fud.isExpired ? 'Sì' : 'No'}</p>`;
+                        content += `<p><span>Frigo:</span> ${fud.isFridge ? 'Sì' : 'No'}</p>`;
+                        content += `<p><span>Quantità:</span> ${fud.quantity}</p>`;
+                        if (fud.brand) content += `<p><span>Marca:</span> ${fud.brand}</p>`;
+                        if (fud.category) content += `<p><span>Categoria:</span> ${fud.category}</p>`;
+                        if (fud.nutritionGrade) content += `<p><span>Grado di nutrizione:</span> ${fud.nutritionGrade}</p>`;
+                        content += '</div>';
                     });
 
                     // Aggiungere il contenuto al contenitore
@@ -59,5 +59,4 @@ function buildBody() {
     xhttp.setRequestHeader("Authorization", "Basic " + credentials);
     xhttp.send();
 }
-
 

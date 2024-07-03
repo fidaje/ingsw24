@@ -28,13 +28,14 @@ function getPantries() {
             data.forEach(pantry => {
                 const li = document.createElement('li');
 
-                let content = `ID Dispensa: ${pantry.id}<br>`;
-                content += `Numero di alimenti: ${pantry.fuds.length}<br>`;
-                content += `Numero di ospiti: ${pantry.guestsUsernames.length}<br>`;
-
+                let content = `
+                    <div class="info"><i class="fas fa-hashtag"></i><span>ID Dispensa: ${pantry.id}</span></div>
+                    <div class="info"><i class="fas fa-utensils"></i><span>Numero di alimenti: ${pantry.fuds.length}</span></div>
+                    <div class="info"><i class="fas fa-user"></i><span>Numero di ospiti: ${pantry.guestsUsernames.length}</span></div>
+                `;
 
                 li.innerHTML = content;
-                li.onclick =  () => getPantry(pantry.id);
+                li.onclick = () => getPantry(pantry.id);
                 ul.appendChild(li);
             });
 
@@ -45,6 +46,7 @@ function getPantries() {
             console.error('There was a problem with the fetch operation:', error);
         });
 }
+
 
 function getPantry(id){
     const url = 'http://127.0.0.1:8080/html/pantry.html';
