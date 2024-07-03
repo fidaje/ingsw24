@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +42,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         //http.httpBasic(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.disable());
+        //http.csrf(csrf -> csrf.disable());
         /*
          * No authentication needed
          * */
@@ -59,15 +60,15 @@ public class SecurityConfig {
          * */
 //        http.authorizeHttpRequests().requestMatchers("/hello.html").permitAll();
 
-        //http.authorizeHttpRequests().requestMatchers("/ingsw24/gateway/**").authenticated().and().httpBasic();
+        http.authorizeHttpRequests(request -> request.requestMatchers("/ingsw24/gateway/**")
+                .authenticated()).httpBasic(Customizer.withDefaults());
 //        http.authorizeHttpRequests().requestMatchers("/hello").permitAll();
-        http.authorizeHttpRequests()
-                .requestMatchers("/ingsw24/gateway/user/**").permitAll()
-                .anyRequest().authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
+        //http.authorizeHttpRequests().requestMatchers("/ingsw24/gateway/user/**").authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
 
+       // http.authorizeHttpRequests().requestMatchers("*.html", "*.css", "*.js").permitAll();
       //  http.authorizeHttpRequests().anyRequest().permitAll();
 
-
+        http.authorizeHttpRequests(request -> request.requestMatchers("/html/**.html", "/javascript/**.js", "styles.css").permitAll());
         return http.build();
     }
 
