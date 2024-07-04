@@ -2,8 +2,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     getPantries();
 });
 
+var host = "172.31.6.1";
+
 function getPantries() {
-    const url = 'http://127.0.0.1:8080/ingsw24/gateway/pantries';
+    const url = 'http://' + host + ':8080/ingsw24/gateway/pantries';
 
     fetch(url, {
         method: 'GET',
@@ -49,7 +51,7 @@ function getPantries() {
 
 
 function getPantry(id){
-    const url = 'http://127.0.0.1:8080/html/pantry.html';
+    const url = 'http://' + host + ':8080/html/pantry.html';
     sessionStorage.setItem("id", id);
 
     const credentials = sessionStorage.getItem("credentials");

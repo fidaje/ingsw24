@@ -1,4 +1,5 @@
 var credentials = "Basic " + sessionStorage.getItem("credentials");
+var host = "172.31.6.1";
 
 document.addEventListener("DOMContentLoaded", function() {
     buildBody();
@@ -8,7 +9,7 @@ function buildBody() {
     console.log("buildBody");
 
     let id = sessionStorage.getItem("id");
-    const url = "http://127.0.0.1:8080/ingsw24/gateway/pantry/" + id;
+    const url = "http://" + host + ":8080/ingsw24/gateway/pantry/" + id;
     const credentials = sessionStorage.getItem("credentials");
 
     const xhttp = new XMLHttpRequest();
@@ -34,6 +35,7 @@ function buildBody() {
                     data.guestsUsernames.forEach(guest => {
                         content += '<div class="guest-item">';
                         content += `<p><i class="fas fa-user"></i> &nbsp ${guest}</p>`;
+                        content += `<button class="remove-guest-btn" onclick="removeGuest('${id}', '${guest}')">Rimuovi</button>`;
                         content += '</div>';
                     });
                     content += '</div>';
@@ -66,5 +68,33 @@ function buildBody() {
 
     xhttp.open("GET", url, true);
     xhttp.setRequestHeader("Authorization", "Basic " + credentials);
+    xhttp.send();
+}
+
+// Funzione per rimuovere un ospite
+function removeGuest(pantryId, username) {
+    const url = `http://`${host}`:8080/ingsw24/gateway/${pantryId}/guests/${username}`;
+    const credentials = sessionStorage.getItem("credentials");
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.withCredentials = true;
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                console.log(`Guest ${username} removed successfully`);
+                // Ricaricare il corpo per aggiornare l'elenco degli ospiti
+                buildBody();
+            } else {
+                console.error('There was a problem with the delete operation:', this.statusText);
+            }
+        }
+    };
+
+    xhttp.open("DELETE", url, true);
+    xhttp.setRequestHeader("Authorization", "Basic " + credentials);
+
+    console.log(xhttp)
+
     xhttp.send();
 }

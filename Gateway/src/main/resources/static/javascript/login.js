@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     form.addEventListener('submit', attemptLogin);
 });
 
+var host = "172.31.6.1";
+
 // Funzione di callback per l'evento submit
 function attemptLogin(event) {
     // Prevenire il comportamento predefinito del form (ovvero il submit)
@@ -24,7 +26,7 @@ function attemptLogin(event) {
     sessionStorage.setItem("credentials", credentials)
 
 
-    const url = 'http://127.0.0.1:8080/html/home.html';
+    const url = 'http://' + host + ':8080/html/home.html';
     const headers = new Headers({'Authorization': `Basic ${credentials}`});
 
     fetch(url, {method: 'GET', headers: headers})
