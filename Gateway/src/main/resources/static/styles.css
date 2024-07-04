@@ -246,10 +246,10 @@ footer {
 /* Stile per i paragrafi Proprietario e Ospiti */
 #pantry p.proprietario,
 #pantry p.ospiti {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 1rem;
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 1rem !important;
 }
 
 /* Stile per il testo successivo ai due punti */
@@ -283,4 +283,32 @@ body.pantry-page {
     font-family: Montserrat, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+/* Stile per il contenitore degli ospiti */
+.guest-container {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+/* Stile per gli ospiti nella dispensa */
+.guest-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+.guest-item p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.guest-item p span {
+    font-weight: bold;
+    color: #333;
 }
