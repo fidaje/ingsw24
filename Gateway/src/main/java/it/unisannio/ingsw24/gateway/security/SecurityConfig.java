@@ -2,9 +2,9 @@ package it.unisannio.ingsw24.gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,34 +41,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        //http.httpBasic(Customizer.withDefaults());
-        //http.csrf(csrf -> csrf.disable());
-        /*
-         * No authentication needed
-         * */
-//        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.csrf(csrf -> csrf.disable());
 
-        /*
-         * All request must be authenticated
-         * */
-//        http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic();
-//        http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
+//        http.authorizeHttpRequests()
+  //              .requestMatchers("/ingsw24/gateway/user/**", "/html/**", "/javascript/**", "../styles.css").permitAll()
+    //            .anyRequest().authenticated();
 
-
-        /*
-         * Path matching based security
-         * */
-//        http.authorizeHttpRequests().requestMatchers("/hello.html").permitAll();
-
-        http.authorizeHttpRequests(request -> request.requestMatchers("/ingsw24/gateway/**")
+	http.authorizeHttpRequests(request -> request.requestMatchers("/ingsw24/gateway/**")
                 .authenticated()).httpBasic(Customizer.withDefaults());
-//        http.authorizeHttpRequests().requestMatchers("/hello").permitAll();
-        //http.authorizeHttpRequests().requestMatchers("/ingsw24/gateway/user/**").authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
+	http.authorizeHttpRequests(request -> request.requestMatchers("/html/**", "/javascript/**", "/styles.css").permitAll());
 
-       // http.authorizeHttpRequests().requestMatchers("*.html", "*.css", "*.js").permitAll();
-      //  http.authorizeHttpRequests().anyRequest().permitAll();
 
-        http.authorizeHttpRequests(request -> request.requestMatchers("/html/**.html", "/javascript/**.js", "styles.css").permitAll());
         return http.build();
     }
 
