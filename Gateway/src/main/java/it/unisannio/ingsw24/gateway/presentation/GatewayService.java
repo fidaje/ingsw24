@@ -74,12 +74,15 @@ public class GatewayService {
 
     /**
      * This method returns the user with the given username.
-     * @param username the username of the user.
      * @return a response with the user.
      */
     @GET
-    @Path("/user/{username}")
-    public Response getUser(@PathParam("username") String username){
+    @Path("/user")
+    public Response getUser(){
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        String username = securityContext.getAuthentication().getName();
+        System.out.println("username in method = " + username);
+
         MyUser user = logic.getUser(username);
         if (user == null)
             return Response.status(Response.Status.NOT_FOUND).build();
