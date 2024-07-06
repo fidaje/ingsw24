@@ -7,16 +7,72 @@
     <link rel="stylesheet" type="text/css" href="../styles.css">
 </head>
 <body>
-<h1>Login to MyPantry</h1>
+<h1>MyPantry Login</h1>
 <div class="form-container">
     <form id = "formLogin">
         <label for="username">Username:</label>
         <input type="text" id="username" required>
         <label for="password">Password:</label>
         <input type="password" id="password" required>
+        <input type="checkbox" onclick="show('password')">Mostra Password <br>
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="registration.html">Register here</a></p>
+    <p>Non hai un account? <button id="showRegisterForm" onclick="toggleRegisterForm()">Registrati qui</button>
+    <form id="formRegister" style="display:none">
+        <label for="username">Username:</label>
+        <input type="text" id="usernameRegister" required>
+        <label for="password">Password:</label>
+        <input type="password" id="passwordRegister" required>
+        <input type="checkbox" onclick="show('passwordRegister')">Mostra Password <br>
+        <button type="submit" onclick="register()">Registrati</button>
+    </form>
+    </p>
 </div>
 </body>
+
+<script>
+    function toggleRegisterForm() {
+        var form = document.getElementById("formRegister");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+
+    function register(){
+        var data = JSON.stringify({
+            "username": document.getElementById("usernameRegister").value,
+            "password": document.getElementById("passwordRegister").value,
+            "roles": [
+                "OWNER",
+                "GUEST"
+            ]
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function() {
+            if(this.readyState === 4) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", "http://172.31.6.1:8080/ingsw24/gateway/user");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(data);
+    }
+
+    function show(elementId) {
+        var password = document.getElementById(elementId);
+        if (password.type === "password") {
+            password.type = "text";
+        } else {
+            password.type = "password";
+        }
+    }
+
+</script>
+
 </html>

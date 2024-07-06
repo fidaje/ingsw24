@@ -60,13 +60,15 @@ function buildBody() {
                     content += '<button id="showAddPackedForm" onclick="toggleAddPackedForm()">Aggiungi Packed</button>';
                     content += '<div id="addPackedForm" style="display:none;">';
                     content += '<input type="number" id="newPackedQuantity" placeholder="Quantità">';
+                    content += '<input type="text" id="newPackedExpire" placeholder="Data Scadenza (yyyy-mm-gg)">';
                     content += '<label for="newPackedFridge">In frigo</label>';
-		    content += '<input type="checkbox" id="newPackedFridge">';
-		    content += '<input type="text" id="newPackedExpire" placeholder="Data Scadenza (yyyy-mm-gg)">';
-		    content += '<div id="my-qr-reader-container" style="margin-top: 20px; display: none;"></div>';
-		    content += '</div>';
+		            content += '<input type="checkbox" id="newPackedFridge">';
+                    content += '<input type="text" id="newPackedBarcode" placeholder="Codice a barre">';
+		            content += '<div id="my-qr-reader-container" style="margin-top: 20px; display: none;"></div>';
+                    content += `<button onclick="addPacked('${id}')">Aggiungi</button>`;
+		            content += '</div>';
 
-		    initializeQrScanner();
+		            initializeQrScanner();
 
                     data.fuds.forEach(fud => {
                         content += '<div class="food-item">';
@@ -259,7 +261,7 @@ function initializeQrScanner() {
     		// Se si trova un QR code
     		function onScanSuccess(decodeText, decodeResult) {
        			alert("Codice trovato: " + decodeText);
-       			addPacked(decodeText);
+       			document.getElementById('newPackedBarcode').value = decodeText;
 		}
 
     		let htmlscanner = new Html5QrcodeScanner(
@@ -270,7 +272,8 @@ function initializeQrScanner() {
 	});
 }
 
-function addPacked(barcode) {
+function addPacked(pantryId) {
+    const barcode = document.getElementById('newPackedBarcode').value;
     const expire = document.getElementById('newPackedExpire').value;
     const quantity = document.getElementById('newPackedQuantity').value;
     const isFridge = document.getElementById('newPackedFridge').checked;

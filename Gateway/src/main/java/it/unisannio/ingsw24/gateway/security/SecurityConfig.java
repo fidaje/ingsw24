@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
+
 /**
  * This class is used to configure the security of the server.
  * It is annotated with @Configuration, @EnableWebSecurity and @EnableMethodSecurity.
@@ -47,9 +49,14 @@ public class SecurityConfig {
   //              .requestMatchers("/ingsw24/gateway/user/**", "/html/**", "/javascript/**", "../styles.css").permitAll()
     //            .anyRequest().authenticated();
 
-	http.authorizeHttpRequests(request -> request.requestMatchers("/ingsw24/gateway/**")
+	    http.authorizeHttpRequests(request -> request.
+            requestMatchers("/ingsw24/gateway/pantry/**", "/ingsw24/gateway/pantries/**", "/ingsw24/gateway/users")
                 .authenticated()).httpBasic(Customizer.withDefaults());
-	http.authorizeHttpRequests(request -> request.requestMatchers("/html/**", "/javascript/**", "/styles.css").permitAll());
+
+        http.authorizeHttpRequests(request -> request.requestMatchers(regexMatcher("/ingsw24/gateway/\\d+/.*"))
+            .authenticated()).httpBasic(Customizer.withDefaults());
+
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/html/**", "/javascript/**", "/styles.css", "/ingsw24/gateway/user").permitAll());
 
 
         return http.build();

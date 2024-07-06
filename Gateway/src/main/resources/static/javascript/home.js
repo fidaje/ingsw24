@@ -35,6 +35,7 @@ function getPantries() {
                     <div class="info"><i class="fas fa-utensils"></i><span>Numero di alimenti: ${pantry.fuds.length}</span></div>
                     <div class="info"><i class="fas fa-user"></i><span>Numero di ospiti: ${pantry.guestsUsernames.length}</span></div>
                 `;
+                content += `<button class="remove-pantry-btn" onclick="removePantry('${pantry.id}', event)">Rimuovi</button>`;
 
                 li.innerHTML = content;
                 li.onclick = () => getPantry(pantry.id);
@@ -75,4 +76,44 @@ function getPantry(id){
 
 function logout() {
     sessionStorage.removeItem("credentials");
+    sessionStorage.clear();
+}
+
+function createPantry(){
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            console.log(this.responseText);
+            window.location.reload();
+        }
+    });
+
+    xhr.open("POST", "http://"+host+":8080/ingsw24/gateway/pantry");
+    xhr.setRequestHeader("Authorization", "Basic " + sessionStorage.getItem("credentials"));
+
+
+    xhr.send();
+}
+
+function removePantry(pantryId, event){
+
+    event.stopPropagation();
+
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            console.log(this.responseText);
+            window.location.reload();
+        }
+    });
+
+    xhr.open("DELETE", "http://"+host+":8080/ingsw24/gateway/" + pantryId + "/");
+    xhr.setRequestHeader("Authorization", "Basic " + sessionStorage.getItem("credentials"));
+
+    xhr.send();
 }

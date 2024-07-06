@@ -57,6 +57,7 @@ form label {
     margin-bottom: 0.5rem;
 }
 
+form input[type="password"],
 form input[type="text"],
 form input[type="number"] {
     margin-bottom: 1rem;
@@ -84,7 +85,7 @@ footer {
     padding: 1rem;
     background-color: #3b5998;
     color: white;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
@@ -311,4 +312,49 @@ body.pantry-page {
 .guest-item p span {
     font-weight: bold;
     color: #333;
+}
+
+/* Sezione "Aggiungi ospite" */
+.add-guest {
+    margin: 1rem 0;
+}
+
+.add-guest input[type="text"] {
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+}
+
+.add-guest button {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.add-guest button:hover {
+    background-color: #555;
+}
+
+/* Pulsanti "Rimuovi" per utenti e cibi */
+.remove-pantry-btn,
+.remove-guest-btn,
+.remove-food-btn {
+    padding: 0.5rem 1rem;
+    background-color: #d9534f; /* Rosso per indicare la rimozione */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 0.5rem; /* Spazio tra il bottone e il contenuto */
+}
+
+.remove-pantry-btn:hover,
+.remove-guest-btn:hover,
+.remove-food-btn:hover {
+    background-color: #c9302c; /* Rosso più scuro al passaggio del mouse */
 }
