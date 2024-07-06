@@ -358,3 +358,60 @@ body.pantry-page {
 .remove-food-btn:hover {
     background-color: #c9302c; /* Rosso più scuro al passaggio del mouse */
 }
+
+/* Stile per l'intestazione della pagina di login */
+.login-page h1 {
+    text-align: center;
+    color: #3b5998;
+    margin-top: 2rem;
+}
+
+/* Aggiungi padding e margine alla form-container */
+.login-page .form-container {
+    padding: 2rem;
+    margin: 2rem auto;
+}
+
+/* Stile per i campi input nel form di login e registrazione */
+.login-page form input[type="text"],
+.login-page form input[type="password"] {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Stile per il pulsante "Mostra Password" */
+.login-page form input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Stile per il pulsante di registrazione */
+.login-page #showRegisterForm,
+.login-page form button {
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+/* Stile per il messaggio "Non hai un account?" */
+.login-page .form-container p {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Stile per il pulsante "Crea Dispensa" */
+#createPantryBtn {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#createPantryBtn:hover {
+    background-color: #555;
+}
