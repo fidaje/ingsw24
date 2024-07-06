@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 var host = "172.31.6.1";
 
 function getPantries() {
+    let encodedEmail = sessionStorage.getItem("credentials");
+    let decodedEmail = atob(encodedEmail).split(':')[0];
+
     const url = 'http://' + host + ':8080/ingsw24/gateway/pantries';
 
     fetch(url, {
@@ -35,7 +38,11 @@ function getPantries() {
                     <div class="info"><i class="fas fa-utensils"></i><span>Numero di alimenti: ${pantry.fuds.length}</span></div>
                     <div class="info"><i class="fas fa-user"></i><span>Numero di ospiti: ${pantry.guestsUsernames.length}</span></div>
                 `;
-                content += `<button class="remove-pantry-btn" onclick="removePantry('${pantry.id}', event)">Rimuovi</button>`;
+
+                if(pantry.ownerUsername === decodedEmail){
+                    content += `<button class="remove-pantry-btn" onclick="removePantry('${pantry.id}', event)">Rimuovi</button>`;
+                }
+
 
                 li.innerHTML = content;
                 li.onclick = () => getPantry(pantry.id);

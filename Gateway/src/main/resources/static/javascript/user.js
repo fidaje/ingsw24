@@ -78,6 +78,14 @@ function changePassword(mail){
 
     xhr.addEventListener("readystatechange", function() {
         if(this.readyState === 4) {
+            if (xhr.status === 200) {
+                alert("Password cambiata con successo");
+                sessionStorage.clear();
+                window.location.href = 'http://' + host + ':8080/html/login.html';
+            }
+            else {
+                alert("Errore nel cambio della password");
+            }
             console.log(this.responseText);
         }
     });
@@ -87,15 +95,6 @@ function changePassword(mail){
     xhr.setRequestHeader("Authorization", "Basic " + auth);
 
     xhr.send(newPassword);
-
-    if (xhr.status === 200) {
-        alert("Password cambiata con successo");
-        sessionStorage.clear();
-        window.location.href = 'http://' + host + ':8080/html/login.html';
-    }
-    else {
-        alert("Errore nel cambio della password");
-    }
 }
 
 function show(elementId) {
