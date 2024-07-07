@@ -523,6 +523,7 @@ body.pantry-page {
 
 .change-password-form input[type="text"],
 .change-password-form input[type="password"] {
+    margin-bottom: 1rem;
     padding: 0.5rem;
     width: calc(100% - 1rem);
     border: 1px solid #ddd;
@@ -546,7 +547,6 @@ body.pantry-page {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 0.5rem;
 }
 
 .change-password-form button:hover {

@@ -38,7 +38,6 @@ function getPantries() {
                     <div class="info"><i class="fas fa-utensils"></i><span>Numero di alimenti: ${pantry.fuds.length}</span></div>
                     <div class="info"><i class="fas fa-user"></i><span>Numero di ospiti: ${pantry.guestsUsernames.length}</span></div>
                 `;
-
                 if(pantry.ownerUsername === decodedEmail){
                     content += `<button class="remove-pantry-btn" onclick="removePantry('${pantry.id}', event)">Rimuovi</button>`;
                 }

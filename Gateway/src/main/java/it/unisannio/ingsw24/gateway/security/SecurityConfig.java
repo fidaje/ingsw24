@@ -56,7 +56,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request.requestMatchers(regexMatcher("/ingsw24/gateway/\\d+/.*"))
             .authenticated()).httpBasic(Customizer.withDefaults());
 
-	    http.authorizeHttpRequests(request -> request.requestMatchers("/html/**", "/javascript/**", "/styles.css", "/ingsw24/gateway/user").permitAll());
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/html/**", "/javascript/**", "/styles.css", "/ingsw24/gateway/user", "/favicon.ico").permitAll());
 
 
         return http.build();
