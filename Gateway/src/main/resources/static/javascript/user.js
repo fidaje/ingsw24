@@ -27,6 +27,7 @@ function buildBody() {
 
             // Creare una lista HTML
             const ul = document.createElement('ul');
+            ul.classList.add('personal-area-list'); // Aggiunta di una classe
 
             // Iterare sui dati e creare un elemento li per ciascuna dispensa
             data.forEach(pantry => {
@@ -37,19 +38,22 @@ function buildBody() {
             let decodedEmail = atob(encodedEmail).split(':')[0];
 
             const email = document.createElement('li');
+            email.classList.add('personal-info-item'); // Aggiunta di una classe
             email.innerHTML = `<div class="info"><i class="fas fa-envelope"></i><span>Email: ${decodedEmail}</span></div>`;
 
             const pantries = document.createElement('li');
+            pantries.classList.add('personal-info-item'); // Aggiunta di una classe
             pantries.innerHTML = `<div class="info"><i class="fas fa-utensils"></i><span>Numero di dispense: ${countPantries}</span></div>`;
 
             const password = document.createElement('li');
+            password.classList.add('personal-info-item'); // Aggiunta di una classe
 
             let content = `<div class="info"><i class="fas fa-lock"></i><span>Cambia password</span></div>`;
-            content += '<div id="changePasswordForm">';
+            content += '<div id="changePasswordForm" class="change-password-form">'; // Aggiunta di una classe
             content += '<input type="password" id="oldPassword" placeholder="Vecchia password">';
-            content += '<input type="checkbox" onclick="show(\'oldPassword\')">Mostra vecchia Password <br>';
+            content += '<input type="checkbox" onclick="show(\'oldPassword\')">Mostra vecchia Password <br> <br>';
             content += '<input type="password" id="newPassword" placeholder="Nuova password">';
-            content += '<input type="checkbox" onclick="show(\'newPassword\')">Mostra nuova Password <br>';
+            content += '<input type="checkbox" onclick="show(\'newPassword\')">Mostra nuova Password <br> <br>';
             content += `<button onclick="changePassword('${decodedEmail}')">Cambia</button>`;
             content += '</div>';
 
