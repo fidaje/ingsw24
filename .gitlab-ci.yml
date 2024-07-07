@@ -303,3 +303,4 @@ deploy-gateway-job:
     - ssh $SSH_USER@$MACHINE_IP 'docker rm gateway || true'
     - ssh $SSH_USER@$MACHINE_IP "docker run -d --name gateway -p 0.0.0.0:8080:8080 --pull=always $CI_REGISTRY/ingsw24-gruppo-1/progetto-gruppo-1/gateway:0.1"
     - echo "Application successfully deployed."
+    #
