@@ -145,11 +145,14 @@ function buildBody() {
                             content += `<button class="remove-food-btn" onclick="removeFood('${id}', '${fud.name}')">Rimuovi</button>`;
                             content += '</div>';
                         });
-                    }
 
+                    }
 
                     // Aggiungere il contenuto al contenitore
                     pantry.innerHTML = content;
+
+                    showExpired(id);
+
                 } else {
                     console.error('Element with id "pantry" not found');
                 }
@@ -370,4 +373,34 @@ function addPacked(pantryId) {
 
     xhttp.send();
 
+}
+
+function showExpired(pantryId){
+
+    const url = "http://" + host + ":8080/ingsw24/gateway/" +pantryId+ "/expiredFoods";
+    var xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    let content = "";
+
+    xhr.addEventListener("readystatechange", function() {
+        if(this.readyState === 4) {
+            console.log(this.responseText);
+            const data = JSON.parse(this.responseText);
+
+            content += '<p class="alimenti-title"><i class="fas fa-carrot"></i> Alimenti Scaduti:</p>';
+            data.forEach(fud => {
+                content += '<div class="food-item">';
+                content += `<p><i class="fas fa-utensils"></i> <span>Nome:</span> ${fud.name}</p>`;
+                content += `<p><i class="fas fa-calendar-alt"></i> <span>Data di scadenza:</span> ${fud.expirationDate}</p>`;
+                content += `<p><i class="fas fa-exclamation-circle"></i> <span>Scaduto:</span> ${fud.isExpired ? 'Sì' : 'No'}</p>`;
+                content += '</div>';
+            });
+            document.getElementById('expired').innerHTML = content;
+        }
+    });
+
+    xhr.open("GET", url);
+    xhr.setRequestHeader("Authorization", "Basic " + sessionStorage.getItem("credentials"));
+
+    xhr.send();
 }
