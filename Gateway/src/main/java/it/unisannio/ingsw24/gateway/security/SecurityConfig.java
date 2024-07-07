@@ -2,6 +2,7 @@ package it.unisannio.ingsw24.gateway.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
 
 /**
  * This class is used to configure the security of the server.
@@ -40,32 +43,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        //http.httpBasic(Customizer.withDefaults());
         http.csrf(csrf -> csrf.disable());
-        /*
-         * No authentication needed
-         * */
-//        http.authorizeHttpRequests().anyRequest().permitAll();
 
-        /*
-         * All request must be authenticated
-         * */
-//        http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic();
-//        http.authorizeHttpRequests().anyRequest().authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
+//        http.authorizeHttpRequests()
+  //              .requestMatchers("/ingsw24/gateway/user/**", "/html/**", "/javascript/**", "../styles.css").permitAll()
+    //            .anyRequest().authenticated();
 
+	    http.authorizeHttpRequests(request -> request.
+            requestMatchers("/ingsw24/gateway/pantry/**", "/ingsw24/gateway/pantries/**", "/ingsw24/gateway/users")
+                .authenticated()).httpBasic(Customizer.withDefaults());
 
-        /*
-         * Path matching based security
-         * */
-//        http.authorizeHttpRequests().requestMatchers("/hello.html").permitAll();
+        http.authorizeHttpRequests(request -> request.requestMatchers(regexMatcher("/ingsw24/gateway/\\d+/.*"))
+            .authenticated()).httpBasic(Customizer.withDefaults());
 
-        //http.authorizeHttpRequests().requestMatchers("/ingsw24/gateway/**").authenticated().and().httpBasic();
-//        http.authorizeHttpRequests().requestMatchers("/hello").permitAll();
-        http.authorizeHttpRequests()
-                .requestMatchers("/ingsw24/gateway/user/**").permitAll()
-                .anyRequest().authenticated().and().httpBasic().authenticationEntryPoint(authenticationEntryPoint);
-
-      //  http.authorizeHttpRequests().anyRequest().permitAll();
+	    http.authorizeHttpRequests(request -> request.requestMatchers("/html/**", "/javascript/**", "/styles.css", "/ingsw24/gateway/user", "/favicon.ico").permitAll());
 
 
         return http.build();

@@ -1,0 +1,554 @@
+@charset "ISO-8859-1";
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+
+body {
+    font-family: Montserrat, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #3b5998;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+section {
+    padding: 2rem;
+}
+
+h2 {
+    color: #3b5998;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+form {
+    margin:1rem 0;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+form input[type="password"],
+form input[type="text"],
+form input[type="number"] {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #3b5998;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#barcode-result {
+    margin-top: 2rem;
+    background: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#barcode-result h3 {
+    color: #333;
+}
+
+#barcode-result p {
+    margin-bottom: 1rem;
+}
+
+#add-food {
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#add-food:hover {
+    background-color: #555;
+}
+
+#pantrySection {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px; /* Ridurre la larghezza massima per i rettangoli */
+}
+
+#pantrySection ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#pantrySection li {
+    position: relative; /* Necessario per le pseudo-classi */
+    background-color: white;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+#pantrySection li:hover {
+    transform: translateY(-5px);
+}
+
+#pantrySection li::before {
+    content: '';
+    position: absolute;
+    top: -2px; /* Compensazione per il bordo */
+    left: -2px; /* Compensazione per il bordo */
+    right: -2px; /* Compensazione per il bordo */
+    bottom: -2px; /* Compensazione per il bordo */
+    border: 2px solid #3b5998;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    animation: border-scroll 2s infinite linear;
+    pointer-events: none;
+    z-index: -1; /* Posizionamento dietro il contenuto */
+}
+
+#pantrySection li:hover::before {
+    opacity: 1;
+}
+
+@keyframes border-scroll {
+    0% {
+        clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+    }
+    25% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    }
+    50% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%);
+    }
+    75% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    100% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+}
+
+#pantrySection li .info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem; /* Aumentare lo spazio tra i campi */
+}
+
+#pantrySection li .info i {
+    color: #3b5998;
+    margin-right: 0.5rem;
+    font-size: 1.5rem; /* Aumentare la dimensione delle icone */
+}
+
+#pantrySection li .info span {
+    font-size: 1.2rem; /* Aumentare la dimensione del font */
+    margin-left: 0.5rem; /* Ridurre il margine sinistro per migliorare l'allineamento */
+}
+
+#pantrySection li p:first-child {
+    font-weight: bold;
+    color: #3b5998;
+}
+
+#pantrySection li p {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+#pantrySection li p i {
+    color: #3b5998;
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+}
+
+/* Stile per il contenitore principale della dispensa */
+#expired,
+#pantry {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Stile per il paragrafo dell'ID Dispensa */
+#pantry p.id-dispensa {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3b5998;
+    margin-bottom: 1rem;
+}
+
+/* Stile per il titolo Alimenti */
+
+#expired p.alimenti-title,
+#pantry p.alimenti-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3b5998;
+    margin-top: 2rem;
+}
+
+/* Stile per i paragrafi Proprietario e Ospiti */
+#pantry p.proprietario,
+#pantry p.ospiti {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Stile per il testo successivo ai due punti */
+#expired p span,
+#pantry p span {
+    font-weight: normal;
+    color: #000;
+}
+
+/* Stile per gli alimenti nella dispensa */
+#expired .food-item,
+#pantry .food-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+#expired .food-item p,
+#pantry .food-item p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+#expired .food-item p span,
+#pantry .food-item p span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Stile per lo sfondo della pagina */
+body.pantry-page {
+    background-color: #3b5998;
+    font-family: Montserrat, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile per il contenitore degli ospiti */
+.guest-container {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+/* Stile per gli ospiti nella dispensa */
+.guest-item {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+.guest-item p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.guest-item p span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Sezione "Aggiungi ospite" */
+.add-guest {
+    margin: 1rem 0;
+}
+
+#newUnPackedQuantity,
+#newPackedQuantity,
+#newPackedExpire,
+#newPackedBarcode,
+#newUnPackedName {
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.add-guest input[type="text"] {
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+#addUnPacked-btn,
+#addPacked-btn,
+.add-guest button {
+    padding: 0.5rem 1rem;
+    background-color: #40b133;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#addUnPacked-btn:hover,
+#addPacked-btn:hover,
+.add-guest button:hover {
+    background-color: #418438;
+}
+
+/* Pulsanti "Rimuovi" per utenti e cibi */
+.remove-pantry-btn,
+.remove-guest-btn,
+.remove-food-btn {
+    padding: 0.5rem 1rem;
+    background-color: #d9534f; /* Rosso per indicare la rimozione */
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 0.5rem; /* Spazio tra il bottone e il contenuto */
+}
+
+.remove-pantry-btn:hover,
+.remove-guest-btn:hover,
+.remove-food-btn:hover {
+    background-color: #c9302c; /* Rosso più scuro al passaggio del mouse */
+}
+
+/* Stile per l'intestazione della pagina di login */
+.login-page h1 {
+    text-align: center;
+    color: #3b5998;
+    margin-top: 2rem;
+}
+
+/* Aggiungi padding e margine alla form-container */
+.login-page .form-container {
+    padding: 2rem;
+    margin: 2rem auto;
+}
+
+/* Stile per i campi input nel form di login e registrazione */
+.login-page form input[type="text"],
+.login-page form input[type="password"] {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Stile per il pulsante "Mostra Password" */
+.login-page form input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* Stile per il pulsante di registrazione */
+.login-page #showRegisterForm,
+.login-page form button {
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+/* Stile per il messaggio "Non hai un account?" */
+.login-page .form-container p {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Stile per il pulsante "Crea Dispensa" */
+#createPantryBtn {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#createPantryBtn:hover {
+    background-color: #555;
+}
+
+/* Stile per i bottoni "Aggiungi Alimento" e "Aggiungi Packed" */
+#my-qr-reader-container button {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+}
+
+#showAddUnPackedForm, #showAddPackedForm {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+}
+
+#showAddUnPackedForm:hover, #showAddPackedForm:hover {
+    background-color: #555;
+}
+
+#addUnPackedForm, #addPackedForm {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    margin-bottom: 1rem;
+}
+
+/* Stile per la lista della sezione area personale */
+.personal-area-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Stile per gli elementi della lista della sezione area personale */
+.personal-info-item {
+    background-color: white;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.personal-info-item:hover {
+    transform: translateY(-5px);
+}
+
+.personal-info-item .info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.personal-info-item .info i {
+    color: #3b5998;
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.personal-info-item .info span {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+}
+
+/* Stile per il form di cambio password */
+.change-password-form {
+    margin-top: 1rem;
+}
+
+.change-password-form input[type="text"],
+.change-password-form input[type="password"] {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#personalAreaSection{
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+.change-password-form input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.change-password-form button {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.change-password-form button:hover {
+    background-color: #555;
+}
