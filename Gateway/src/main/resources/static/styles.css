@@ -327,25 +327,43 @@ body.pantry-page {
     margin: 1rem 0;
 }
 
+#newUnPackedQuantity,
+#newPackedQuantity,
+#newPackedExpire,
+#newPackedBarcode,
+#newUnPackedName {
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
 .add-guest input[type="text"] {
     padding: 0.5rem;
     width: calc(100% - 1rem);
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
+#addUnPacked-btn,
+#addPacked-btn,
 .add-guest button {
     padding: 0.5rem 1rem;
-    background-color: #3b5998;
+    background-color: #40b133;
     color: white;
     border: none;
     cursor: pointer;
     border-radius: 5px;
 }
 
+#addUnPacked-btn:hover,
+#addPacked-btn:hover,
 .add-guest button:hover {
-    background-color: #555;
+    background-color: #418438;
 }
 
 /* Pulsanti "Rimuovi" per utenti e cibi */
@@ -421,5 +439,116 @@ body.pantry-page {
 }
 
 #createPantryBtn:hover {
+    background-color: #555;
+}
+
+/* Stile per i bottoni "Aggiungi Alimento" e "Aggiungi Packed" */
+#my-qr-reader-container button {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+}
+
+#showAddUnPackedForm, #showAddPackedForm {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+}
+
+#showAddUnPackedForm:hover, #showAddPackedForm:hover {
+    background-color: #555;
+}
+
+#addUnPackedForm, #addPackedForm {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    margin-bottom: 1rem;
+}
+
+/* Stile per la lista della sezione area personale */
+.personal-area-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Stile per gli elementi della lista della sezione area personale */
+.personal-info-item {
+    background-color: white;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.personal-info-item:hover {
+    transform: translateY(-5px);
+}
+
+.personal-info-item .info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.personal-info-item .info i {
+    color: #3b5998;
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+}
+
+.personal-info-item .info span {
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+}
+
+/* Stile per il form di cambio password */
+.change-password-form {
+    margin-top: 1rem;
+}
+
+.change-password-form input[type="text"],
+.change-password-form input[type="password"] {
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#personalAreaSection{
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+.change-password-form input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.change-password-form button {
+    padding: 0.5rem 1rem;
+    background-color: #3b5998;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+}
+
+.change-password-form button:hover {
     background-color: #555;
 }
