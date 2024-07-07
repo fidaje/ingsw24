@@ -30,10 +30,11 @@ function buildBody() {
                     pantry.innerHTML = '';
                     let content = "";
 
+                    // Mappare i dati in paragrafi HTML con icone
+                    content += `<p class="id-dispensa"><i class="fas fa-id-badge"></i> ID Dispensa: ${data.id}</p>`;
+                    content += `<p class="proprietario"><i class="fas fa-user"></i> Proprietario: <span>${data.ownerUsername}</span></p>`;
+
                     if( data.ownerUsername === decodedEmail ){
-                        // Mappare i dati in paragrafi HTML con icone
-                        content += `<p class="id-dispensa"><i class="fas fa-id-badge"></i> ID Dispensa: ${data.id}</p>`;
-                        content += `<p class="proprietario"><i class="fas fa-user"></i> Proprietario: <span>${data.ownerUsername}</span></p>`;
 
                         // Campo di input e pulsante per aggiungere un nuovo ospite
                         content += '<div class="add-guest">';
@@ -52,51 +53,8 @@ function buildBody() {
                         });
                         content += '</div>';
 
-                        // Aggiungere i dettagli degli alimenti
-                        content += '<p class="alimenti-title"><i class="fas fa-carrot"></i> Alimenti:</p>';
-                        content += '<button id="showAddUnPackedForm" onclick="toggleAddUnPackedForm()">Aggiungi Alimento</button>';
-                        content += '<div id="addUnPackedForm" style="display:none;">';
-                        content += '<input type="text" id="newUnPackedName" placeholder="Nome alimento">';
-                        content += '<input type="number" id="newUnPackedQuantity" placeholder="Quantità">';
-                        content += '<label for="newFoodFridge">In frigo</label>';
-                        content += '<input type="checkbox" id="newUnPackedFridge">';
-                        content += `<button onclick="addUnPacked('${id}')">Aggiungi</button>`;
-                        content += '</div>';
-
-                        content += '<button id="showAddPackedForm" onclick="toggleAddPackedForm()">Aggiungi Packed</button>';
-                        content += '<div id="addPackedForm" style="display:none;">';
-                        content += '<input type="number" id="newPackedQuantity" placeholder="Quantità">';
-                        content += '<input type="text" id="newPackedExpire" placeholder="Data Scadenza (yyyy-mm-gg)">';
-                        content += '<label for="newPackedFridge">In frigo</label>';
-                        content += '<input type="checkbox" id="newPackedFridge">';
-                        content += '<input type="text" id="newPackedBarcode" placeholder="Codice a barre">';
-                        content += '<div id="my-qr-reader-container" style="margin-top: 20px; display: none;"></div>';
-                        content += `<button onclick="addPacked('${id}')">Aggiungi</button>`;
-                        content += '</div>';
-
-                        initializeQrScanner();
-
-                        data.fuds.forEach(fud => {
-                            content += '<div class="food-item">';
-                            content += `<p><i class="fas fa-utensils"></i> <span>Nome:</span> ${fud.name}</p>`;
-                            content += `<p><i class="fas fa-calendar-alt"></i> <span>Data di scadenza:</span> ${fud.expirationDate}</p>`;
-                            content += `<p><i class="fas fa-exclamation-circle"></i> <span>Scaduto:</span> ${fud.isExpired ? 'Sì' : 'No'}</p>`;
-                            content += `<p><i class="fas fa-snowflake"></i> <span>Frigo:</span> ${fud.isFridge ? 'Sì' : 'No'}</p>`;
-                            content += `<p><i class="fas fa-balance-scale"></i> <span>Quantità:</span> ${fud.quantity}</p>`;
-                            if (fud.brand) content += `<p><i class="fas fa-tag"></i> <span>Marca:</span> ${fud.brand}</p>`;
-                            if (fud.category) content += `<p><i class="fas fa-list"></i> <span>Categoria:</span> ${fud.category}</p>`;
-                            if (fud.nutritionGrade) content += `<p><i class="fas fa-chart-bar"></i> <span>Grado di nutrizione:</span> ${fud.nutritionGrade}</p>`;
-                            content += `<button class="remove-food-btn" onclick="removeFood('${id}', '${fud.name}')">Rimuovi</button>`;
-                            content += '</div>';
-                        });
-
                     }
                     else{
-                        // Mappare i dati in paragrafi HTML con icone
-                        content += `<p class="id-dispensa"><i class="fas fa-id-badge"></i> ID Dispensa: ${data.id}</p>`;
-                        content += `<p class="proprietario"><i class="fas fa-user"></i> Proprietario: <span>${data.ownerUsername}</span></p>`;
-
-
 
                         // Aggiungere i dettagli degli ospiti
                         content += '<p class="ospiti"><i class="fas fa-users"></i> Ospiti:</p>';
@@ -107,46 +65,45 @@ function buildBody() {
                             content += '</div>';
                         });
                         content += '</div>';
-
-                        // Aggiungere i dettagli degli alimenti
-                        content += '<p class="alimenti-title"><i class="fas fa-carrot"></i> Alimenti:</p>';
-                        content += '<button id="showAddUnPackedForm" onclick="toggleAddUnPackedForm()">Aggiungi Alimento</button>';
-                        content += '<div id="addUnPackedForm" style="display:none;">';
-                        content += '<input type="text" id="newUnPackedName" placeholder="Nome alimento">';
-                        content += '<input type="number" id="newUnPackedQuantity" placeholder="Quantità">';
-                        content += '<label for="newFoodFridge">In frigo</label>';
-                        content += '<input type="checkbox" id="newUnPackedFridge">';
-                        content += `<button onclick="addUnPacked('${id}')">Aggiungi</button>`;
-                        content += '</div>';
-
-                        content += '<button id="showAddPackedForm" onclick="toggleAddPackedForm()">Aggiungi Packed</button>';
-                        content += '<div id="addPackedForm" style="display:none;">';
-                        content += '<input type="number" id="newPackedQuantity" placeholder="Quantità">';
-                        content += '<input type="text" id="newPackedExpire" placeholder="Data Scadenza (yyyy-mm-gg)">';
-                        content += '<label for="newPackedFridge">In frigo</label>';
-                        content += '<input type="checkbox" id="newPackedFridge">';
-                        content += '<input type="text" id="newPackedBarcode" placeholder="Codice a barre">';
-                        content += '<div id="my-qr-reader-container" style="margin-top: 20px; display: none;"></div>';
-                        content += `<button onclick="addPacked('${id}')">Aggiungi</button>`;
-                        content += '</div>';
-
-                        initializeQrScanner();
-
-                        data.fuds.forEach(fud => {
-                            content += '<div class="food-item">';
-                            content += `<p><i class="fas fa-utensils"></i> <span>Nome:</span> ${fud.name}</p>`;
-                            content += `<p><i class="fas fa-calendar-alt"></i> <span>Data di scadenza:</span> ${fud.expirationDate}</p>`;
-                            content += `<p><i class="fas fa-exclamation-circle"></i> <span>Scaduto:</span> ${fud.isExpired ? 'Sì' : 'No'}</p>`;
-                            content += `<p><i class="fas fa-snowflake"></i> <span>Frigo:</span> ${fud.isFridge ? 'Sì' : 'No'}</p>`;
-                            content += `<p><i class="fas fa-balance-scale"></i> <span>Quantità:</span> ${fud.quantity}</p>`;
-                            if (fud.brand) content += `<p><i class="fas fa-tag"></i> <span>Marca:</span> ${fud.brand}</p>`;
-                            if (fud.category) content += `<p><i class="fas fa-list"></i> <span>Categoria:</span> ${fud.category}</p>`;
-                            if (fud.nutritionGrade) content += `<p><i class="fas fa-chart-bar"></i> <span>Grado di nutrizione:</span> ${fud.nutritionGrade}</p>`;
-                            content += `<button class="remove-food-btn" onclick="removeFood('${id}', '${fud.name}')">Rimuovi</button>`;
-                            content += '</div>';
-                        });
-
                     }
+
+                    // Aggiungere i dettagli degli alimenti
+                    content += '<p class="alimenti-title"><i class="fas fa-carrot"></i> Alimenti:</p>';
+                    content += '<button id="showAddUnPackedForm" onclick="toggleAddUnPackedForm()">Aggiungi UnPacked</button>';
+                    content += '<div id="addUnPackedForm" style="display:none;">';
+                    content += '<input type="text" id="newUnPackedName" placeholder="Nome alimento">';
+                    content += '<input type="number" id="newUnPackedQuantity" placeholder="Quantità">';
+                    content += '<br> <label for="newFoodFridge">In frigo</label>';
+                    content += '<input type="checkbox" id="newUnPackedFridge">';
+                    content += `<br> <br> <button id="addUnPacked-btn" onclick="addUnPacked('${id}')">Aggiungi</button>`;
+                    content += '</div>';
+
+                    content += '<button id="showAddPackedForm" onclick="toggleAddPackedForm()">Aggiungi Packed</button>';
+                    content += '<div id="addPackedForm" style="display:none;">';
+                    content += '<input type="text" id="newPackedBarcode" placeholder="Codice a barre">';
+                    content += '<input type="number" id="newPackedQuantity" placeholder="Quantità">';
+                    content += '<input type="text" id="newPackedExpire" placeholder="Data Scadenza (yyyy-mm-gg)">';
+                    content += '<br> <label for="newPackedFridge">In frigo</label>';
+                    content += '<input type="checkbox" id="newPackedFridge">';
+                    content += '<div id="my-qr-reader-container" style="margin-top: 20px; display: none;"></div>';
+                    content += `<br> <button id="addPacked-btn" onclick="addPacked('${id}')">Aggiungi</button>`;
+                    content += '</div>';
+
+                    initializeQrScanner();
+
+                    data.fuds.forEach(fud => {
+                        content += '<div class="food-item">';
+                        content += `<p><i class="fas fa-utensils"></i> <span>Nome:</span> ${fud.name}</p>`;
+                        content += `<p><i class="fas fa-calendar-alt"></i> <span>Data di scadenza:</span> ${fud.expirationDate}</p>`;
+                        content += `<p><i class="fas fa-exclamation-circle"></i> <span>Scaduto:</span> ${fud.isExpired ? 'Sì' : 'No'}</p>`;
+                        content += `<p><i class="fas fa-snowflake"></i> <span>Frigo:</span> ${fud.isFridge ? 'Sì' : 'No'}</p>`;
+                        content += `<p><i class="fas fa-balance-scale"></i> <span>Quantità:</span> ${fud.quantity}</p>`;
+                        if (fud.brand) content += `<p><i class="fas fa-tag"></i> <span>Marca:</span> ${fud.brand}</p>`;
+                        if (fud.category) content += `<p><i class="fas fa-list"></i> <span>Categoria:</span> ${fud.category}</p>`;
+                        if (fud.nutritionGrade) content += `<p><i class="fas fa-chart-bar"></i> <span>Grado di nutrizione:</span> ${fud.nutritionGrade}</p>`;
+                        content += `<button class="remove-food-btn" onclick="removeFood('${id}', '${fud.name}')">Rimuovi</button>`;
+                        content += '</div>';
+                    });
 
                     // Aggiungere il contenuto al contenitore
                     pantry.innerHTML = content;
