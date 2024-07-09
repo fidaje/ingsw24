@@ -1,7 +1,7 @@
 services:
   gateway:
     build:
-      context: ./gateway
+      context: ./Gateway
       dockerfile: Dockerfile
     container_name: gateway
     ports:
@@ -9,7 +9,7 @@ services:
 
   user:
     build:
-      context: ./user
+      context: ./User
       dockerfile: Dockerfile
     container_name: user
     ports:
@@ -18,7 +18,7 @@ services:
 
   packed:
     build:
-      context: ./packed
+      context: ./Packed
       dockerfile: Dockerfile
     container_name: packed
     ports:
@@ -28,7 +28,7 @@ services:
 
   unpacked:
     build:
-      context: ./unpacked
+      context: ./UnPacked
       dockerfile: Dockerfile
     container_name: unpacked
     ports:
@@ -36,7 +36,7 @@ services:
 
   pantry:
     build:
-      context: ./pantry
+      context: ./Pantry
       dockerfile: Dockerfile
     container_name: pantry
     ports:
