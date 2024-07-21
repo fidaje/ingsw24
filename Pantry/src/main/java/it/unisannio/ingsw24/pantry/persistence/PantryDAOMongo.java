@@ -244,8 +244,9 @@ public class PantryDAOMongo implements PantryDAO {
             for(Document food : foods) {
                 if (food.getBoolean("isExpired")) {
                     String foodName = food.getString("name");
+                    int quantity = food.getInteger("quantity");
                     expiredFoods.add(foodName);
-                    message += "- " + foodName + "\n";
+                    message += "- " + foodName + " (Quantity: " + quantity + ")\n";
                 }
             }
             if (expiredFoods.isEmpty())
